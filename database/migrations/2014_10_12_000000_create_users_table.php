@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('address');
             $table->string('photo')->nullable();
             $table->boolean('verified_at');
-            $table->enum('role',['user','Organizer','hall_owner'])->default('user');
             $table->float('money');
             $table->rememberToken();
             $table->timestamps();
