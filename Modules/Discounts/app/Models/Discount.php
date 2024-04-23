@@ -24,6 +24,8 @@ class Discount extends Model
         'event_id',
     ];
 
+    protected $table = 'discounts';
+
     public function serviceAsset() {
         return $this->belongsTo(ServiceAsset::class, 'event_id', 'id');
     }

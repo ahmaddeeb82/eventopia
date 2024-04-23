@@ -22,7 +22,7 @@ class Asset extends Model implements Favoritable
         'user_id',
     ];
 
-
+    protected $table = 'assets';
 
     public function favorites()
     {

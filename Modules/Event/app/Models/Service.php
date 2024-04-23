@@ -19,6 +19,8 @@ class Service extends Model
         'service_name',
     ];
 
+    protected $table = 'services';
+
     public function serviceAssets() {
         return $this->belongsToMany(Asset::class, 'service_asset', 'service_id', 'asset_id');
     }

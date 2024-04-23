@@ -20,6 +20,8 @@ class Notification extends Model
         'description',
     ];
 
+    protected $table = 'notifications';
+
     public function users() {
         return $this->belongsToMany(User::class, 'user_notifications', 'notification_id','user_id');
     }

@@ -22,6 +22,8 @@ class Hall extends Model
         'asset_id',
     ];
 
+    protected $table = 'halls';
+
     public function asset() {
         return $this->belongsTo(Asset::class,'asset_id', 'id');
     }

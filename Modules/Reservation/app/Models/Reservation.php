@@ -28,6 +28,8 @@ class Reservation extends Model
         'event_id',
     ];
 
+    protected $table = 'reservations';
+
     public function user() {
         $this->belongsTo(User::class,'confirmed_guest_id');
     }

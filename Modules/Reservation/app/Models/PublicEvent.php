@@ -25,6 +25,8 @@ class PublicEvent extends Model
         'reservation_id',
     ];
 
+    protected $table = 'extra_public_events';
+
     public function reservation() {
         $this->belongsTo(Reservation::class, 'reservation_id','id');
     }

@@ -20,6 +20,8 @@ class ServiceAsset extends Model
         'price',
     ];
 
+    protected $table = 'service_asset';
+
     public function proportion() {
         return $this->hasOne(PublicEventProportion::class,'event_id','id');
     }

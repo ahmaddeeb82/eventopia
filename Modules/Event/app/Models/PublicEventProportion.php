@@ -18,6 +18,8 @@ class PublicEventProportion extends Model
         'event_id',
     ];
 
+    protected $table = 'public_event_proportion';
+
     public  function serviceAsset() {
         return $this->belongsTo(ServiceAsset::class, 'event_id', 'id');
     }

@@ -20,6 +20,8 @@ class Chat extends Model
         'connection_name',
     ];
 
+    protected $table = 'chats';
+
     public function sender() {
         return $this->belongsTo(User::class, 'sender_id', 'id');
     }

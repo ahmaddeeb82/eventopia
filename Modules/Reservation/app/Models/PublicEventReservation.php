@@ -24,6 +24,8 @@ class PublicEventReservation extends Model implements Favoritable
         'user_id',
     ];
 
+    protected $table = 'public_event_reservations';
+
     public function publicEvent() {
         return $this->belongsTo(PublicEvent::class, 'event_id','id');
     }

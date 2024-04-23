@@ -15,6 +15,8 @@ class OTP extends Model
      */
     protected $fillable = ['otp'];
 
+    protected $table = 'otps';
+
     public function user () {
         return $this->belongsTo(User::class);
     }
