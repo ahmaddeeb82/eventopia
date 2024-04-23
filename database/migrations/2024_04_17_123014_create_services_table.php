@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->enum('service_kind',['birthday','wedding']);
+            $table->enum('service_kind',['private','public']);
             $table->string('service_name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

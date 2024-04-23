@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Asset\Models\Asset;
+use Modules\Chat\Models\Chat;
+use Modules\Contracts\Models\Contract;
+use Modules\Favorite\Interfaces\Favoritable;
+use Modules\Notification\Models\Notification;
+use Modules\Reservation\Models\PublicEventReservation;
+use Modules\Reservation\Models\Reservation;
 
 class User extends Authenticatable
 {
@@ -18,9 +25,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
+        'address',
+        'photo',
+        'verified_at',
+        'money'
     ];
 
     /**
@@ -42,4 +55,43 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function contracts() {
+        return $this->hasMany(Contract::class, 'user_id', 'id');
+    }
+
+    public function notifications() {
+        return $this->belongsToMany(Notification::class,'user_notifications', 'user_id', 'notification_id');
+    }
+
+    public function assets() {
+        return $this->hasMany(Asset::class, 'user_id', 'id');
+    }
+
+    public function otps() {
+        return $this->hasMany(OTP::class, 'user_id', 'id');
+    }
+
+    public function publicEventReservations() {
+        return $this->hasMany(PublicEventReservation::class, 'user_id', 'id');
+    }
+
+    public function chatSender() {
+        return $this->hasMany(Chat::class,'sender_id', 'id');
+    }
+
+    public function chatReciever() {
+        return $this->hasMany(Chat::class,'reciever_id', 'id');
+    }
+
+    public function favorites() {
+        return $this->morphedByMany(Favoritable::class, 'favoritable');
+    }
+
+
+    public function reservations() {
+        return $this->hasMany(Reservation::class,'confirmed_guest_id','id');
+    }
+
+
 }

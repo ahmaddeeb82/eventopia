@@ -21,8 +21,9 @@ return new class extends Migration
             $table->float('ticket_price');
             $table->integer('total_tickets');
             $table->integer('reserved_tickets');
-            $table->foreignId('reservation_id')->constrained();
+            $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

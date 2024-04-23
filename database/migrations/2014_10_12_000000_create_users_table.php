@@ -15,16 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('email')->unique();
-            //$table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('address');
+            $table->string('phone_number');
             $table->string('photo')->nullable();
-            $table->boolean('verified_at');
-            $table->float('money');
+            $table->float('money')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

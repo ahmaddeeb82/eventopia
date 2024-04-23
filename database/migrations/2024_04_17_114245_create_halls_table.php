@@ -17,9 +17,10 @@ return new class extends Migration
             $table->boolean('dinner');
             $table->boolean('mixed');
             $table->json('active_times');
-            $table->string('hall_name');
-            $table->foreignId('asset_id')->constrained();
+            $table->string('name');
+            $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

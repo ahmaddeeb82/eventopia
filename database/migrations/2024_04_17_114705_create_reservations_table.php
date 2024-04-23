@@ -20,8 +20,13 @@ return new class extends Migration
             $table->boolean('payment')->default(false);
             $table->float('total_price');
             $table->text('notes')->nullable();
-            $table->foreignId('confirmed_guest_id')->constrained();
+            $table->string('phone')->nullable();
+            $table->unsignedBigInteger('confirmed_guest_id');
+            $table->foreign('confirmed_guest_id')->references('id')->on('users');
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')->references('id')->on('service_asset');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

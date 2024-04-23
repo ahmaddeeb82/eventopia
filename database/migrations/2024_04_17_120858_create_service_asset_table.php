@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('service_asset', function (Blueprint $table) {
             $table->id();
             $table->float('price');
-            $table->foreignId('asset_id')->constrained();
-            $table->foreignId('service_id')->constrained();
+            $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('service_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

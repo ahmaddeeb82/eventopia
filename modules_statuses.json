@@ -1,3 +1,11 @@
 {
-    "User": true
+    "User": true,
+    "Asset": true,
+    "Reservation": true,
+    "Event": true,
+    "Chat": true,
+    "Notification": true,
+    "Favorite": true,
+    "Contracts": true,
+    "Discounts": true
 }

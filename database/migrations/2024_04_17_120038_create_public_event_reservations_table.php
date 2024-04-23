@@ -16,9 +16,11 @@ return new class extends Migration
             $table->boolean('payment')->default(false);
             $table->float('tickets_price');
             $table->integer('tickets_number');
-            $table->foreignId('event_id')->constrained();
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')->references('id')->on('extra_public_events')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

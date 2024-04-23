@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('favorite_public_events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('public_event_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('public_event_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

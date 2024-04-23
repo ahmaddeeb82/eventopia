@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->float('price');
-            $table->date('start_contract_date');
-            $table->date('end_contract_date');
-            $table->float('diration');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->float('duration');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

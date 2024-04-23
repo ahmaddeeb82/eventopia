@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('otp', function (Blueprint $table) {
             $table->id();
             $table->string('otp');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

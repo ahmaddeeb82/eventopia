@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained();
             $table->foreignId('reciever_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

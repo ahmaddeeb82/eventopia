@@ -18,8 +18,11 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->float('duration');
-            $table->foreignId('event_id')->constrained();
+            $table->boolean('active')->default(true);
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')->references('id')->on('service_asset')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
