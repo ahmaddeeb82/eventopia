@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('connection_name');
             $table->unsignedBigInteger('sender_id');
-            $table->foreign('sender_id')->references('id')->on('users');
+            $table->foreign('sender_id')->references('id')->on('users')->cascadeOnDelete();
             $table->unsignedBigInteger('reciever_id');
-            $table->foreign('reciever_id')->references('id')->on('users');
+            $table->foreign('reciever_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
