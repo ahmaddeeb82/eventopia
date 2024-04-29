@@ -17,7 +17,7 @@ return new class extends Migration
             $table->boolean('dinner');
             $table->boolean('mixed');
             $table->json('active_times');
-            $table->string('name');
+            $table->json('name');
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

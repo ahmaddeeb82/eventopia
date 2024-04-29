@@ -13,5 +13,9 @@ return [
     |
     */
 
+    'create_service' => 'تم إضافة الخدمة بنجاح',
+    'update_service' => 'تم تعديل الخدمة بنجاح',
+    'retrieve_service' => 'تم إعادة الخدمة بنجاح',
+
 
 ];

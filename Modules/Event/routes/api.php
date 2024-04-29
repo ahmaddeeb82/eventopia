@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Event\Http\Controllers\EventController;
+use Modules\Event\Http\Controllers\ServiceController;
 
 /*
  *--------------------------------------------------------------------------
@@ -14,6 +15,10 @@ use Modules\Event\Http\Controllers\EventController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('event', EventController::class)->names('event');
+Route::middleware('localizeApi')->controller(ServiceController::class)
+->prefix('service')
+->group(function() {
+    Route::post('create','create');
+    Route::post('update','update');
+    Route::get('get','get');
 });

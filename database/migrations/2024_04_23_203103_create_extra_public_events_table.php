@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('extra_public_events', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
+            $table->json('category');
             $table->text('description');
             $table->string('photo');
             $table->string('name');

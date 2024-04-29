@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Trairs;
+namespace App\Traits;
 
 trait ApiResponse {
     public function sendResponse($code = 200, $message = '', $data = []) {
