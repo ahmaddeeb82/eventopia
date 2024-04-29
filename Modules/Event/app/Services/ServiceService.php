@@ -29,4 +29,8 @@ class ServiceService {
         return new GetServiceResource($this->repository->getWithId($id));
     }
 
+    public function deleteService($id) {
+        $this->repository->delete($this->repository->getWithId($id));
+    }
+
 }

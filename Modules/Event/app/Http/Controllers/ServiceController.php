@@ -40,4 +40,14 @@ class ServiceController extends Controller
 
     }
 
+    public function delete(GetServiceRequest $request) {
+        (new ServiceService(new ServiceRepository()))->deleteService($request->id);
+
+        return $this->sendResponse(
+            200,
+            __('messages.retrieve_service'),
+        );
+
+    }
+
 }

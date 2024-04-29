@@ -26,5 +26,10 @@ class ServiceRepository implements ServiceRepositoryInterface
         $service->update($attributes);
 
     }
+
+    public function delete($service)
+    {
+        $service->delete();
+    }
     
 }
