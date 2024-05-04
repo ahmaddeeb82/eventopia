@@ -3,20 +3,23 @@
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Modules\Asset\Models\Asset;
 use Modules\Chat\Models\Chat;
+use Modules\Asset\Models\Asset;
+use Laravel\Sanctum\HasApiTokens;
 use Modules\Contracts\Models\Contract;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Modules\Reservation\Models\Reservation;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Notification\Models\Notification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Reservation\Models\PublicEventReservation;
-use Modules\Reservation\Models\Reservation;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use HasRoles;
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
