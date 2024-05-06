@@ -39,6 +39,8 @@ class User extends Authenticatable
         'money'
     ];
 
+    protected $guard_name = 'web';
+
     /**
      * The attributes that should be hidden for serialization.
      *
