@@ -17,3 +17,11 @@ use Modules\User\Http\Controllers\UserController;
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('user', UserController::class)->names('user');
 });
+
+Route::controller(UserController::class)
+->prefix('auth')
+->group(function(){
+    Route::post('register', 'register');
+    Route::post('addUser', 'addUser')->middleware(['role::Admin']);
+    Route::post('login','login');
+});
