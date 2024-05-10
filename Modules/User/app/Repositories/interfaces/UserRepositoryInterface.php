@@ -10,4 +10,5 @@ interface UserRepositoryInterface
 {
     public function create($userInfo);
 
+    public function login($login_info , $login_type);
 }
