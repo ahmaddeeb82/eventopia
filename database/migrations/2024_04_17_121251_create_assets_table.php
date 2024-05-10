@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->string('photos');
-            $table->float('rate');
+            $table->json('photos');
+            $table->float('rate')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

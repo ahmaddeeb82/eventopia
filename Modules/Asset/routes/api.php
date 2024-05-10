@@ -14,6 +14,10 @@ use Modules\Asset\Http\Controllers\AssetController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('asset', AssetController::class)->names('asset');
+Route::middleware('localizeApi')->controller(AssetController::class)
+->prefix('assets')
+->group(function() {
+    Route::post('add-info','add');
+    Route::post('add-photos','addPhotos');
+    Route::get('get','get');
 });

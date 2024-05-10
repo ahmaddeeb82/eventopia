@@ -3,65 +3,43 @@
 namespace Modules\Asset\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Asset\app\Repositories\AssetRepository;
+use Modules\Asset\app\Repositories\HallRepository;
+use Modules\Asset\app\Services\AssetService;
+use Modules\Asset\app\Services\HallService;
+use Modules\Asset\Http\Requests\AddAssetRequest;
+use Modules\Asset\Http\Requests\AssetPhotosRequest;
+use Modules\Asset\Http\Requests\GetAssetRequest;
+use Modules\Event\app\Repositories\ServiceRepository;
+use Modules\Event\app\Services\ServiceService;
+use Modules\Event\Http\Controllers\ServiceController;
 
 class AssetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('asset::index');
+    use ApiResponse;
+    
+    public function add(AddAssetRequest $request) {
+
+        (new AssetService(new AssetRepository()))->addCompleteAsset($request->all());
+
+        return $this->sendResponse(200, __('messages.create_asset'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('asset::create');
+    public function addPhotos(AssetPhotosRequest $request) {
+        return $this->sendResponse(200,
+        __('messages.create_asset'),
+        (new AssetService(new AssetRepository()))->addPhotos($request->photos));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
+    public function get(GetAssetRequest $request) {
+
+        return $this->sendResponse(200,
+        __('messages.create_asset'),
+        (new AssetService(new AssetRepository()))->get($request->id));
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('asset::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('asset::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

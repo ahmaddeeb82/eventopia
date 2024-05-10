@@ -14,6 +14,7 @@ class UpdateServiceRequest extends FormRequest
             'name' => 'required|array:ar,en',
             'name.ar' => 'required|string',
             'name.en' => 'required|string',
+            'proportion' => 'sometimes|integer',
         ];
     }
 }

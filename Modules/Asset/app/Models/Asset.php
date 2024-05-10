@@ -33,7 +33,7 @@ class Asset extends Model implements Favoritable
         return $this->belongsToMany(Service::class, 'service_asset', 'asset_id', 'service_id');
     }
 
-    public function halls() {
-        return $this->hasMany(Hall::class, 'asset_id','id');
+    public function hall() {
+        return $this->hasOne(Hall::class, 'asset_id','id');
     }
 }

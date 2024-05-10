@@ -4,13 +4,14 @@ namespace Modules\Event\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Models\Asset;
 use Modules\Event\Database\Factories\ServiceFactory;
 use Spatie\Translatable\HasTranslations;
 
 class Service extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +19,7 @@ class Service extends Model
     protected $fillable = [
         'kind',
         'name',
+        'active',
     ];
 
     protected $table = 'services';

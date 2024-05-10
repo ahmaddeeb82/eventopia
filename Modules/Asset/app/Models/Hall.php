@@ -17,7 +17,9 @@ class Hall extends Model
     protected $fillable = [
         'capacity',
         'dinner',
+        'dinner_price',
         'mixed',
+        'mixed_price',
         'active_times',
         'name',
         'asset_id',

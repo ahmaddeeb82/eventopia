@@ -9,17 +9,15 @@ use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Requests\GetServiceRequest;
 use Modules\Event\Http\Requests\ServiceRequest;
 use Modules\Event\Http\Requests\UpdateServiceRequest;
+use Modules\Event\Models\Service;
 
 class ServiceController extends Controller
 {
     use ApiResponse;
 
-
     public function create(ServiceRequest $request) {
-        (new ServiceService(new ServiceRepository()))->createService($request->all());
-
+        (new ServiceService(new ServiceRepository()))->createMultipleServices($request->services);
         return $this->sendResponse(200,__('messages.create_service'));
-
     }
 
     public function update(UpdateServiceRequest $request) {
@@ -46,6 +44,16 @@ class ServiceController extends Controller
         return $this->sendResponse(
             200,
             __('messages.retrieve_service'),
+        );
+
+    }
+
+    public function list() {
+        
+        return $this->sendResponse(
+            200,
+            __('messages.retrieve_service'),
+            (new ServiceService(new ServiceRepository()))->list(),
         );
 
     }

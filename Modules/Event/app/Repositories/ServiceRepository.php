@@ -31,5 +31,10 @@ class ServiceRepository implements ServiceRepositoryInterface
     {
         $service->delete();
     }
+
+    public function list()
+    {
+        return Service::all();
+    }
     
 }

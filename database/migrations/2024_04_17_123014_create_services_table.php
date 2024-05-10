@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('kind',['private','public']);
             $table->json('name');
+            $table->boolean('active')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

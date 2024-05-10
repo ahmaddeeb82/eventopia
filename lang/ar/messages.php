@@ -17,6 +17,7 @@ return [
     'update_service' => 'تم تعديل الخدمة بنجاح',
     'retrieve_service' => 'تم إعادة الخدمة بنجاح',
     'delete_service' => 'تم حذف الخدمة بنجاح',
+    'create_asset' => 'تم إضافة الأصل بنجاح',
 
 
 ];

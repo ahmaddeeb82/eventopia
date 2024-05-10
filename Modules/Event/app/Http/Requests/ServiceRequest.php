@@ -12,10 +12,12 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kind' => 'required|in:public,private',
-            'name' => 'required|array:ar,en',
-            'name.ar' => 'required|string',
-            'name.en' => 'required|string',
+            'services' => 'required|array',
+            'services.*.kind' => 'required|in:public,private',
+            'services.*.name' => 'required|array:ar,en',
+            'services.*.name.ar' => 'required|string',
+            'services.*.name.en' => 'required|string',
+            'services.*.proportion' => 'sometimes|integer',
         ];
     }
 

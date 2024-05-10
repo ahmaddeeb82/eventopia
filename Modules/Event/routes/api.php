@@ -21,4 +21,5 @@ Route::middleware('localizeApi')->controller(ServiceController::class)
     Route::post('create','create');
     Route::post('update','update');
     Route::get('get','get');
+    Route::get('list', 'list');
 });

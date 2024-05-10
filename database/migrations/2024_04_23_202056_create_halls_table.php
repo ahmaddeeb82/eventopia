@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('capacity');
             $table->boolean('dinner');
+            $table->float('dinner_price');
             $table->boolean('mixed');
+            $table->float('mixed_price');
             $table->json('active_times');
             $table->json('name');
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();

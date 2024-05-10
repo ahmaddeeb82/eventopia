@@ -12,14 +12,30 @@ class ServiceService {
         $this->repository = $repository;
     }
 
-    public function createService($attributes) {
+    public function createService($service) {
+        return $this->repository->create($service);
+    }
 
-        $this->repository->create($attributes);
+    public function createMultipleServices($services) {
+
+        foreach($services as $service) {
+            $this->createService($service);
+        }
 
     }
 
+    public function createDisactiveServices($services) {
+        $added_services = [];
+        foreach($services as $service) {
+            $service = $this->createService($service);
+            $service->delete();
+            $added_services[] = $service;
+        }
+        return $added_services;
+    }
+
     public function editService($attributes) {
-        $this->repository->edit(
+        return $this->repository->edit(
             $attributes,
             $this->repository->getWithId($attributes['id'])
         );
@@ -32,5 +48,10 @@ class ServiceService {
     public function deleteService($id) {
         $this->repository->delete($this->repository->getWithId($id));
     }
+
+    public function list() {
+        return GetServiceResource::collection($this->repository->list());
+    }
+
 
 }

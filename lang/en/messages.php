@@ -17,5 +17,6 @@ return [
     'update_service' => 'Service Updated Successfully',
     'retrieve_service' => 'Service Retrieved Successfully',
     'delete_service' => 'Service Deleted Successfully',
+    'create_asset' => 'Asset Created Successfully',
 
 ];
