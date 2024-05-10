@@ -28,6 +28,7 @@ class AddAssetRequest extends FormRequest
             'hall.name.ar' => 'required_with:hall.name|string',
             'hall.name.en' => 'required_with:hall.name|string',
             'hall.capacity' => 'required_with:hall|numeric',
+            'hall.address' => 'required_with:hall|string',
             'hall.dinner' => 'required_with:hall|boolean',
             'hall.mixed' => 'required_with:hall|boolean',
             'hall.dinner_price' => 'required_with:hall|numeric',

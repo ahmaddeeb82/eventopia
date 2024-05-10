@@ -17,5 +17,13 @@ class AssetRepository implements AssetRepositoryInterface
         return Asset::where('id', $id)->first();
     }
 
+    public function update($asset, $data) {
+        return $asset->update($data);
+    }
+
+    public function topRate()
+    {
+        return Asset::orderByDesc('rate')->get();
+    }
 
 }

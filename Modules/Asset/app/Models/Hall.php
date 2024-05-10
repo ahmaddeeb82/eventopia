@@ -22,6 +22,7 @@ class Hall extends Model
         'mixed_price',
         'active_times',
         'name',
+        'address',
         'asset_id',
     ];
 

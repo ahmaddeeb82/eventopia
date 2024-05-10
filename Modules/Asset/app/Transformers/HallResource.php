@@ -15,10 +15,10 @@ class HallResource extends JsonResource
         return [
             "capacity" => $this->capacity,
             "dinner" => $this->dinner,
-  "dinner_price" => $this->dinner_price,
-  "mixed" => $this->mixed,
-  "mixed_price" => $this->mixed_price,
-  "active_times" => json_decode($this->active_times),
+            "dinner_price" => $this->dinner_price,
+            "mixed" => $this->mixed,
+            "mixed_price" => $this->mixed_price,
+            "active_times" => json_decode($this->active_times),
             "name" => $this->name,
         ];
     }

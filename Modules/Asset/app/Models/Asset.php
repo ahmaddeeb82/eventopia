@@ -20,6 +20,7 @@ class Asset extends Model implements Favoritable
         'photos',
         'rate',
         'user_id',
+        'rated_number',
     ];
 
     protected $table = 'assets';

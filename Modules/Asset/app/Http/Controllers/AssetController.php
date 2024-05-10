@@ -13,7 +13,9 @@ use Modules\Asset\app\Services\AssetService;
 use Modules\Asset\app\Services\HallService;
 use Modules\Asset\Http\Requests\AddAssetRequest;
 use Modules\Asset\Http\Requests\AssetPhotosRequest;
+use Modules\Asset\Http\Requests\AssetRateRequest;
 use Modules\Asset\Http\Requests\GetAssetRequest;
+use Modules\Asset\Transformers\AssetResource;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Controllers\ServiceController;
@@ -38,8 +40,20 @@ class AssetController extends Controller
     public function get(GetAssetRequest $request) {
 
         return $this->sendResponse(200,
-        __('messages.create_asset'),
+        __('messages.retrieve_asset'),
         (new AssetService(new AssetRepository()))->get($request->id));
     }
 
+    public function rate(AssetRateRequest $request) {
+        (new AssetService(new AssetRepository()))->claculateRate($request->all());
+        return $this->sendResponse(200,
+        __('messages.rate'));
+    }
+
+    public function list() {
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        AssetResource::collection((new AssetRepository)->topRate())
+    );
+    }
 }

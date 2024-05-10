@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->json('photos');
             $table->float('rate')->default(0);
+            $table->integer('rated_number')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

@@ -18,5 +18,7 @@ return [
     'retrieve_service' => 'Service Retrieved Successfully',
     'delete_service' => 'Service Deleted Successfully',
     'create_asset' => 'Asset Created Successfully',
+    'retrieve_asset' => 'Asset Retrieved Successfully',
+    'rate' => 'Rated Successfully',
 
 ];

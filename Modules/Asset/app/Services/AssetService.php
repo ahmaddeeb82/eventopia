@@ -57,7 +57,7 @@ class AssetService {
     }
 
     public function saveHall($asset, $hall) {
-        $asset->halls()->save((new HallService(new HallRepository()))->add($hall));
+        $asset->hall()->save((new HallService(new HallRepository()))->add($hall));
     }
 
     public function addPhotos($asset_photos) {
@@ -71,8 +71,31 @@ class AssetService {
 
         $this->attachMultipleServices($asset,$asset_info['services']);
 
+        if(isset($asset_info['hall'])) {
         $this->saveHall($asset, $asset_info['hall']);
+        }
 
+    }
+
+    public function updateWithId($data) {
+
+        return $this->repository->update(
+            $this->repository->getWithId($data['id']),
+            $data);
+    }
+
+    public function update($asset, $data) {
+
+        return $this->repository->update(
+            $asset,
+            $data);
+    }
+
+    public function claculateRate($data) {
+        $asset = $this->repository->getWithId($data['id']);
+        $data['rated_number'] = $asset->rated_number + 1;
+        $data['rate'] = round((($asset->rate * $asset->rated_number) + $data['rate']) / $data['rated_number'], 1);
+        return $this->update($asset, $data);
     }
 
     public function get($id) {

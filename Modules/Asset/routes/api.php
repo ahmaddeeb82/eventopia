@@ -20,4 +20,6 @@ Route::middleware('localizeApi')->controller(AssetController::class)
     Route::post('add-info','add');
     Route::post('add-photos','addPhotos');
     Route::get('get','get');
+    Route::get('list','list');
+    Route::put('rate','rate');
 });
