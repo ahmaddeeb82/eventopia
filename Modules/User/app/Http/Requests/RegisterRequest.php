@@ -19,8 +19,8 @@ class RegisterRequest extends FormRequest
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
             'address' => 'required',
-            'phone_number' => 'required|unique:users,phone,',
-            
+            'phone_number' => 'required|unique:users,phone_number|regex:/^(09)[345689][0-9]{7}$/',
+            'role' => 'sometimes|string|in:Organizer,HallOwner',
         ];
     }
 
