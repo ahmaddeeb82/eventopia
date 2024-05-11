@@ -24,4 +24,5 @@ Route::controller(UserController::class)
     Route::post('register', 'register');
     Route::post('addUser', 'addUser')->middleware(['role::Admin']);
     Route::post('login','login');
+    Route::post('email-verification','emaiVerification')->middleware(['auth:sanctum']);
 });

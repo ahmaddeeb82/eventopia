@@ -12,6 +12,7 @@ use Modules\User\app\Services\UserService;
 use Modules\User\Http\Requests\LoginRequest;
 use Modules\User\Http\Requests\RegisterRequest;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\User\Http\Requests\VerificationRequest;
 
 class UserController extends Controller
 {
@@ -23,16 +24,10 @@ class UserController extends Controller
 
     public function register(RegisterRequest $request){
 
-        $user_object = new UserService(new UserRepository());
-
-        $user = $user_object -> create($request -> except(['confirm_password']));
-
-        $user_object->assignRoleUser($user, 'User');
-
         return $this -> sendResponse(
             200,
             __('auth.create_user'),
-            $user_object->createToken($user)
+            (new UserService(new UserRepository()))->create($request -> except(['confirm_password']),'User')
         );
 
    }
@@ -43,18 +38,20 @@ class UserController extends Controller
 
    public function addUser(RegisterRequest $request){
 
-        $user_object = new UserService(new UserRepository());
+    return $this -> sendResponse(
+        200,
+        __('auth.create_user'),
+        (new UserService(new UserRepository()))->create($request -> except(['confirm_password']),$request->role)
+    );
+   }
 
-        $user = $user_object -> create($request -> except(['confirm_password','role']));
-
-        $user_object->assignRoleUser($user , $request -> role);
-
-        return $this -> sendResponse(
+    public function emaiVerification(VerificationRequest $request) {
+        return $this->sendResponse(
             200,
             __('auth.create_user'),
-            $user_object->createToken($user)
+            (new UserService(new UserRepository()))->verification($request->all())
         );
-   }
+    }
 
 
    public function login(LoginRequest $request){

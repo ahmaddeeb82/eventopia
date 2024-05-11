@@ -36,7 +36,7 @@ class User extends Authenticatable
         'address',
         'photo',
         'phone_number',
-        'verified_at',
+        'email_verified_at',
         'money'
     ];
 
@@ -76,9 +76,6 @@ class User extends Authenticatable
         return $this->hasMany(Asset::class, 'user_id', 'id');
     }
 
-    public function otps() {
-        return $this->hasMany(OTP::class, 'user_id', 'id');
-    }
 
     public function publicEventReservations() {
         return $this->hasMany(PublicEventReservation::class, 'user_id', 'id');

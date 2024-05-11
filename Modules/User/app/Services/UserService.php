@@ -2,10 +2,10 @@
 
 namespace Modules\User\app\Services;
 
+use Ichtrojan\Otp\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
-
+use Modules\User\Notifications\EmailVerificationNotification;
 
 class UserService {
 
@@ -18,11 +18,17 @@ class UserService {
     }
     
 
-    public function create($userInfo){
+    public function create($userInfo, $role){
 
         $userInfo['password'] = Hash::make('password'); 
+        
+        $user = $this -> repository -> create($userInfo); 
 
-        return $this -> repository -> create($userInfo); 
+        $this->assignRoleUser($user, 'User');
+
+        $user->notify(new EmailVerificationNotification());
+
+        return $this->createToken($user);
 
     }
 
@@ -36,6 +42,16 @@ class UserService {
     public function createToken($user){
 
         return ['token' => $user -> createToken('API TOKEN') -> plainTextToken];
+    }
+
+    public function verification($data) {
+        $otp = (new Otp)->validate($data['email'], $data['otp']);
+        if(!$otp->status) {
+            return ['verified' => false];
+        }
+
+        $this->repository->get($data['email'], 'email')->update(['email_verified_at'=> now()]);
+        return ['verified' => true];
     }
 
 

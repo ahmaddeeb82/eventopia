@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         Spatie\Permission\PermissionServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
 
     ])->toArray(),
 
@@ -186,6 +187,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Otp' => Ichtrojan\Otp\Otp::class,
     ])->toArray(),
 
 ];

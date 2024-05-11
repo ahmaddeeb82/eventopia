@@ -15,6 +15,11 @@ class UserRepository implements UserRepositoryInterface
         return User::create($userInfo); 
     }
 
+    public function get($info, $identifier)
+    {
+        return User::where($identifier , $info)->first();
+    }
+
     public function login($login_info , $login_type){
 
         return User::where($login_type,$login_info)->first();
