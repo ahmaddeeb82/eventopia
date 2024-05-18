@@ -16,9 +16,11 @@ return new class extends Migration
             $table->integer('attendees_number');
             $table->date('start_date');
             $table->date('end_date');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->float('duration');
             $table->boolean('payment')->default(false);
-            $table->float('total_price');
+            $table->float('total_price')->default(0);
             $table->text('notes')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('confirmed_guest_id');
