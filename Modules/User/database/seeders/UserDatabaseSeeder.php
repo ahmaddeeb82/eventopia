@@ -19,7 +19,7 @@ class UserDatabaseSeeder extends Seeder
             'last_name' => 'nabhan',
             'username' => 'SarahNabhan',
             'email' => 'sarahnabhan@gmail.com',
-            'password' => Hash::make('admin'),
+            'password' => Hash::make('123456'),
             'address' => 'damascus',
             'phone_number' => '0959876049',
         ]);

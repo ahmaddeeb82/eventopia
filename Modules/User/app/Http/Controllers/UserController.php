@@ -6,17 +6,21 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Traits\DateFormatter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Modules\User\app\Services\UserService;
 use Modules\User\Http\Requests\LoginRequest;
 use Modules\User\Http\Requests\RegisterRequest;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\User\Http\Requests\AddUserRequest;
+use Modules\User\Http\Requests\GetInvestorsRequest;
+use Modules\User\Http\Requests\GetUserWithId;
 use Modules\User\Http\Requests\VerificationRequest;
 
 class UserController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, DateFormatter;
 
     /*
     Register User from the app
@@ -27,7 +31,7 @@ class UserController extends Controller
         return $this -> sendResponse(
             200,
             __('auth.create_user'),
-            (new UserService(new UserRepository()))->create($request -> except(['confirm_password']),'User')
+            (new UserService(new UserRepository()))->register($request -> except(['confirm_password']),'User')
         );
 
    }
@@ -36,12 +40,12 @@ class UserController extends Controller
     add organizer or hall owner from the dashboard
     */
 
-   public function addUser(RegisterRequest $request){
+   public function addUser(AddUserRequest $request){
 
     return $this -> sendResponse(
         200,
         __('auth.create_user'),
-        (new UserService(new UserRepository()))->create($request -> except(['confirm_password']),$request->role)
+        (new UserService(new UserRepository()))->addInvestor($request -> except(['confirm_password', 'contract']), $request->role, $request->contract)
     );
    }
 
@@ -55,11 +59,39 @@ class UserController extends Controller
 
 
    public function login(LoginRequest $request){
-        
-    $user_object = new UserService(new UserRepository());
 
-    $user = $user_object -> login($request);
+    return $this->sendResponse(
+        200,
+        __('auth.create_user'),
+        (new UserService(new UserRepository()))->login($request->all())
+    );
+   }
+
+   public function logout() {
+
+    (new UserService(new UserRepository()))->deleteToken();
+
+    return $this->sendResponse(
+        200,
+        __('messages.loggedout'),
+    );
+   }
+    public function listInvestors(GetInvestorsRequest $request) {
+        
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new UserService(new UserRepository()))->listWithRole($request->role)
+        );
+    }
+
+    public function getWithContract(GetUserWithId $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new UserService(new UserRepository()))->getInvestorWithContract($request->id)
+        );
+    }
 
     
-   }
 }

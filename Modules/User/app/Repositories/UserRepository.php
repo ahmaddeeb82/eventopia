@@ -20,7 +20,12 @@ class UserRepository implements UserRepositoryInterface
         return User::where($identifier , $info)->first();
     }
 
-    public function login($login_info , $login_type){
+    public function listWithRole($role)
+    {
+        return User::role($role)->get();
+    }
+
+    public function login($login_info, $login_type){
 
         return User::where($login_type,$login_info)->first();
     }

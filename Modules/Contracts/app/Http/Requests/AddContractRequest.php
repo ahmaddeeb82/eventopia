@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\User\Http\Requests;
+namespace Modules\Contracts\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class AddContractRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,8 +12,10 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required|min:6',
-            'login' => 'required|string'
+            'user_id' => 'required|integer|exists:users,id',
+            'price' => 'numeric',
+            'start_date' => 'date_format:Y-m-d',
+            'end_date' => 'date_format:Y-m-d',
         ];
     }
 

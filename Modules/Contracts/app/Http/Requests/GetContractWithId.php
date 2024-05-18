@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\User\Http\Requests;
+namespace Modules\Contracts\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class GetContractWithId extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,8 +12,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required|min:6',
-            'login' => 'required|string'
+            'id' => 'required|integer|exists:contracts,id',
         ];
     }
 
