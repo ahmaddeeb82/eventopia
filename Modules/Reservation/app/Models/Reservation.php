@@ -4,6 +4,7 @@ namespace Modules\Reservation\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Asset\Models\Asset;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\Database\Factories\ReservationFactory;
 use Modules\User\Models\User;
@@ -19,6 +20,8 @@ class Reservation extends Model
         'attendees_number',
         'start_date',
         'end_date',
+        'start_time',
+        'end_time',
         'duration',
         'payment',
         'total_price',
@@ -31,11 +34,11 @@ class Reservation extends Model
     protected $table = 'reservations';
 
     public function user() {
-        $this->belongsTo(User::class,'confirmed_guest_id');
+       return $this->belongsTo(User::class,'confirmed_guest_id');
     }
 
     public function serviceAsset() {
-        $this->belongsTo(ServiceAsset::class, 'event_id');
+       return $this->belongsTo(ServiceAsset::class, 'event_id');
     }
 
     public function publicEvent() {
@@ -51,6 +54,10 @@ class Reservation extends Model
             'id',
             'id'
         );
+    }
+
+    public function assets() {
+        return $this->belongsTo(Asset::class, 'event_id', 'id');
     }
 
 }

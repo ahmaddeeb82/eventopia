@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Asset\Database\Factories\AssetFactory;
 use Modules\Event\Models\Service;
+use Modules\Event\Models\ServiceAsset;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Favorite\Models\Favorite;
+use Modules\Reservation\Models\Reservation;
 
 class Asset extends Model implements Favoritable
 {
@@ -36,5 +38,16 @@ class Asset extends Model implements Favoritable
 
     public function hall() {
         return $this->hasOne(Hall::class, 'asset_id','id');
+    }
+
+    public function reservations() {
+        return $this->hasManyThrough(
+            Reservation::class,
+            ServiceAsset::class,
+            'asset_id',
+            'event_id',
+            'id',
+            'id'
+        );
     }
 }
