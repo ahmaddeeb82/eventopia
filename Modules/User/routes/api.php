@@ -22,7 +22,10 @@ Route::controller(UserController::class)
 ->prefix('auth')
 ->group(function(){
     Route::post('register', 'register');
-    Route::post('addUser', 'addUser')->middleware(['role::Admin']);
+    Route::post('add-user', 'addUser')->middleware(['auth:sanctum','role:Admin']);
+    Route::get('list-investors', 'listInvestors')->middleware(['auth:sanctum','role:Admin']);
+    Route::get('get-investor', 'getWithContract')->middleware(['auth:sanctum','role:Admin']);
     Route::post('login','login');
+    Route::get('logout','logout')->middleware(['auth:sanctum']);
     Route::post('email-verification','emaiVerification')->middleware(['auth:sanctum']);
 });

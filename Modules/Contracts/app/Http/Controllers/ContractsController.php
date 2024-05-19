@@ -3,65 +3,42 @@
 namespace Modules\Contracts\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Contracts\app\Repositories\ContractRepository;
+use Modules\Contracts\app\Services\ContractService;
+use Modules\Contracts\Http\Requests\AddContractRequest;
+use Modules\Contracts\Http\Requests\GetContractWithId;
+use Modules\Contracts\Http\Requests\GetUserContractsRequest;
 
 class ContractsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('contracts::index');
+    use ApiResponse;
+    public function add(AddContractRequest $request) {
+        (new ContractService(new ContractRepository()))->create($request->all());
+
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('contracts::create');
+    public function list(GetUserContractsRequest $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new ContractService(new ContractRepository()))->list($request->user_id)
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+    public function get(GetContractWithId $request) {
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('contracts::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('contracts::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new ContractService(new ContractRepository()))->getWithId($request->id)
+        );
     }
 }

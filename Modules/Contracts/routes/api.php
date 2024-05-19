@@ -14,6 +14,13 @@ use Modules\Contracts\Http\Controllers\ContractsController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('contracts', ContractsController::class)->names('contracts');
+
+
+
+Route::controller(ContractsController::class)
+->prefix('contracts')
+->group(function(){
+    Route::post('add', 'add');
+    Route::get('list', 'list');
+    Route::get('get', 'get');
 });
