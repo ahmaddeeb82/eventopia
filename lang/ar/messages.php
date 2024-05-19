@@ -20,6 +20,8 @@ return [
     'create_asset' => 'تم إضافة الأصل بنجاح',
     'retrieve_asset' => 'تم إعادة الأصل بنجاح',
     'rate' => 'تم التقييم بنجاح',
+    'add_reservation' => 'تم الحجز بنجاح',
+    'get_reservation' => 'تم اعادة تفاصيل الحجز بنجاح',
 
 
 ];
