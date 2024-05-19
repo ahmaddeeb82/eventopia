@@ -17,3 +17,10 @@ use Modules\Reservation\Http\Controllers\ReservationController;
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('reservation', ReservationController::class)->names('reservation');
 });
+
+Route::middleware('localizeApi') -> controller(ReservationController::class)
+->prefix('reservation')
+->group(function(){
+    Route::post('add', 'add');
+    Route::get('getInfo', 'getInfo');
+});

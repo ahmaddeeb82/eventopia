@@ -20,5 +20,7 @@ return [
     'create_asset' => 'Asset Created Successfully',
     'retrieve_asset' => 'Asset Retrieved Successfully',
     'rate' => 'Rated Successfully',
+    'add_reservation' => 'reservation completed successfully',
+    'get_reservation' => 'reservation details returned successfully',
 
 ];

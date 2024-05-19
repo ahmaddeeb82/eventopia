@@ -2,12 +2,13 @@
 
 namespace Modules\Reservation\Models;
 
+use Modules\User\Models\User;
+use Modules\Asset\Models\Asset;
+use Modules\Event\Models\Service;
+use Modules\Event\Models\ServiceAsset;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Asset\Models\Asset;
-use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\Database\Factories\ReservationFactory;
-use Modules\User\Models\User;
 
 class Reservation extends Model
 {
@@ -58,6 +59,10 @@ class Reservation extends Model
 
     public function assets() {
         return $this->belongsTo(Asset::class, 'event_id', 'id');
+    }
+
+    public function services() {
+        return $this->belongsTo(Service::class, 'event_id', 'id');
     }
 
 }

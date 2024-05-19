@@ -3,65 +3,40 @@
 namespace Modules\Reservation\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Reservation\app\Repositories\ReservationRepository;
+use Modules\Reservation\app\Services\ReservationService;
+use Modules\Reservation\Http\Requests\GetReservationRequest;
+use Modules\Reservation\Http\Requests\ReservationRequest;
+use Modules\Reservation\Models\Reservation;
+use Modules\Reservation\Transformers\ReservationResource;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('reservation::index');
+    use ApiResponse;
+    
+
+    public function add(ReservationRequest $request){
+        $reservation = (new ReservationService(new ReservationRepository))->add($request->all());
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            new ReservationResource($reservation)
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('reservation::create');
-    }
+    public function getInfo(GetReservationRequest $request) {
+        return $this -> sendResponse(
+            200,
+            __('messages.get_reservation'),
+            (new ReservationService(new ReservationRepository))->getInfo($request -> id)
+        );
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+        // $reservation = Reservation::find(1);
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('reservation::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('reservation::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        // return $reservation->assets->hall;
     }
 }
