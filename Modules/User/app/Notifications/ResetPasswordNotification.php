@@ -8,9 +8,10 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class EmailVerificationNotification extends Notification
+class ResetPasswordNotification extends Notification
 {
     use Queueable;
+
 
     public $message;
     public $subject;
@@ -22,8 +23,9 @@ class EmailVerificationNotification extends Notification
      */
     public function __construct()
     {
-        $this->message = 'Use the below code for verification process';
-        $this->subject = 'Verification Needed';
+        //
+        $this->message = 'Use the below code for resetting your password';
+        $this->subject = 'Ressetting Password';
         $this->fromEmail = 'konan_123_2002@outlook.com';
         $this->mailer = 'smtp';
         $this->otp = new Otp;

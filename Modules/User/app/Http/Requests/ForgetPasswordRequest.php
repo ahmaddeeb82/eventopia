@@ -4,7 +4,7 @@ namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerificationRequest extends FormRequest
+class ForgetPasswordRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,8 +12,7 @@ class VerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|email|exists:users,email',
-            'otp' => 'required|max:6',
+            'email' => 'required|email|exists:users,email',
         ];
     }
 
