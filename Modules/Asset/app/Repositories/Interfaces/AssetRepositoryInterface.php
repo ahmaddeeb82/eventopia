@@ -8,5 +8,5 @@ interface AssetRepositoryInterface {
     public function update($asset, $data);
     public function getWithId($id);
     public function topRate();
-
+    public function recentlyAdded($role);
 }

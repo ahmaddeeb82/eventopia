@@ -19,6 +19,7 @@ use Modules\Asset\Transformers\AssetResource;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Controllers\ServiceController;
+use Modules\User\Http\Requests\GetInvestorsRequest;
 
 class AssetController extends Controller
 {
@@ -54,6 +55,14 @@ class AssetController extends Controller
         return $this->sendResponse(200,
         __('messages.rate'),
         AssetResource::collection((new AssetRepository)->topRate())
+    );
+    }
+
+    public function recentlyAdded(GetInvestorsRequest $request) {
+        //return (new AssetRepository)->recentlyAdded($request->role);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new AssetService(new AssetRepository()))->recentlyAdded($request->role)
     );
     }
 }

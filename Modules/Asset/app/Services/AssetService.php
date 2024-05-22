@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Repositories\HallRepository;
 use Modules\Asset\Http\Requests\AssetResource;
+use Modules\Asset\Transformers\AssetRecordsResource;
 use Modules\Asset\Transformers\AssetResource as TransformersAssetResource;
 use Modules\Asset\Transformers\HallResource;
 use Modules\Event\app\Repositories\ProportionRepository;
@@ -28,7 +29,7 @@ class AssetService {
 
     public function add($asset) {
         $asset['photos']=json_encode($asset['photos']);
-        $asset['user_id'] = auth()->user()->id;
+        $asset['user_id'] = 20;
         return $this->repository->add($asset);
     }
 
@@ -103,4 +104,9 @@ class AssetService {
             $this->repository->getWithId($id)
         );
     }
+
+    public function recentlyAdded($role) 
+    {
+        return AssetRecordsResource::collection($this->repository->recentlyAdded($role));
+    } 
 }

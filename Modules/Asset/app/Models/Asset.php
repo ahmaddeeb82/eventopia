@@ -10,6 +10,7 @@ use Modules\Event\Models\ServiceAsset;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Models\Reservation;
+use Modules\User\Models\User;
 
 class Asset extends Model implements Favoritable
 {
@@ -26,6 +27,10 @@ class Asset extends Model implements Favoritable
     ];
 
     protected $table = 'assets';
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function favorites()
     {

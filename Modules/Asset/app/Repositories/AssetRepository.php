@@ -26,4 +26,14 @@ class AssetRepository implements AssetRepositoryInterface
         return Asset::orderByDesc('rate')->get();
     }
 
+    public function recentlyAdded($role) 
+    {
+        if($role == 'HallOwner') {
+            return Asset::has('hall')->latest()->take(7)->get(); 
+        }
+        else {
+            return Asset::doesntHave('hall')->latest()->take(7)->get(); 
+        }
+    }
+
 }

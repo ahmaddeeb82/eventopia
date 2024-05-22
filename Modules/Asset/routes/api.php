@@ -22,4 +22,5 @@ Route::middleware('localizeApi')->controller(AssetController::class)
     Route::get('get','get');
     Route::get('list','list');
     Route::put('rate','rate');
+    Route::get('recent', 'recentlyAdded');
 });
