@@ -31,11 +31,11 @@ class PublicEvent extends Model
     public $translatable = ['category'];
 
     public function reservation() {
-        $this->belongsTo(Reservation::class, 'reservation_id','id');
+        return $this->belongsTo(Reservation::class, 'reservation_id','id');
     }
 
     public function publicEventReservations() {
-        $this->hasMany(PublicEventReservation::class, 'event_id','id');
+        return $this->hasMany(PublicEventReservation::class, 'event_id','id');
     }
 
     
