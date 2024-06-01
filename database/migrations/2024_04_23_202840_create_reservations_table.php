@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->integer('attendees_number');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('start_time');
-            $table->string('end_time');
-            $table->float('duration');
+            $table->integer('attendees_number')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
+            $table->float('duration')->default(0);
             $table->boolean('payment')->default(false);
             $table->float('total_price')->default(0);
             $table->text('notes')->nullable();
