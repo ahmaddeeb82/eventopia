@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->json('category');
             $table->text('description');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->string('name');
             $table->string('address');
             $table->float('ticket_price');
-            $table->integer('total_tickets');
-            $table->integer('reserved_tickets');
+            $table->integer('reserved_tickets')->default(0);
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

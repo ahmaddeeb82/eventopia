@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 Route::middleware('localizeApi') -> controller(ReservationController::class)
 ->prefix('reservation')
 ->group(function(){
-    Route::post('add', 'add');
+    Route::post('addInfo', 'addInfo');
+    Route::post('addPhoto','addPhoto');
     Route::get('getInfo', 'getInfo');
 });
