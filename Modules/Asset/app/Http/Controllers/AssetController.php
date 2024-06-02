@@ -65,4 +65,20 @@ class AssetController extends Controller
         (new AssetService(new AssetRepository()))->recentlyAdded($request->role)
     );
     }
+
+    public function addToFavorite(GetAssetRequest $request) {
+        
+        (new AssetService(new AssetRepository()))->addToFavorite($request->id);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        );
+    }
+
+    public function getFavorites() {
+        
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new AssetService(new AssetRepository()))->getFavorites()
+        );
+    }
 }

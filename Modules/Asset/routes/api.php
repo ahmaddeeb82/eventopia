@@ -14,7 +14,7 @@ use Modules\Asset\Http\Controllers\AssetController;
  *
 */
 
-Route::middleware('localizeApi')->controller(AssetController::class)
+Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::class)
 ->prefix('assets')
 ->group(function() {
     Route::post('add-info','add');
@@ -23,4 +23,6 @@ Route::middleware('localizeApi')->controller(AssetController::class)
     Route::get('list','list');
     Route::put('rate','rate');
     Route::get('recent', 'recentlyAdded');
+    Route::get('favorite' , 'addToFavorite');
+    Route::get('get-favorites' , 'getFavorites');
 });

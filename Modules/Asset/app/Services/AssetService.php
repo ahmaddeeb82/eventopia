@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Repositories\HallRepository;
 use Modules\Asset\Http\Requests\AssetResource;
+use Modules\Asset\Models\Time;
 use Modules\Asset\Transformers\AssetRecordsResource;
 use Modules\Asset\Transformers\AssetResource as TransformersAssetResource;
 use Modules\Asset\Transformers\HallResource;
@@ -16,6 +17,7 @@ use Modules\Event\app\Repositories\ServiceAssetRepository;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Transformers\GetServiceResource;
+use Modules\Favorite\Models\Favorite;
 
 class AssetService {
     use ImageTrait;
@@ -61,6 +63,12 @@ class AssetService {
         $asset->hall()->save((new HallService(new HallRepository()))->add($hall));
     }
 
+    public function saveTimes($hall,$times) {
+        array_map(function ($time) use ($hall) {
+            $hall->times()->save(new Time($time));
+        }, $times);
+    }
+
     public function addPhotos($asset_photos) {
 
         return ['id' => $this->add(['photos' => $this->saveMultiplePhotos($asset_photos)])->id];
@@ -74,6 +82,7 @@ class AssetService {
 
         if(isset($asset_info['hall'])) {
         $this->saveHall($asset, $asset_info['hall']);
+        $this->saveTimes($asset->hall,$asset_info['hall']['active_times']);
         }
 
     }
@@ -108,5 +117,14 @@ class AssetService {
     public function recentlyAdded($role) 
     {
         return AssetRecordsResource::collection($this->repository->recentlyAdded($role));
-    } 
+    }
+    
+    public function addToFavorite($id) {
+        $asset = $this->repository->getWithId($id);
+        $asset->usersFavorite()->attach([auth()->user()->id]);
+    }
+
+    public function getFavorites() {
+        return TransformersAssetResource::collection(auth()->user()->favoriteAssets);
+    }
 }

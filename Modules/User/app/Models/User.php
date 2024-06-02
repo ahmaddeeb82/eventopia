@@ -15,6 +15,7 @@ use Modules\Notification\Models\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Reservation\Models\PublicEventReservation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Reservation\Models\PublicEvent;
 
 class User extends Authenticatable
 {
@@ -84,8 +85,13 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class,'reciever_id', 'id');
     }
 
-    public function favorites() {
-        return $this->morphedByMany(Favoritable::class, 'favoritable');
+    public function favoriteAssets()
+    {
+        return $this->morphedByMany(Asset::class, 'favoritable');
+    }
+    public function favoritePublicEvents()
+    {
+        return $this->morphedByMany(PublicEvent::class, 'favoritable');
     }
 
 

@@ -15,7 +15,7 @@ class DiscountRepository implements DiscountRepositoryInterface
 
     public function list()
     {
-        return Discount::all();
+        return Discount::where('active', true)->get();
     }
     
 }

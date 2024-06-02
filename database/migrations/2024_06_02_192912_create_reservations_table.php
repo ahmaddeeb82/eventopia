@@ -16,8 +16,8 @@ return new class extends Migration
             $table->integer('attendees_number')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->string('start_time')->nullable();
-            $table->string('end_time')->nullable();
+            // $table->string('start_time')->nullable();
+            // $table->string('end_time')->nullable();
             $table->float('duration')->default(0);
             $table->boolean('payment')->default(false);
             $table->float('total_price')->default(0);
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->foreign('confirmed_guest_id')->references('id')->on('users');
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('service_asset');
+            $table->foreignId('time_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

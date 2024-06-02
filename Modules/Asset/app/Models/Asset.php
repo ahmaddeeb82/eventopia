@@ -12,7 +12,7 @@ use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Models\Reservation;
 use Modules\User\Models\User;
 
-class Asset extends Model implements Favoritable
+class Asset extends Model
 {
     use HasFactory;
 
@@ -36,9 +36,9 @@ class Asset extends Model implements Favoritable
         return $this->hasMany(ServiceAsset::class, 'asset_id', 'id');
     }
 
-    public function favorites()
+    public function usersFavorite()
     {
-        return $this->morphMany(Favorite::class, 'favoritable');
+        return $this->morphToMany(User::class, 'favoritable');
     }
 
     public function services() {
