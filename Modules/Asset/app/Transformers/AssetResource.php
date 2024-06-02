@@ -5,6 +5,7 @@ namespace Modules\Asset\Transformers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Event\Transformers\GetServiceResource;
+use Modules\Event\Transformers\GetServiceWithPriceResource;
 
 class AssetResource extends JsonResource
 {
@@ -13,11 +14,12 @@ class AssetResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // return [$this->services];
         return array_merge([
             'id' => $this->id,
             "photos" => json_decode($this->photos),
             "rate" => $this->rate,
-            "services" => GetServiceResource::collection($this->services),
+            "services" => GetServiceWithPriceResource::collection($this->servicesWithPrice),
         ],$this->hall?(new HallResource($this->hall))->toArray($request):[]);
     }
 }

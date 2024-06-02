@@ -29,7 +29,7 @@ class AssetService {
 
     public function add($asset) {
         $asset['photos']=json_encode($asset['photos']);
-        $asset['user_id'] = 20;
+        $asset['user_id'] = 2;
         return $this->repository->add($asset);
     }
 

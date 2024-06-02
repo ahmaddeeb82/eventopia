@@ -66,7 +66,10 @@ class UserService {
 
     public function createToken($user){
 
-        return ['token' => $user -> createToken('API TOKEN') -> plainTextToken];
+        return [
+            'token' => $user -> createToken('API TOKEN') -> plainTextToken,
+            'role' => $user->getRoleNames()[0]
+        ];
     }
 
     public function checkOtp($otp, $email) {
@@ -110,7 +113,7 @@ class UserService {
 
         if (auth()->attempt([$login_type => $user['login'], 'password' => $user['password']])) {
             
-            return ['token' => $this->repository->login($user['login'], $login_type)->createToken('API TOKEN') -> plainTextToken];
+            return $this->createToken($this->repository->login($user['login'], $login_type));
         } else {
             return [];
         }

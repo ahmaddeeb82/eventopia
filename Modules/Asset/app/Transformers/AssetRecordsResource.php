@@ -14,6 +14,7 @@ class AssetRecordsResource extends JsonResource
     {
         return [
             'name' => $this->hall != null ?$this->hall->name:$this->user->first_name . ' ' . $this->user->last_name,
+            'photo' => $this->hall != null ? json_decode($this->photos)[0]:$this->user->photo,
         ];
     }
 }

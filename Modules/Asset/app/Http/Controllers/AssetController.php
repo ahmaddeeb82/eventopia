@@ -51,10 +51,10 @@ class AssetController extends Controller
         __('messages.rate'));
     }
 
-    public function list() {
+    public function list(Request $request) {
         return $this->sendResponse(200,
         __('messages.rate'),
-        AssetResource::collection((new AssetRepository)->topRate())
+        AssetResource::collection((new AssetRepository)->list($request->identifier, $request->role, $request->service_id??1))
     );
     }
 

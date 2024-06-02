@@ -32,6 +32,10 @@ class Asset extends Model implements Favoritable
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function serviceAssets() {
+        return $this->hasMany(ServiceAsset::class, 'asset_id', 'id');
+    }
+
     public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favoritable');
@@ -39,6 +43,10 @@ class Asset extends Model implements Favoritable
 
     public function services() {
         return $this->belongsToMany(Service::class, 'service_asset', 'asset_id', 'service_id');
+    }
+
+    public function servicesWithPrice() {
+        return $this->belongsToMany(Service::class, 'service_asset', 'asset_id', 'service_id')->withPivot('price');
     }
 
     public function hall() {
