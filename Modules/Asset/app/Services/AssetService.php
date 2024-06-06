@@ -28,7 +28,8 @@ class AssetService {
 
     public function add($asset) {
         $asset['photos']=json_encode($asset['photos']);
-        $asset['user_id'] = auth()->user()->id;
+        $asset['user_id'] = 1;
+        //auth()->user()->id;
         return $this->repository->add($asset);
     }
 

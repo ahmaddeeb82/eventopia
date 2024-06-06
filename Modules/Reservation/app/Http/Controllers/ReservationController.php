@@ -7,13 +7,16 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\app\Repositories\ReservationRepository;
+use Modules\Reservation\app\Repositories\TicketsReservationRepository;
 use Modules\Reservation\app\Services\ReservationService;
 use Modules\Reservation\Http\Requests\GetPrivateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
 use Modules\Reservation\Http\Requests\PhotoPublicReservationRequest;
 use Modules\Reservation\Http\Requests\ReservationRequest;
+use Modules\Reservation\Http\Requests\TicketsReservationRequest;
 use Modules\Reservation\Models\Reservation;
 use Modules\Reservation\Transformers\ReservationResource;
 
@@ -49,6 +52,14 @@ class ReservationController extends Controller
             (new ReservationService(new ReservationRepository))->getInfo($request -> id)
         );
 
+    }
+
+    public function addTickets(TicketsReservationRequest $request){
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            (new ReservationService(new TicketsReservationRepository))->addTickets($request->all())
+        );
     }
 
 }
