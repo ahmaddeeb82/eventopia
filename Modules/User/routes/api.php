@@ -26,6 +26,9 @@ Route::controller(UserController::class)
     Route::get('list-investors', 'listInvestors')->middleware(['auth:sanctum','role:Admin']);
     Route::get('get-investor', 'getWithContract')->middleware(['auth:sanctum','role:Admin']);
     Route::post('login','login');
+    Route::post('forget-password','forgetPassword');
+    Route::post('res-pass-verification','checkOtp');
+    Route::post('reset-password','resetPassword');
     Route::get('logout','logout')->middleware(['auth:sanctum']);
     Route::post('email-verification','emaiVerification')->middleware(['auth:sanctum']);
 });

@@ -14,6 +14,9 @@ use Modules\Discounts\Http\Controllers\DiscountsController;
  *
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('discounts', DiscountsController::class)->names('discounts');
+Route::middleware('localizeApi')->controller(DiscountsController::class)
+->prefix('discounts')
+->group(function() {
+    Route::post('add','add');
+    Route::get('list','list');
 });

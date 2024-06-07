@@ -5,6 +5,7 @@ namespace Modules\Reservation\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Reservation\Database\Factories\PublicEventFactory;
+use Modules\User\Models\User;
 use Spatie\Translatable\HasTranslations;
 
 class PublicEvent extends Model
@@ -38,5 +39,13 @@ class PublicEvent extends Model
         return $this->hasMany(PublicEventReservation::class, 'event_id','id');
     }
 
+    public function usersFavorite()
+    {
+        return $this->morphToMany(User::class, 'favoritable');
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
     
 }

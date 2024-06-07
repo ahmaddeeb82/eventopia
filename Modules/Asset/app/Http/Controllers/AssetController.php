@@ -19,6 +19,7 @@ use Modules\Asset\Transformers\AssetResource;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Controllers\ServiceController;
+use Modules\User\Http\Requests\GetInvestorsRequest;
 
 class AssetController extends Controller
 {
@@ -50,10 +51,34 @@ class AssetController extends Controller
         __('messages.rate'));
     }
 
-    public function list() {
+    public function list(Request $request) {
         return $this->sendResponse(200,
         __('messages.rate'),
-        AssetResource::collection((new AssetRepository)->topRate())
+        AssetResource::collection((new AssetRepository)->list($request->identifier, $request->role, $request->service_id??1))
     );
+    }
+
+    public function recentlyAdded(GetInvestorsRequest $request) {
+        //return (new AssetRepository)->recentlyAdded($request->role);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new AssetService(new AssetRepository()))->recentlyAdded($request->role)
+    );
+    }
+
+    public function addToFavorite(GetAssetRequest $request) {
+        
+        (new AssetService(new AssetRepository()))->addToFavorite($request->id);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        );
+    }
+
+    public function getFavorites() {
+        
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new AssetService(new AssetRepository()))->getFavorites()
+        );
     }
 }

@@ -4,10 +4,13 @@ namespace Modules\User\app\Services;
 
 use App\Traits\DateFormatter;
 use Ichtrojan\Otp\Otp;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Modules\Contracts\app\Repositories\ContractRepository;
 use Modules\User\Notifications\EmailVerificationNotification;
+use Modules\User\Notifications\ResetPasswordNotification;
 use Modules\User\Transformers\GetInvestorsResource;
 use Modules\User\Transformers\GetInvestorWithContractResource;
 use Modules\User\Transformers\InvestorResource;
@@ -41,7 +44,7 @@ class UserService {
 
         $user = $this->create($userInfo, $role);
 
-        //$user->notify(new EmailVerificationNotification());
+        $user->notify(new EmailVerificationNotification());
 
         return $this->createToken($user);
 
@@ -63,17 +66,42 @@ class UserService {
 
     public function createToken($user){
 
-        return ['token' => $user -> createToken('API TOKEN') -> plainTextToken];
+        return [
+            'token' => $user -> createToken('API TOKEN') -> plainTextToken,
+            'role' => $user->getRoleNames()[0]
+        ];
+    }
+
+    public function checkOtp($otp, $email) {
+        $otp = (new Otp)->validate($email, $otp);
+        if(!$otp->status) {
+            return false;
+        }
+        return true;
     }
 
     public function verification($data) {
-        $otp = (new Otp)->validate($data['email'], $data['otp']);
-        if(!$otp->status) {
+        if(!$this->checkOtp($data['otp'],auth()->user()->email)) {
             return ['verified' => false];
         }
 
         $this->repository->get($data['email'], 'email')->update(['email_verified_at'=> now()]);
         return ['verified' => true];
+    }
+
+    public function forgetPassword($email) {
+        $user = $this->repository->get($email, 'email');
+        $user->notify(new ResetPasswordNotification());
+    }
+
+
+    public function resetPassword($data) {
+        if(isset($data['old_password']) && !auth()->attempt(['email' => auth()->user()->email, 'password' => $data['old_password']])) {
+            throw new ValidationException(new Validator());
+        }
+        $user = $this->repository->get($data['email'], 'email');
+        $user->update(['password'=> Hash::make($data['password'])]);
+        return $this->createToken($user);
     }
 
 
@@ -85,7 +113,7 @@ class UserService {
 
         if (auth()->attempt([$login_type => $user['login'], 'password' => $user['password']])) {
             
-            return ['token' => $this->repository->login($user['login'], $login_type)->createToken('API TOKEN') -> plainTextToken];
+            return $this->createToken($this->repository->login($user['login'], $login_type));
         } else {
             return [];
         }

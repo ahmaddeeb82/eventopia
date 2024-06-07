@@ -20,7 +20,7 @@ class Hall extends Model
         'dinner_price',
         'mixed',
         'mixed_price',
-        'active_times',
+        //'active_times',
         'name',
         'address',
         'asset_id',
@@ -32,6 +32,10 @@ class Hall extends Model
 
     public function asset() {
         return $this->belongsTo(Asset::class,'asset_id', 'id');
+    }
+
+    public function times() {
+        return $this->hasMany(Time::class, 'hall_id', 'id');
     }
     
 }

@@ -9,7 +9,7 @@ use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Database\Factories\PublicEventReservationFactory;
 use Modules\User\Models\User;
 
-class PublicEventReservation extends Model implements Favoritable
+class PublicEventReservation extends Model
 {
     use HasFactory;
 
@@ -34,7 +34,7 @@ class PublicEventReservation extends Model implements Favoritable
         return $this->belongsTo(User::class, 'user_id','id');
     }
 
-    public function favorites() {
-        return $this->morphMany(Favorite::class, 'favoritable');
-    }
+    // public function favorites() {
+    //     return $this->morphMany(Favorite::class, 'favoritable');
+    // }
 }

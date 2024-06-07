@@ -14,7 +14,6 @@ class HallService {
     }
 
     public function add($hall) {
-        $hall['active_times'] = json_encode($hall['active_times']);
         return $this->repository->add($hall);
     }
     

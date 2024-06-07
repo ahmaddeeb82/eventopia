@@ -14,8 +14,10 @@ use Modules\User\Http\Requests\LoginRequest;
 use Modules\User\Http\Requests\RegisterRequest;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\Http\Requests\AddUserRequest;
+use Modules\User\Http\Requests\ForgetPasswordRequest;
 use Modules\User\Http\Requests\GetInvestorsRequest;
 use Modules\User\Http\Requests\GetUserWithId;
+use Modules\User\Http\Requests\ResetPasswordRequest;
 use Modules\User\Http\Requests\VerificationRequest;
 
 class UserController extends Controller
@@ -93,5 +95,28 @@ class UserController extends Controller
         );
     }
 
-    
+    public function forgetPassword(ForgetPasswordRequest $request) {
+        (new UserService(new UserRepository()))->forgetPassword($request->email);
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout')
+        );
+    }
+
+    public function checkOtp(VerificationRequest $request) {
+        return $this->sendResponse(
+            200,
+            __('auth.create_user'),
+            (new UserService(new UserRepository()))->checkOtp($request->otp,$request->email)
+        );
+    }
+
+    public function resetPassword(ResetPasswordRequest $request) {
+        return $this->sendResponse(
+            200,
+            __('auth.create_user'),
+            ((new UserService(new UserRepository()))->resetPassword($request->all()))
+        );
+    }
+
 }

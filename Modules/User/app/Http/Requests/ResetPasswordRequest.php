@@ -3,18 +3,19 @@
 namespace Modules\User\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class VerificationRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
-        return [
-            'email' => 'sometimes|email|exists:users,email',
-            'otp' => 'required|max:6',
-        ];
+        return array_merge([
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
+        ],Auth::check()?['old_password' => 'required|min:6']: []);
     }
 
     /**

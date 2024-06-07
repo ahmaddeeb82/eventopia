@@ -4,6 +4,7 @@ namespace Modules\Event\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Asset\Models\Asset;
 use Modules\Discounts\Models\Discount;
 use Modules\Event\Database\Factories\ServiceAssetFactory;
 
@@ -28,6 +29,10 @@ class ServiceAsset extends Model
 
     public function discounts() {
         return $this->hasMany(Discount::class,'event_id', 'id');
+    }
+
+    public function asset() {
+        return $this->belongsTo(Asset::class, 'asset_id');
     }
 
     

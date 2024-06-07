@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\User\Http\Requests;
+namespace Modules\Discounts\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerificationRequest extends FormRequest
+class AddDiscountRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,8 +12,10 @@ class VerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|email|exists:users,email',
-            'otp' => 'required|max:6',
+            'percentage' => 'required|numeric|min:1|max:100',
+            'start_date' => 'required|date_format:Y-m-d',
+            'end_date' => 'required|date_format:Y-m-d',
+            'event_id' => 'required|integer|exists:service_asset,id'
         ];
     }
 

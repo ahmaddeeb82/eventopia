@@ -10,8 +10,9 @@ use Modules\Event\Models\ServiceAsset;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Models\Reservation;
+use Modules\User\Models\User;
 
-class Asset extends Model implements Favoritable
+class Asset extends Model
 {
     use HasFactory;
 
@@ -27,13 +28,25 @@ class Asset extends Model implements Favoritable
 
     protected $table = 'assets';
 
-    public function favorites()
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function serviceAssets() {
+        return $this->hasMany(ServiceAsset::class, 'asset_id', 'id');
+    }
+
+    public function usersFavorite()
     {
-        return $this->morphMany(Favorite::class, 'favoritable');
+        return $this->morphToMany(User::class, 'favoritable');
     }
 
     public function services() {
         return $this->belongsToMany(Service::class, 'service_asset', 'asset_id', 'service_id');
+    }
+
+    public function servicesWithPrice() {
+        return $this->belongsToMany(Service::class, 'service_asset', 'asset_id', 'service_id')->withPivot('price');
     }
 
     public function hall() {
