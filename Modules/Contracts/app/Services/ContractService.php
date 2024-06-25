@@ -39,4 +39,17 @@ class ContractService {
       return $pdf->download('contract.pdf');
 
    }
+
+   public function disactive($id) {
+      $contract = $this->repository->get($id, 'id');
+      $contract->delete();
+      return new ContractResource($contract);
+   }
+
+   public function update($data) {
+      $contract = $this->repository->get($data['id'], 'id');
+      $data['user_id'] = $contract->user->id;
+      unset($data['id']);
+      return new ContractResource($this->create($data));
+   }
 }

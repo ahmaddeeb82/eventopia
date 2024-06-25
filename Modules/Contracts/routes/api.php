@@ -21,7 +21,9 @@ Route::controller(ContractsController::class)
 ->prefix('contracts')
 ->group(function(){
     Route::post('add', 'add');
+    Route::post('update', 'update');
     Route::get('list', 'list');
     Route::get('get', 'get');
+    Route::get('disactive', 'disactive');
     Route::get('get-pdf', 'getPdf');
 });

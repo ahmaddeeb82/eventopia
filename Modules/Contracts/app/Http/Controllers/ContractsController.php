@@ -12,6 +12,7 @@ use Modules\Contracts\app\Services\ContractService;
 use Modules\Contracts\Http\Requests\AddContractRequest;
 use Modules\Contracts\Http\Requests\GetContractWithId;
 use Modules\Contracts\Http\Requests\GetUserContractsRequest;
+use Modules\Contracts\Http\Requests\UpdateContractRequest;
 
 class ContractsController extends Controller
 {
@@ -44,5 +45,23 @@ class ContractsController extends Controller
     
     public function getPdf(GetContractWithId $request) {
         return (new ContractService(new ContractRepository()))->getContractPdf($request->id);
+    }
+
+    public function disactive(GetContractWithId $request) {
+
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new ContractService(new ContractRepository()))->disactive($request->id)
+        );
+    }
+
+    public function update(UpdateContractRequest $request) {
+
+        return $this->sendResponse(
+            200,
+            __('messages.loggedout'),
+            (new ContractService(new ContractRepository()))->update($request->all())
+        );
     }
 }

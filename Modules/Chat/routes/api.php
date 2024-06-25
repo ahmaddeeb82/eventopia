@@ -17,3 +17,7 @@ use Modules\Chat\Http\Controllers\ChatController;
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('chat', ChatController::class)->names('chat');
 });
+
+Route::post('/send-message', [ChatController::class, 'sendMessage']);
+Route::post('/join-room', [ChatController::class, 'joinRoom']);
+Route::post('/leave-room', [ChatController::class, 'leaveRoom']);

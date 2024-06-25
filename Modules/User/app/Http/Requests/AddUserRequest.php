@@ -26,6 +26,7 @@ class AddUserRequest extends FormRequest
             'last_name' => 'required',
             'username' => 'required|unique:users|regex:/^[A-Za-z][A-Za-z0-9_]{7,29}$/',
             'email' =>'required|unique:users|email',
+            'address' => 'required|string',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
             'phone_number' => 'required|unique:users,phone_number|regex:/^(09)[345689][0-9]{7}$/',

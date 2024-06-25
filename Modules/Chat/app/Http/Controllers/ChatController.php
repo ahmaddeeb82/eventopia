@@ -3,65 +3,58 @@
 namespace Modules\Chat\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $client;
+
+    public function __construct()
     {
-        return view('chat::index');
+        $this->client = new Client(['base_uri' => 'http://localhost:3000']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function sendMessage(Request $request)
     {
-        return view('chat::create');
+        $response = $this->client->post('/send-message', [
+            'json' => $request->all()
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return response()->json(['message' => 'Message sent successfully']);
+        } else {
+            return response()->json(['message' => 'Failed to send message'], $response->getStatusCode());
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
+    public function joinRoom(Request $request)
     {
-        //
+        $response = $this->client->post('/join-room', [
+            'json' => $request->all()
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return response()->json(['message' => 'Joined room successfully']);
+        } else {
+            return response()->json(['message' => 'Failed to join room'], $response->getStatusCode());
+        }
     }
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function leaveRoom(Request $request)
     {
-        return view('chat::show');
+        $response = $this->client->post('/leave-room', [
+            'json' => $request->all()
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return response()->json(['message' => 'Left room successfully']);
+        } else {
+            return response()->json(['message' => 'Failed to leave room'], $response->getStatusCode());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('chat::edit');
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
