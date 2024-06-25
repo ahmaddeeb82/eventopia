@@ -19,6 +19,7 @@ use Modules\Asset\Transformers\AssetResource;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Controllers\ServiceController;
+use Modules\Favorite\Http\Requests\GetFavoriteWithIdRequest;
 use Modules\User\Http\Requests\GetInvestorsRequest;
 
 class AssetController extends Controller
@@ -79,6 +80,14 @@ class AssetController extends Controller
         return $this->sendResponse(200,
         __('messages.rate'),
         (new AssetService(new AssetRepository()))->getFavorites()
+        );
+    }
+
+    public function deleteFavorite(GetFavoriteWithIdRequest $request) {
+        
+        (new AssetService(new AssetRepository()))->deleteFavorite($request->id);
+        return $this->sendResponse(200,
+        __('messages.rate'),
         );
     }
 }

@@ -41,4 +41,8 @@ class ContractsController extends Controller
             (new ContractService(new ContractRepository()))->getWithId($request->id)
         );
     }
+    
+    public function getPdf(GetContractWithId $request) {
+        return (new ContractService(new ContractRepository()))->getContractPdf($request->id);
+    }
 }

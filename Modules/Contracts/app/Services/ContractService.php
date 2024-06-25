@@ -3,9 +3,11 @@
 namespace Modules\Contracts\app\Services;
 
 use App\Traits\DateFormatter;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Modules\Contracts\Models\Contract;
 use Modules\Contracts\Transformers\ContractResource;
 use Modules\Contracts\Transformers\GetContractsWithUserResource;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ContractService {
    use DateFormatter;
@@ -29,5 +31,12 @@ class ContractService {
 
    public function getWithId($id) {
       return new GetContractsWithUserResource($this->repository->get($id,'id'));
+   }
+
+   public function getContractPdf($id) {
+      $contract = $this->repository->get($id, 'id');
+      $pdf = Pdf::loadView('contracts.contract', ['contract' => $contract]);
+      return $pdf->download('contract.pdf');
+
    }
 }

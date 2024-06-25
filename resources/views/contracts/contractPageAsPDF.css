@@ -1,0 +1,121 @@
+body {
+	font-family: var(--font-family);
+	background-color: var(--bg-color);
+  }
+  a {
+	text-decoration: none;
+  }
+  .container {
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: auto;
+	margin-right: auto;
+  }
+
+  /* Small */
+  
+  @media (min-width: 768px) {
+	.container {
+	  width: 750px;
+	}
+	.main-skills .card {
+	  flex-direction: row;
+	}
+	.left-container {
+	  border-right: solid 1px var(--bg-color);
+	  width: 40%;
+	  border-bottom: 0;
+	}
+  }
+  @media (max-width: 768px) {
+	  
+	}
+  /* Medium */
+  @media (min-width: 992px) {
+	.container {
+	  width: 970px;
+	}
+	
+  }
+  /* Large */
+  @media (min-width: 1200px) {
+	.container {
+	  width: 1170px;
+	}
+	
+  }
+  .invitetion{
+	padding-top:80px;
+	background-color:white;
+
+  }
+  .invitetion .main{
+	padding-left:100px;
+	padding-right:100px;
+	padding-bottom:50px;
+  }
+  .first-section{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	flex-direction:column;
+  }
+  .invitetion h1{
+	letter-spacing:15px;
+	text-transform:uppercase;
+	margin-bottom:0;
+    padding-left: 22px;
+  }
+  h2{
+	
+	font-family: "Dancing Script", cursive;
+  }
+.logo-holder{
+	width:100px;
+	height:100px;
+	border-radius:50%;
+	border:2px solid white;
+}
+.logo-holder img{
+	width:100%;
+	border-radius:50%;
+}
+/* Second Section */
+.client-info p, .aggred-value{
+	display: flex;
+    justify-content: space-between;
+border-bottom: 1px solid lightgrey;
+}
+.client-info p.role :nth-child(2){
+padding-left:70px;
+}
+
+/* Contract INFO */
+.contract-info .date{
+	display:flex;
+	justify-content:space-around;
+	padding-bottom:30px;
+}
+.contract-info .date .start-date ,.end-date{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+}
+/* Second Section */
+/* footer */
+footer{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	background-color:var(--main-color);
+	padding:10px;
+	color:white;
+	font-size:12px;
+}
+footer p:not(:nth-child(3)){
+	border-right:1px solid;
+	padding-right:20px;
+	margin-right:20px;
+	
+}
+/* footer */

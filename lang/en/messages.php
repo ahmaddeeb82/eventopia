@@ -22,5 +22,11 @@ return [
     'rate' => 'Rated Successfully',
     'add_reservation' => 'reservation completed successfully',
     'get_reservation' => 'reservation details returned successfully',
+    'register' => 'Registered Successfully',
+    'user_added' => 'User Has Been Added Successfully',
+    'email_verified' => 'Email Verified Successfully',
+    'email_not_verified' => 'Email Verification Failed',
+    'login' => 'Logged In Successfully',
+    'login_fail' => 'Log In Failed',
 
 ];

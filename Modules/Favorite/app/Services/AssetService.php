@@ -130,6 +130,6 @@ class AssetService {
     }
 
     public function deleteFavorite($pivot_id) {
-        Favorite::where('id', $pivot_id)->delete();
+        
     }
 }

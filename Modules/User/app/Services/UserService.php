@@ -2,6 +2,7 @@
 
 namespace Modules\User\app\Services;
 
+use App\Traits\ApiResponse;
 use App\Traits\DateFormatter;
 use Ichtrojan\Otp\Otp;
 use Illuminate\Contracts\Validation\Validator;
@@ -17,7 +18,7 @@ use Modules\User\Transformers\InvestorResource;
 
 class UserService {
 
-    use DateFormatter;
+    use DateFormatter, ApiResponse;
 
     
     public $repository;
@@ -82,11 +83,21 @@ class UserService {
 
     public function verification($data) {
         if(!$this->checkOtp($data['otp'],auth()->user()->email)) {
-            return ['verified' => false];
+            return $this->sendResponse(
+                200,
+                __('messages.email_not_verified'),
+                ['verified' => false]
+            );
+            //return ['verified' => false];
         }
 
         $this->repository->get($data['email'], 'email')->update(['email_verified_at'=> now()]);
-        return ['verified' => true];
+        return $this->sendResponse(
+            200,
+            __('messages.email_verified'),
+            ['verified' => true]
+        );
+        //return ['verified' => true];
     }
 
     public function forgetPassword($email) {
@@ -111,11 +122,18 @@ class UserService {
         : 'username';
 
 
+        
         if (auth()->attempt([$login_type => $user['login'], 'password' => $user['password']])) {
-            
-            return $this->createToken($this->repository->login($user['login'], $login_type));
+            return $this->sendResponse(
+                200,
+                __('messages.login'),
+                $this->createToken($this->repository->login($user['login'], $login_type))
+            );
         } else {
-            return [];
+            return $this->sendResponse(
+                401,
+                __('messages.login_fail'),
+            );
         }
     }
 

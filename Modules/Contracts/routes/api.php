@@ -23,4 +23,5 @@ Route::controller(ContractsController::class)
     Route::post('add', 'add');
     Route::get('list', 'list');
     Route::get('get', 'get');
+    Route::get('get-pdf', 'getPdf');
 });

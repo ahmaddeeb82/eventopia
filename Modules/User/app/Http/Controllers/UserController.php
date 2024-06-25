@@ -32,7 +32,7 @@ class UserController extends Controller
 
         return $this -> sendResponse(
             200,
-            __('auth.create_user'),
+            __('messages.register'),
             (new UserService(new UserRepository()))->register($request -> except(['confirm_password']),'User')
         );
 
@@ -46,22 +46,18 @@ class UserController extends Controller
 
     return $this -> sendResponse(
         200,
-        __('auth.create_user'),
+        __('messages.user_added'),
         (new UserService(new UserRepository()))->addInvestor($request -> except(['confirm_password', 'contract']), $request->role, $request->contract)
     );
    }
 
     public function emaiVerification(VerificationRequest $request) {
-        return $this->sendResponse(
-            200,
-            __('auth.create_user'),
-            (new UserService(new UserRepository()))->verification($request->all())
-        );
+        return (new UserService(new UserRepository()))->verification($request->all());
     }
 
 
    public function login(LoginRequest $request){
-
+    return (new UserService(new UserRepository()))->login($request->all());
     return $this->sendResponse(
         200,
         __('auth.create_user'),

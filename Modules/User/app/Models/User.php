@@ -87,7 +87,7 @@ class User extends Authenticatable
 
     public function favoriteAssets()
     {
-        return $this->morphedByMany(Asset::class, 'favoritable');
+        return $this->morphedByMany(Asset::class, 'favoritable')->withPivot('id');
     }
     public function favoritePublicEvents()
     {
