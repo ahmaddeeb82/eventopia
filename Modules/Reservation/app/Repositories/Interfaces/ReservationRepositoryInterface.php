@@ -6,7 +6,7 @@ interface ReservationRepositoryInterface {
 
     public function addInfo($reservationInfo);
     
-    public function update($model, $info, $identifier);
+    //public function update($model, $info, $identifier);
 
     public function getInfo($id);
 

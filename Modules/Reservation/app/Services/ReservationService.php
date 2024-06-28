@@ -4,6 +4,7 @@ namespace Modules\Reservation\app\Services;
 
 use App\Traits\DateFormatter;
 use App\Traits\ImageTrait;
+use App\Traits\UpdateTrait;
 use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
@@ -15,6 +16,7 @@ use Modules\Reservation\Transformers\ReservationResource;
 use Modules\User\Models\User;
 
 class ReservationService {
+    use UpdateTrait;
     use DateFormatter;
     use ImageTrait;
 
@@ -39,7 +41,7 @@ class ReservationService {
         
         $reservation = $this -> repository -> addInfo($reservationInfo);
          
-        $service_kind = $reservation->services->kind;
+        $service_kind = $reservation -> services -> kind;
 
         $price = $reservation -> serviceAsset -> price;
 
@@ -48,9 +50,9 @@ class ReservationService {
         $price= $price + ($hall->mixed ? $hall->mixed_price : 0) + ($hall->dinner ? $hall->dinner_price : 0);
         }
 
-        $this -> repository -> update ($reservation ,$price ,'total_price');
+        $this -> updateWithModel ($reservation ,$price ,'total_price');
 
-        $this -> repository -> update (
+        $this -> updateWithModel (
             $reservation ,
             $this -> calcDurationForReservation($reservation -> start_time ,$reservation -> end_time) ,
             'duration');
@@ -68,11 +70,11 @@ class ReservationService {
         
         $reservation = PublicEvent::where('id',$public_photo['event_id'])->first();
         $photo = ['photo'=>$this -> savePhoto($public_photo['photo'])];
-        $event = $this -> repository -> update($reservation, $photo,'photo');
+        $event = $this -> updateWithModel($reservation, $photo,'photo');
         
         return $event;
 
-        }
+    }
 
 
     public function getInfo($id){
@@ -81,6 +83,28 @@ class ReservationService {
 
         return new ReservationPrivateResource($reservation);
         
+    }
+
+
+    public function addTickets($tickets){
+
+        $reservation_tickte = $this -> repository -> addTickets($tickets);
+
+        $reservation = PublicEvent::where('id' ,$tickets['event_id']) -> first();
+
+        $reserved_tickets = ($reservation -> reserved_tickets + $tickets['tickets_number']);
+        $this -> updateWithModel($reservation ,$reserved_tickets ,'reserved_tickets');
+
+        $tickets_price = ($reservation -> ticket_price * $tickets['tickets_number']);
+        $this -> updateWithModel($reservation_tickte,$tickets_price,'tickets_price');
+
+        return $tickets_price;
+
+    }
+
+
+    public function getWithDate($date){
+
     }
     
 }

@@ -24,4 +24,5 @@ Route::middleware('localizeApi') -> controller(ReservationController::class)
     Route::post('addInfo', 'addInfo');
     Route::post('addPhoto','addPhoto');
     Route::get('getInfo', 'getInfo');
+    Route::post('addTickets','addTickets');
 });

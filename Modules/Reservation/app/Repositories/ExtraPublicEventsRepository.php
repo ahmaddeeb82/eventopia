@@ -3,6 +3,7 @@
 namespace Modules\Reservation\app\Repositories;
 
 use Modules\Reservation\Models\PublicEvent;
+use Modules\Reservation\Models\PublicEventReservation;
 use Modules\Reservation\Models\Reservation;
 
 class ExtraPublicEventsRepository{
@@ -12,4 +13,5 @@ class ExtraPublicEventsRepository{
         return new PublicEvent($extraPublicEvents);
     
     }
+
 }
