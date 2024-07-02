@@ -19,8 +19,11 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
 ->group(function() {
     Route::post('add-info','add');
     Route::post('add-photos','addPhotos');
+    Route::post('update-hall','update');
+    Route::post('update-service','updateSereviceForOrganizer');
     Route::get('get','get');
     Route::get('list','list');
+    Route::get('list-for-investor','listForInvestor');
     Route::put('rate','rate');
     Route::get('recent', 'recentlyAdded');
     Route::get('favorite' , 'addToFavorite');

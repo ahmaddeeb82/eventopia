@@ -16,5 +16,5 @@ class HallService {
     public function add($hall) {
         return $this->repository->add($hall);
     }
-    
+   
 }

@@ -4,21 +4,16 @@ namespace Modules\Asset\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Modules\Asset\app\Repositories\AssetRepository;
-use Modules\Asset\app\Repositories\HallRepository;
 use Modules\Asset\app\Services\AssetService;
-use Modules\Asset\app\Services\HallService;
 use Modules\Asset\Http\Requests\AddAssetRequest;
 use Modules\Asset\Http\Requests\AssetPhotosRequest;
 use Modules\Asset\Http\Requests\AssetRateRequest;
 use Modules\Asset\Http\Requests\GetAssetRequest;
+use Modules\Asset\Http\Requests\UpdateHallInformationRequest;
+use Modules\Asset\Http\Requests\UpdateServiceOrgeanizerRequest;
 use Modules\Asset\Transformers\AssetResource;
-use Modules\Event\app\Repositories\ServiceRepository;
-use Modules\Event\app\Services\ServiceService;
-use Modules\Event\Http\Controllers\ServiceController;
 use Modules\Favorite\Http\Requests\GetFavoriteWithIdRequest;
 use Modules\User\Http\Requests\GetInvestorsRequest;
 
@@ -60,7 +55,6 @@ class AssetController extends Controller
     }
 
     public function recentlyAdded(GetInvestorsRequest $request) {
-        //return (new AssetRepository)->recentlyAdded($request->role);
         return $this->sendResponse(200,
         __('messages.rate'),
         (new AssetService(new AssetRepository()))->recentlyAdded($request->role)
@@ -84,10 +78,35 @@ class AssetController extends Controller
     }
 
     public function deleteFavorite(GetFavoriteWithIdRequest $request) {
-        
         (new AssetService(new AssetRepository()))->deleteFavorite($request->id);
         return $this->sendResponse(200,
         __('messages.rate'),
         );
+    }
+
+    public function listForInvestor() {
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new AssetService(new AssetRepository()))->listForInvestor()
+        );
+    }
+
+    public function update(UpdateHallInformationRequest $request) {
+
+        (new AssetService(new AssetRepository()))->updateCompleteAsset($request->all());
+
+        return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function updateSereviceForOrganizer(UpdateServiceOrgeanizerRequest $request) {
+        (new AssetService(new AssetRepository()))->updateAttachedService($request->all());
+
+        return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function addSereviceForOrganizer() {
+        (new AssetService(new AssetRepository()))->updateAttachedService();
+
+        return $this->sendResponse(200, __('messages.create_asset'));
     }
 }

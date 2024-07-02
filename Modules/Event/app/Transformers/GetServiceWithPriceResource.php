@@ -15,7 +15,7 @@ class GetServiceWithPriceResource extends JsonResource
     {
         $serviceAsset = ServiceAsset::where('asset_id', $this->pivot->asset_id)->where('service_id', $this->pivot->service_id)->first();
         return [
-            'id' => $this->id,
+            'id' => $serviceAsset->id,
             'name' => $this->name,
             'kind' => $this->kind,
             'price' => $this->pivot->price,

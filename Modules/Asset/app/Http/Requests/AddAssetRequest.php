@@ -35,8 +35,8 @@ class AddAssetRequest extends FormRequest
             'hall.mixed_price' => 'required_with:hall|numeric',
             'hall.active_times' => 'required_with:hall|array',
             'hall.active_time.*' => 'array|required_with:hall.active_times',
-            'hall.active_time.*.opening' => 'required_with:hall.active_times.*|date_format:H:i:s',
-            'hall.active_time.*.closing' => 'required_with:hall.active_times.*|date_format:H:i:s',
+            'hall.active_time.*.start_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
+            'hall.active_time.*.end_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
 
 
             

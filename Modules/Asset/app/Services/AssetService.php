@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Repositories\HallRepository;
 use Modules\Asset\Http\Requests\AssetResource;
+use Modules\Asset\Models\Asset;
 use Modules\Asset\Models\Time;
 use Modules\Asset\Transformers\AssetRecordsResource;
 use Modules\Asset\Transformers\AssetResource as TransformersAssetResource;
@@ -17,7 +18,9 @@ use Modules\Event\app\Repositories\ProportionRepository;
 use Modules\Event\app\Repositories\ServiceAssetRepository;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
+use Modules\Event\Models\ServiceAsset;
 use Modules\Event\Transformers\GetServiceResource;
+use Modules\Event\Transformers\GetServiceWithPriceResource;
 use Modules\Favorite\Models\Favorite;
 
 class AssetService {
@@ -32,7 +35,7 @@ class AssetService {
 
     public function add($asset) {
         $asset['photos']=json_encode($asset['photos']);
-        $asset['user_id'] = 2;
+        $asset['user_id'] = auth()->user()->id;
         return $this->repository->add($asset);
     }
 
@@ -132,4 +135,61 @@ class AssetService {
     public function deleteFavorite($pivot_id) {
         Favorite::where('id', $pivot_id)->delete();
     }
+
+    public function listForInvestor() {
+        if(auth()->user()->hasRole('HallOwner')){
+        return TransformersAssetResource::collection(auth()->user()->assets);
+        } else {
+            return GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice);
+        }
+    }
+
+    public function updateAttachedService($service) {
+        $service_to_edit = ServiceAsset::where('id', $service['id'])->first();
+        $service_to_edit->update($service);
+        if(isset($service['proportion'])) {
+            $service_to_edit->proportion->update($service['proportion']);
+        }
+    }
+
+    public function updateTime($time) {
+        $time_to_edit = Time::where('id', $time['id'])->first();
+        $time_to_edit->update($time);
+    }
+
+    public function updateMultipleTimes($asset, $times) {
+        if(isset($times['edited'])) {
+            array_map(function ($time) {
+                $this->updateTime($time);
+            }, $times['edited'], array_keys($times['edited']));
+        }
+        if(isset($times['added'])) {
+            $this->saveTimes($asset->hall,$times['added']);
+        }
+
+}
+
+    public function updateMultipleServices($asset, $services) {
+        if(isset($services['edited'])) {
+            array_map(function ($service) {
+                $this->updateAttachedService($service);
+            }, $services['edited'], array_keys($services['edited']));
+            unset($services['edited']);
+        }
+        if(isset($services['added']) || isset($services['existed'])) {
+            $this->attachMultipleServices($asset,$services);
+        }
+    }
+
+    public function updateCompleteAsset($asset_info) {
+        $asset = $this->repository->getWithId($asset_info['id']);
+
+        $this->updateMultipleServices($asset,$asset_info['services']);
+
+        if(isset($asset_info['hall'])) {
+            $asset->hall->update($asset_info['hall']);
+            $this->updateMultipleTimes($asset,$asset_info['hall']['active_times']);
+        }
+    }
+
 }

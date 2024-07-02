@@ -51,7 +51,6 @@ class AssetRepository implements AssetRepositoryInterface
                 break;
         }
         return $assets;
-        //return Asset::orderByDesc('rate')->get();
     }
 
     public function recentlyAdded($role) 
@@ -63,5 +62,6 @@ class AssetRepository implements AssetRepositoryInterface
             return Asset::doesntHave('hall')->latest()->take(7)->get(); 
         }
     }
+
 
 }
