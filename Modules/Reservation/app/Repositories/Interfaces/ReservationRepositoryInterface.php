@@ -10,4 +10,6 @@ interface ReservationRepositoryInterface {
 
     public function getInfo($id);
 
+    public function dateTime($date);
+
 }
