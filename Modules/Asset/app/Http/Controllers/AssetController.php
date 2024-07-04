@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
 use Modules\Asset\Http\Requests\AddAssetRequest;
+use Modules\Asset\Http\Requests\AddServiceForOrganizerRequest;
+use Modules\Asset\Http\Requests\AssetFiltersRequest;
 use Modules\Asset\Http\Requests\AssetPhotosRequest;
 use Modules\Asset\Http\Requests\AssetRateRequest;
 use Modules\Asset\Http\Requests\GetAssetRequest;
@@ -104,9 +106,17 @@ class AssetController extends Controller
         return $this->sendResponse(200, __('messages.create_asset'));
     }
 
-    public function addSereviceForOrganizer() {
-        (new AssetService(new AssetRepository()))->updateAttachedService();
+    public function addSereviceForOrganizer(AddServiceForOrganizerRequest $request) {
+        (new AssetService(new AssetRepository()))->updateAttachedService($request->all());
 
         return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function getFilters(AssetFiltersRequest $request) {
+        
+        return $this->sendResponse(200,
+        __('messages.create_asset'),
+        (new AssetService(new AssetRepository()))->filterForReservation($request->all())
+    );
     }
 }

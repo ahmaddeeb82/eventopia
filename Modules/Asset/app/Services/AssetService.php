@@ -192,4 +192,8 @@ class AssetService {
         }
     }
 
+    public function filterForReservation($filters) {
+        return TransformersAssetResource::collection($this->repository->filterForReservation($filters));
+    }
+
 }

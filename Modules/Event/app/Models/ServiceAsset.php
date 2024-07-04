@@ -35,5 +35,9 @@ class ServiceAsset extends Model
         return $this->belongsTo(Asset::class, 'asset_id');
     }
 
+    public function service() {
+        return $this->belongsTo(Asset::class, 'service_id');
+    }
+
     
 }

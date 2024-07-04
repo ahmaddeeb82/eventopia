@@ -28,5 +28,6 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
     Route::get('recent', 'recentlyAdded');
     Route::get('favorite' , 'addToFavorite');
     Route::get('get-favorites' , 'getFavorites');
+    Route::get('get-filters' , 'getFilters');
     Route::delete('delete-favorite' , 'deleteFavorite');
 });

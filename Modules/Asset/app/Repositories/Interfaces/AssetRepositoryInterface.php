@@ -9,4 +9,5 @@ interface AssetRepositoryInterface {
     public function getWithId($id);
     public function list($identifier, $role, $id = 1);
     public function recentlyAdded($role);
+    public function filterForReservation($filters);
 }

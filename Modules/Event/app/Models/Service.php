@@ -31,6 +31,10 @@ class Service extends Model
         return $this->belongsToMany(Asset::class, 'service_asset', 'service_id', 'asset_id');
     }
 
+    public function serviceAssets() {
+        return $this->hasMany(ServiceAsset::class, 'asset_id', 'id');
+    }
+
     public function reservations() {
         return $this->hasManyThrough(
             Reservation::class,
