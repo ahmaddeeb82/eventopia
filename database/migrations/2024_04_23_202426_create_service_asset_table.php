@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('service_asset', function (Blueprint $table) {
             $table->id();
-            $table->float('price');
+            $table->decimal('price', 12);
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
