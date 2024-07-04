@@ -11,6 +11,7 @@ use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\app\Repositories\ReservationRepository;
 use Modules\Reservation\app\Repositories\TicketsReservationRepository;
 use Modules\Reservation\app\Services\ReservationService;
+use Modules\Reservation\Http\Requests\DateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPrivateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
@@ -59,6 +60,14 @@ class ReservationController extends Controller
             200,
             __('messages.add_reservation'),
             (new ReservationService(new TicketsReservationRepository))->addTickets($request->all())
+        );
+    }
+
+    public function dateRes(DateReservationRequest $request){
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            (new ReservationService(new ReservationRepository)) -> dateTime($request)
         );
     }
 
