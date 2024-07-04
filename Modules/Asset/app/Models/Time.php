@@ -5,6 +5,7 @@ namespace Modules\Asset\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Asset\Database\Factories\TimeFactory;
+use Modules\Reservation\Models\Reservation;
 
 class Time extends Model
 {
@@ -21,6 +22,10 @@ class Time extends Model
 
     public function hall() {
         return $this->belongsTo(Hall::class,'hall_id','id');
+    }
+
+    public function reservation(){
+        return $this -> hasMany(Reservation::class, 'time_id', 'id');
     }
 
     

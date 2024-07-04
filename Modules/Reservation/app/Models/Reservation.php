@@ -8,6 +8,7 @@ use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Asset\Models\Time;
 use Modules\Reservation\Database\Factories\ReservationFactory;
 
 class Reservation extends Model
@@ -21,8 +22,8 @@ class Reservation extends Model
         'attendees_number',
         'start_date',
         'end_date',
-        'start_time',
-        'end_time',
+        //'start_time',
+        //'end_time',
         'duration',
         'payment',
         'total_price',
@@ -30,6 +31,7 @@ class Reservation extends Model
         'phone',
         'confirmed_guest_id',
         'event_id',
+        'time_id',
     ];
 
     protected $table = 'reservations';
@@ -63,6 +65,10 @@ class Reservation extends Model
 
     public function services() {
         return $this->belongsTo(Service::class, 'event_id', 'id');
+    }
+
+    public function time(){
+        return $this -> belongsTo(Time::class, 'time_id', 'id');
     }
 
 }
