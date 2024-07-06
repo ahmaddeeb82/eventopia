@@ -45,7 +45,7 @@ class UserService {
 
         $user = $this->create($userInfo, $role);
 
-        $user->notify(new EmailVerificationNotification());
+        //$user->notify(new EmailVerificationNotification());
 
         return $this->createToken($user);
 
