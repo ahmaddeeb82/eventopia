@@ -7,6 +7,7 @@ use App\Traits\ApiResponse;
 use Modules\Event\App\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Http\Requests\GetServiceRequest;
+use Modules\Event\Http\Requests\ListServicesRequest;
 use Modules\Event\Http\Requests\ServiceRequest;
 use Modules\Event\Http\Requests\UpdateServiceRequest;
 use Modules\Event\Models\Service;
@@ -48,12 +49,12 @@ class ServiceController extends Controller
 
     }
 
-    public function list() {
+    public function list(ListServicesRequest $request) {
         
         return $this->sendResponse(
             200,
             __('messages.retrieve_service'),
-            (new ServiceService(new ServiceRepository()))->list(),
+            (new ServiceService(new ServiceRepository()))->list($request->identifier),
         );
 
     }

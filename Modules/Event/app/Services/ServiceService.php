@@ -49,8 +49,8 @@ class ServiceService {
         $this->repository->delete($this->repository->getWithId($id));
     }
 
-    public function list() {
-        return GetServiceResource::collection($this->repository->list());
+    public function list($identifier) {
+        return GetServiceResource::collection($this->repository->list($identifier));
     }
 
 

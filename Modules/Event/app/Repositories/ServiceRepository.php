@@ -32,9 +32,12 @@ class ServiceRepository implements ServiceRepositoryInterface
         $service->delete();
     }
 
-    public function list()
+    public function list($identifier)
     {
-        return Service::all();
+       if($identifier == 'all')
+            return Service::all();
+        else
+            return Service::where('kind', $identifier)->get();
     }
     
 }

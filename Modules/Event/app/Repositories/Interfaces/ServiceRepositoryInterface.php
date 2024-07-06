@@ -8,7 +8,7 @@ interface ServiceRepositoryInterface {
     public function edit($attributes, $service);
     public function getWithId($id);
     public function delete($service);
-    public function list();
+    public function list($identifier);
     
 
 }
