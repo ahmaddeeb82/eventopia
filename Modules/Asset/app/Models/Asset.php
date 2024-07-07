@@ -63,4 +63,8 @@ class Asset extends Model
             'id'
         );
     }
+
+    public function times() {
+        return $this->hasMany(Time::class, 'asset_id', 'id');
+    }
 }

@@ -67,9 +67,13 @@ class AssetService {
         $asset->hall()->save((new HallService(new HallRepository()))->add($hall));
     }
 
-    public function saveTimes($hall,$times) {
-        array_map(function ($time) use ($hall) {
-            $hall->times()->save(new Time($time));
+    public function saveOneTime($asset, $time) {
+        $asset->times()->save(new Time($time));
+    }
+
+    public function saveTimes($asset,$times) {
+        array_map(function ($time) use ($asset) {
+            $this->saveOneTime($asset,$time);
         }, $times);
     }
 
@@ -85,8 +89,16 @@ class AssetService {
         $this->attachMultipleServices($asset,$asset_info['services']);
 
         if(isset($asset_info['hall'])) {
-        $this->saveHall($asset, $asset_info['hall']);
-        $this->saveTimes($asset->hall,$asset_info['hall']['active_times']);
+            $this->saveHall($asset, $asset_info['hall']);
+            $this->saveTimes($asset,$asset_info['hall']['active_times']);
+        }
+
+        if(isset($asset_info['organizer_start_time'])) {
+            $this->saveOneTime($asset,
+                [
+                    'start_time' => $asset_info['organizer_start_time'],
+                    'end_time' => $asset_info['organizer_end_time'],
+                ]);
         }
 
     }

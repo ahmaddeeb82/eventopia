@@ -28,5 +28,6 @@ return [
     'email_not_verified' => 'Email Verification Failed',
     'login' => 'Logged In Successfully',
     'login_fail' => 'Log In Failed',
+    'no_enough_money' => 'No Enough Money In Your Cart',
 
 ];

@@ -32,6 +32,8 @@ class Reservation extends Model
         'confirmed_guest_id',
         'event_id',
         'time_id',
+        'mixed',
+        'dinner'
     ];
 
     protected $table = 'reservations';
@@ -63,7 +65,7 @@ class Reservation extends Model
         return $this->belongsTo(Asset::class, 'event_id', 'id');
     }
 
-    public function services() {
+    public function service() {
         return $this->belongsTo(Service::class, 'event_id', 'id');
     }
 

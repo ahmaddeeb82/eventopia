@@ -20,6 +20,6 @@ class AssetResource extends JsonResource
             "photos" => json_decode($this->photos),
             "rate" => $this->rate,
             "services" => GetServiceWithPriceResource::collection($this->servicesWithPrice),
-        ],$this->hall?(new HallResource($this->hall))->toArray($request):[]);
+        ],$this->hall?(new HallResource($this->hall))->toArray($request):['start_time' => $this->times->first()->start_time, 'end_time' => $this->times()->first()->end_time]);
     }
 }

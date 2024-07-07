@@ -37,8 +37,8 @@ class AddAssetRequest extends FormRequest
             'hall.active_time.*' => 'array|required_with:hall.active_times',
             'hall.active_time.*.start_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
             'hall.active_time.*.end_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
-
-
+            'organizer_start_time' => 'sometimes|date_format:H:i:s',
+            'organizer_end_time' => 'sometimes|date_format:H:i:s',
             
         ];
     }

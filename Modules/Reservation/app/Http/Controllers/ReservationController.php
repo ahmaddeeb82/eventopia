@@ -15,6 +15,7 @@ use Modules\Reservation\Http\Requests\DateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPrivateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
+use Modules\Reservation\Http\Requests\GetTimesRequest;
 use Modules\Reservation\Http\Requests\PhotoPublicReservationRequest;
 use Modules\Reservation\Http\Requests\ReservationRequest;
 use Modules\Reservation\Http\Requests\TicketsReservationRequest;
@@ -26,13 +27,12 @@ class ReservationController extends Controller
     use ApiResponse;
     
 
-    public function addInfo(ReservationRequest $request){
+    public function addInfoReservationForHallOwner(ReservationRequest $request){
 
         return $this -> sendResponse(
             200,
             __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository))->addInfo($request->all())
-
+            (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all())
             );
     }
 
@@ -69,6 +69,15 @@ class ReservationController extends Controller
             __('messages.add_reservation'),
             (new ReservationService(new ReservationRepository)) -> dateTime($request)
         );
+    }
+
+    public function listTimesForHallOwner(GetTimesRequest $request){
+
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            (new ReservationService(new ReservationRepository))->getTimesForHallOwner($request->asset_id,$request->date)
+            );
     }
 
 }

@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('times', function (Blueprint $table) {
-            $table->id();
-            $table->string('start_time');
-            $table->string('end_time');
-            $table->foreignId('asset_id')->constrained();
-            $table->timestamps();
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->boolean('dinner')->default(false)->after('mixed');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('times');
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->dropColumn('dinner');
+        });
     }
 };

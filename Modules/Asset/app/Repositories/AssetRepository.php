@@ -45,7 +45,7 @@ class AssetRepository implements AssetRepositoryInterface
                     $assets =  $assets->doesntHave('hall')->get(); 
                 }
             case 'all':
-                $assets = $assets->all();
+                $assets = $assets->get();
                 break;
             default:
                 break;

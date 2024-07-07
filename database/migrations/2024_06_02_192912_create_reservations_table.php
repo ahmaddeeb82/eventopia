@@ -16,8 +16,6 @@ return new class extends Migration
             $table->integer('attendees_number')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            // $table->string('start_time')->nullable();
-            // $table->string('end_time')->nullable();
             $table->float('duration')->default(0);
             $table->boolean('payment')->default(false);
             $table->float('total_price')->default(0);

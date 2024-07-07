@@ -31,4 +31,6 @@ Route::controller(UserController::class)
     Route::post('reset-password','resetPassword');
     Route::get('logout','logout')->middleware(['auth:sanctum']);
     Route::post('email-verification','emaiVerification')->middleware(['auth:sanctum']);
+    Route::post('add-cart', 'addToCart')->middleware(['auth:sanctum']);
+    
 });

@@ -19,7 +19,7 @@ class HallResource extends JsonResource
             "mixed" => $this->mixed,
             "address" => $this->address,
             "mixed_price" => $this->mixed_price,
-            "active_times" => TimeResource::collection($this->times),
+            "active_times" => TimeResource::collection($this->asset->times),
             "name" => $this->name,
         ];
     }

@@ -17,11 +17,11 @@ class Time extends Model
     protected $fillable = [
         'start_time',
         'end_time',
-        'hall_id'
+        'asset_id'
     ];
 
-    public function hall() {
-        return $this->belongsTo(Hall::class,'hall_id','id');
+    public function asset() {
+        return $this->belongsTo(Asset::class,'asset_id','id');
     }
 
     public function reservation(){

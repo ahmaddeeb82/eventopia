@@ -34,8 +34,6 @@ class Hall extends Model
         return $this->belongsTo(Asset::class,'asset_id', 'id');
     }
 
-    public function times() {
-        return $this->hasMany(Time::class, 'hall_id', 'id');
-    }
+    
     
 }

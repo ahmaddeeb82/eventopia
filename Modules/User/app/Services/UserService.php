@@ -155,4 +155,21 @@ class UserService {
         return new GetInvestorWithContractResource($user);
     }
 
+    public function editToCart($user , $money, $operation) {
+        switch($operation){
+            case '+':
+                $user->update([
+                    'money' => $user->money + $money
+                ]);
+                break;
+            case '-':
+                $user->update([
+                    'money' => $user->money - $money
+                ]);
+                break;
+            default:
+                break;    
+        }
+    }
+
 }

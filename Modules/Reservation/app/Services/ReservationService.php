@@ -2,6 +2,7 @@
 
 namespace Modules\Reservation\app\Services;
 
+use App\Traits\ApiResponse;
 use App\Traits\DateFormatter;
 use App\Traits\ImageTrait;
 use App\Traits\UpdateTrait;
@@ -10,16 +11,19 @@ use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\PublicEvent;
 use Modules\Reservation\Models\Reservation;
+use Modules\Reservation\Transformers\GetTimesResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
 use Modules\Reservation\Transformers\ReservationPublicResource;
 use Modules\Reservation\Transformers\ReservationResource;
 use Modules\Reservation\Transformers\TimeReservationResource;
+use Modules\User\app\Repositories\UserRepository;
+use Modules\User\app\Services\UserService;
 use Modules\User\Models\User;
 
 class ReservationService {
-    use UpdateTrait;
-    use DateFormatter;
-    use ImageTrait;
+    use UpdateTrait, DateFormatter, ImageTrait, ApiResponse;
+
+
 
     public $repository;
 
@@ -57,26 +61,73 @@ class ReservationService {
     }
 
 
-    public function addInfo($reservationInfo){
+    public function addInfoReservationForHallOwner($reservationInfo){
 
-        $reservationInfo['confirmed_guest_id'] = auth() -> user() -> id;
+        $reservationInfo['confirmed_guest_id'] = auth() -> user() -> id; 
 
         $reservation = $this -> repository -> addInfo($reservationInfo);
          
-        $service_kind = $reservation -> services -> kind;
+        $service_kind = $reservation -> service -> kind;
 
         $price = $reservation -> serviceAsset -> price;
 
         if(isset($reservation -> assets -> hall)){
         $hall = $reservation -> assets -> hall;
-        $price= $price + ($hall->mixed ? $hall->mixed_price : 0) + ($hall->dinner ? $hall->dinner_price : 0);
+        $price= $price + ($reservation->mixed ? $hall->mixed_price : 0) + ($reservation->dinner ? $hall->dinner_price : 0);
+        }
+
+        if($price > auth()->user()->money) {
+            $reservation->delete();
+            return $this -> sendResponse(
+                200,
+                __('messages.add_reservation'),
+                new ReservationPrivateResource($reservation)
+            );
+        }
+        
+
+        (new UserService(new UserRepository()))->editToCart(auth()->user(), $price, '-');
+        (new UserService(new UserRepository()))->editToCart($reservation->assets->user, $price, '+');
+        
+        $this -> updateWithModel ($reservation ,$price ,'total_price');
+
+        $this -> updateWithModel (
+            $reservation ,
+            $this -> calcDurationForReservation($reservation -> time ->start_time ,$reservation  -> time -> end_time) ,
+            'duration');
+
+        if($service_kind == 'public' && isset($reservationInfo['extra_public_events'])){
+            $this -> addPublicEvent($reservation, $reservationInfo['extra_public_events']);
+            $this -> addCategory($reservation, $reservationInfo['extra_public_events.category']);
+        }
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            new ReservationPrivateResource($reservation)
+            );
+        
+    }
+
+    public function addInfoReservationForOrganizer($reservationInfo){
+
+        $reservationInfo['confirmed_guest_id'] = auth() -> user() -> id; 
+
+        $reservation = $this -> repository -> addInfo($reservationInfo);
+         
+        $service_kind = $reservation -> service -> kind;
+
+        $price = $reservation -> serviceAsset -> price;
+
+        if(isset($reservation -> assets -> hall)){
+        $hall = $reservation -> assets -> hall;
+        $price= $price + ($reservation->mixed ? $hall->mixed_price : 0) + ($reservation->dinner ? $hall->dinner_price : 0);
         }
 
         $this -> updateWithModel ($reservation ,$price ,'total_price');
 
         $this -> updateWithModel (
             $reservation ,
-            $this -> calcDurationForReservation($reservation -> start_time ,$reservation -> end_time) ,
+            $this -> calcDurationForReservation($reservation -> time ->start_time ,$reservation  -> time -> end_time) ,
             'duration');
 
         if($service_kind == 'public' && isset($reservationInfo['extra_public_events'])){
@@ -122,6 +173,14 @@ class ReservationService {
         $this -> updateWithModel($reservation_tickte,$tickets_price,'tickets_price');
 
         return $tickets_price;
+
+    }
+
+    public function getTimesForHallOwner($asset_id, $date) {
+        return GetTimesResource::collection($this->repository->listTimesToReserveForHallOwner($asset_id, $date));
+    }
+
+    public function checkReservationTimeForOrganizer() {
 
     }
 

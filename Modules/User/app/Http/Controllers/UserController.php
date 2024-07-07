@@ -13,6 +13,7 @@ use Modules\User\app\Services\UserService;
 use Modules\User\Http\Requests\LoginRequest;
 use Modules\User\Http\Requests\RegisterRequest;
 use Modules\User\app\Repositories\UserRepository;
+use Modules\User\Http\Requests\AddToCartRequest;
 use Modules\User\Http\Requests\AddUserRequest;
 use Modules\User\Http\Requests\ForgetPasswordRequest;
 use Modules\User\Http\Requests\GetInvestorsRequest;
@@ -112,6 +113,16 @@ class UserController extends Controller
             200,
             __('auth.create_user'),
             ((new UserService(new UserRepository()))->resetPassword($request->all()))
+        );
+    }
+
+    public function addToCart(AddToCartRequest $request) {
+        ((new UserService(new UserRepository()))->editToCart(auth()->user(),$request->money, '-'));
+
+        return $this->sendResponse(
+            200,
+            __('auth.create_user')
+           
         );
     }
 

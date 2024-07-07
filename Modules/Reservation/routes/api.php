@@ -19,11 +19,12 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 });
 
 Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationController::class)
-->prefix('reservation')
+->prefix('reservations')
 ->group(function(){
-    Route::post('addInfo', 'addInfo');
+    Route::post('addInfo', 'addInfoReservationForHallOwner');
     Route::post('addPhoto','addPhoto');
     Route::get('getInfo', 'getInfo');
+    Route::get('list-times-hall', 'listTimesForHallOwner');
     Route::post('addTickets','addTickets');
     Route::get('dateRes','dateRes');
 });
