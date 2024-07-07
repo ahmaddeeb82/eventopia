@@ -76,18 +76,26 @@ class ReservationService {
         $price= $price + ($reservation->mixed ? $hall->mixed_price : 0) + ($reservation->dinner ? $hall->dinner_price : 0);
         }
 
-        if($price > auth()->user()->money) {
-            $reservation->delete();
-            return $this -> sendResponse(
-                200,
-                __('messages.add_reservation'),
-                new ReservationPrivateResource($reservation)
-            );
-        }
         
-
-        (new UserService(new UserRepository()))->editToCart(auth()->user(), $price, '-');
-        (new UserService(new UserRepository()))->editToCart($reservation->assets->user, $price, '+');
+        if($reservationInfo['payment_type'] == 'electro') {
+            if($price > auth()->user()->money) {
+                $reservation->delete();
+                return $this -> sendResponse(
+                    200,
+                    __('messages.add_reservation'),
+                    new ReservationPrivateResource($reservation)
+                );
+            }
+            (new UserService(new UserRepository()))->editToCart(auth()->user(), $price, '-');
+            (new UserService(new UserRepository()))->editToCart($reservation->assets->user, $price, '+');
+            $reservation->update([
+                'payment' => true,
+            ]);
+        } else {
+            $reservation->update([
+                'payment' => false,
+            ]);
+        }
         
         $this -> updateWithModel ($reservation ,$price ,'total_price');
 

@@ -25,6 +25,7 @@ class ReservationRequest extends FormRequest
             'event_id' => 'required|integer|exists:service_asset,id',
             'mixed' => 'required|boolean',
             'dinner' => 'required|boolean',
+            'payment_type' => 'required|in:electro,cash',
             //'confirmed_guest_id' => 'required|exists:users,id',
             'extra_public_events' => 'sometimes',
             'extra_public_events.category' => 'required_with:extra_public_events|array:ar,en',

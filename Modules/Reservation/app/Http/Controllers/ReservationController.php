@@ -29,11 +29,9 @@ class ReservationController extends Controller
 
     public function addInfoReservationForHallOwner(ReservationRequest $request){
 
-        return $this -> sendResponse(
-            200,
-            __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all())
-            );
+        
+            return (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all());
+            
     }
 
     public function addPhoto(PhotoPublicReservationRequest $request){
