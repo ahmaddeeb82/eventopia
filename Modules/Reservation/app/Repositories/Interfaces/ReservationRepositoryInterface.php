@@ -12,6 +12,7 @@ interface ReservationRepositoryInterface {
 
     public function dateTime($date);
 
-    public function listTimesToReserveForHallOwner($asset_id,$date);
+    public function listTimesToReserve($asset_id,$date, $role);
+
 
 }

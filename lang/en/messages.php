@@ -29,5 +29,6 @@ return [
     'login' => 'Logged In Successfully',
     'login_fail' => 'Log In Failed',
     'no_enough_money' => 'No Enough Money In Your Cart',
+    'time_fail' => "Reservation Time Isn't Available",
 
 ];

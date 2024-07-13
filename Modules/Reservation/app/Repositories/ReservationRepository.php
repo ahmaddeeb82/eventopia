@@ -30,7 +30,7 @@ class ReservationRepository implements ReservationRepositoryInterface{
 
     }
 
-    public function listTimesToReserveForHallOwner($asset_id, $date)
+    public function listTimesToReserve($asset_id, $date, $role)
     {
         
         $asset = Asset::where('id', $asset_id)->first();
@@ -41,12 +41,14 @@ class ReservationRepository implements ReservationRepositoryInterface{
 
         $reservedTimes = $reservations->pluck('time_id')->toArray();
 
-        $availableTimes = $allTimes->filter(function ($time) use ($reservedTimes) {
-            return !in_array($time->id, $reservedTimes);
+        
+        $availableTimes = $allTimes->filter(function ($time) use ($reservedTimes, $role, $asset) {
+            return $role=='HallOwner'?!in_array($time->id, $reservedTimes):in_array($time->id, $reservedTimes) && $time != $asset->times()->first();
         });
 
         return $availableTimes->values();
     }
+
 
 
 }

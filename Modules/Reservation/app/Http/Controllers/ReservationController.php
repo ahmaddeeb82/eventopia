@@ -27,7 +27,7 @@ class ReservationController extends Controller
     use ApiResponse;
     
 
-    public function addInfoReservationForHallOwner(ReservationRequest $request){
+    public function addInfoReservation(ReservationRequest $request){
 
         
             return (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all());
@@ -77,5 +77,21 @@ class ReservationController extends Controller
             (new ReservationService(new ReservationRepository))->getTimesForHallOwner($request->asset_id,$request->date)
             );
     }
+
+    public function listTimesForOrganizer(GetTimesRequest $request){
+
+        return $this -> sendResponse(
+            200,
+            __('messages.add_reservation'),
+            (new ReservationService(new ReservationRepository))->getTimesForOrgnizer($request->asset_id,$request->date)
+            );
+    }
+
+    public function addInfoReservationForOrganizer(ReservationRequest $request){
+
+        
+        return (new ReservationService(new ReservationRepository))->addInfoReservationForOrganizer($request->all());
+        
+}
 
 }

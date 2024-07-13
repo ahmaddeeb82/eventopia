@@ -24,7 +24,7 @@ class ReservationPrivateResource extends JsonResource
             'start_time' => $this -> time ->start_time,
             'end_time' => $this  -> time -> end_time,
             'duration' => $this -> duration,
-            'event_name' => $this->service->name,
+            'event_name' => $this->serviceAsset->service->name,
             'total_price' => $this -> total_price,
             'payment' => $this -> payment,
             'notes' => $this -> notes,

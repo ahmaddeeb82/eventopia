@@ -117,7 +117,7 @@ class UserController extends Controller
     }
 
     public function addToCart(AddToCartRequest $request) {
-        ((new UserService(new UserRepository()))->editToCart(auth()->user(),$request->money, '-'));
+        ((new UserService(new UserRepository()))->editToCart(auth()->user(),$request->money, '+'));
 
         return $this->sendResponse(
             200,
