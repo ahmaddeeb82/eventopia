@@ -13,36 +13,36 @@ class AssetRepository implements AssetRepositoryInterface
     {
         return Asset::create($asset);
     }
-    
-    public function getWithId($id) {
+
+    public function getWithId($id)
+    {
         return Asset::where('id', $id)->first();
     }
 
-    public function update($asset, $data) {
+    public function update($asset, $data)
+    {
         return $asset->update($data);
     }
 
     public function list($identifier, $role, $service_id = 1)
     {
-        if($role == 'HallOwner') {
-            $assets =  Asset::has('hall'); 
+        if ($role == 'HallOwner') {
+            $assets =  Asset::has('hall');
+        } else {
+            $assets =  Asset::doesntHave('hall');
         }
-        else {
-            $assets =  Asset::doesntHave('hall'); 
-        }
-        
-        switch($identifier) {
+
+        switch ($identifier) {
             case 'rate':
                 $assets = $assets->orderByDesc('rate')->get();
                 break;
             case 'price':
                 $service = Service::find($service_id);
-                $assets = $service->assets()->withPivot('price')->orderBy('pivot_price','desc');
-                if($role == 'HallOwner') {
-                    $assets =  $assets->has('hall')->get(); 
-                }
-                else {
-                    $assets =  $assets->doesntHave('hall')->get(); 
+                $assets = $service->assets()->withPivot('price')->orderBy('pivot_price', 'desc');
+                if ($role == 'HallOwner') {
+                    $assets =  $assets->has('hall')->get();
+                } else {
+                    $assets =  $assets->doesntHave('hall')->get();
                 }
             case 'all':
                 $assets = $assets->get();
@@ -53,54 +53,50 @@ class AssetRepository implements AssetRepositoryInterface
         return $assets;
     }
 
-    public function recentlyAdded($role) 
+    public function recentlyAdded($role)
     {
-        if($role == 'HallOwner') {
-            return Asset::has('hall')->latest()->take(7)->get(); 
-        }
-        else {
-            return Asset::doesntHave('hall')->latest()->take(7)->get(); 
+        if ($role == 'HallOwner') {
+            return Asset::has('hall')->latest()->take(7)->get();
+        } else {
+            return Asset::doesntHave('hall')->latest()->take(7)->get();
         }
     }
 
     public function filterForReservation($filters)
     {
         $query = Asset::query()
-        ->select('assets.*')
-        ->distinct()
-        ->whereHas('user', function ($query) use ($filters) {
-            $query->whereHas('roles', function ($query) use ($filters) {
-                $query->where('name', $filters['role']);
+            ->select('assets.*')
+            ->distinct()
+            ->whereHas('user', function ($query) use ($filters) {
+                $query->whereHas('roles', function ($query) use ($filters) {
+                    $query->where('name', $filters['role']);
+                });
+            })
+            ->whereHas('serviceAssets', function ($query) use ($filters) {
+                $query->whereHas('service', function ($query) use ($filters) {
+                    $query->where('id', $filters['service_id'])
+                        ->whereBetween('price', [$filters['min_price'], $filters['max_price']]);
+                });
             });
-        })
-        ->whereHas('serviceAssets', function ($query) use ($filters) {
-            $query->whereHas('service', function ($query) use ($filters) {
-                $query->where('id', $filters['service_id'])
-                ->whereBetween('price', [$filters['min_price'], $filters['max_price']]);
+
+        if ($filters['role'] == 'HallOwner') {
+            $query->whereHas('hall', function ($query) use ($filters) {
+                $query->where('mixed', '=', $filters['mixed_service'])
+                    ->where('dinner', '=', $filters['dinner_service'])
+                    ->where('address', 'LIKE', $filters['region'] . '%')
+                    ->whereBetween('capacity', [$filters['audiences_number'] - 25, $filters['audiences_number'] + 25]);
+            })
+                ->whereHas('times', function ($query) use ($filters) {
+                    $query->where('start_time', '=', $filters['start_time'])
+                        ->where('end_time', '=', $filters['end_time']);
+                });
+        } else {
+            $query->whereHas('user', function ($query) use ($filters) {
+                $query->where('address', 'LIKE', $filters['region'] . '%');
             });
-        });
+        }
 
-    if ($filters['role'] == 'HallOwner') {
-        $query->whereHas('hall', function ($query) use ($filters) {
-            $query->where('mixed', '=', $filters['mixed_service'])
-                  ->where('dinner', '=', $filters['dinner_service'])
-                  ->where('address', 'LIKE', $filters['region'] . '%')
-                  ->whereBetween('capacity', [$filters['audiences_number'] - 25, $filters['audiences_number'] + 25])
-                  ->whereHas('times', function ($query) use ($filters) {
-                      $query->where('start_time', '=', $filters['start_time'])
-                             ->where('end_time', '=', $filters['end_time']);
-                  });
-                //   ->whereHas('serviceAssets', function ($query) use ($filters) {
-                //       $query->whereBetween('price', [$filters['min_price'], $filters['max_price']]);
-                //   });
-        });
-    } else {
-        $query->whereHas('user', function ($query) use ($filters) {
-            $query->where('address', 'LIKE', $filters['region'] . '%');
-        });
-    }
-
-    return $query->get();
+        return $query->get();
 
         // return DB::table('users')
         // ->select('assets.*')
@@ -128,6 +124,4 @@ class AssetRepository implements AssetRepositoryInterface
         // ->get();
 
     }
-
-
 }
