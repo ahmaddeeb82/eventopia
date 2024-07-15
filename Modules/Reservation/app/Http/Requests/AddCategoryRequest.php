@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Favorite\Http\Requests;
+namespace Modules\Reservation\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetFavoriteWithIdRequest extends FormRequest
+class AddCategoryRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,10 +12,10 @@ class GetFavoriteWithIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:assets,id',
+            
         ];
     }
-//zkariaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa was here
+
     /**
      * Determine if the user is authorized to make this request.
      */

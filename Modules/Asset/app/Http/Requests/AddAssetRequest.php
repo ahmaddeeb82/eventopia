@@ -6,6 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AddAssetRequest extends FormRequest
 {
+
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      */
@@ -20,7 +29,7 @@ class AddAssetRequest extends FormRequest
             'services.existed.*.proportion' => 'sometimes|integer',
             'services.added' => 'sometimes|array',
             'services.added.*.kind' => 'required_with:services|in:public,private',
-            'services.added.*.name' => 'required_with:services|array:ar,en',
+            'services.added.*.name' => 'required_with:services|array:ar,en|required_array_keys:ar,en',
             'services.added.*.name.ar' => 'required_with:name|string',
             'services.added.*.name.en' => 'required_with:name|string',
             'hall' => 'sometimes',
@@ -34,20 +43,14 @@ class AddAssetRequest extends FormRequest
             'hall.dinner_price' => 'required_with:hall|numeric',
             'hall.mixed_price' => 'required_with:hall|numeric',
             'hall.active_times' => 'required_with:hall|array',
-            'hall.active_time.*' => 'array|required_with:hall.active_times',
-            'hall.active_time.*.start_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
-            'hall.active_time.*.end_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
+            'hall.active_times.*' => 'array|required_with:hall.active_times|required_array_keys:start_time,end_time',
+            'hall.active_times.*.start_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
+            'hall.active_times.*.end_time' => 'required_with:hall.active_times.*|date_format:H:i:s',
             'organizer_start_time' => 'sometimes|date_format:H:i:s',
             'organizer_end_time' => 'sometimes|date_format:H:i:s',
             
         ];
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    
 }

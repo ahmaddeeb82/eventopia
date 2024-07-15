@@ -4,6 +4,7 @@ namespace Modules\Reservation\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Event\Models\ServiceAsset;
 
 class ReservationRequest extends FormRequest
 {
@@ -13,7 +14,6 @@ class ReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'attendees_number' => 'required',
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' =>  'required|date_format:Y-m-d',
             'notes' => 'sometimes',
@@ -21,18 +21,10 @@ class ReservationRequest extends FormRequest
             'end_time' => 'sometimes','regex:/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/',
             'time_id' => 'sometimes|integer|exists:times,id',
             'event_id' => 'required|integer|exists:service_asset,id',
+            'attendees_number' => 'required|integer|max:' . ServiceAsset::where('id', $this->event_id)->first()->asset->capacity,
             'mixed' => 'required|boolean',
             'dinner' => 'required|boolean',
             'payment_type' => 'required|in:electro,cash',
-            //'confirmed_guest_id' => 'required|exists:users,id',
-            'extra_public_events' => 'sometimes',
-            'extra_public_events.category' => 'required_with:extra_public_events|array:ar,en',
-            'extra_public_events.category.ar' => 'required_with:extra_public_events.category|string',
-            'extra_public_events.category.en' => 'required_with:extra_public_events.category|string',
-            'extra_public_events.description' => 'required_with:extra_public_events',
-            'extra_public_events.name' => 'required_with:extra_public_events',
-            'extra_public_events.address' => 'required_with:extra_public_events',
-            'extra_public_events.ticket_price' => 'required_with:extra_public_events',
         ];           
     }
 

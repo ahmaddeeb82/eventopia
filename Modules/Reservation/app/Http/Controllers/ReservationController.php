@@ -17,6 +17,7 @@ use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
 use Modules\Reservation\Http\Requests\GetTimesRequest;
 use Modules\Reservation\Http\Requests\PhotoPublicReservationRequest;
+use Modules\Reservation\Http\Requests\PublicEventReservationRequest;
 use Modules\Reservation\Http\Requests\ReservationRequest;
 use Modules\Reservation\Http\Requests\TicketsReservationRequest;
 use Modules\Reservation\Models\Reservation;
@@ -25,73 +26,79 @@ use Modules\Reservation\Transformers\ReservationResource;
 class ReservationController extends Controller
 {
     use ApiResponse;
-    
 
-    public function addInfoReservation(ReservationRequest $request){
 
-        
-            return (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all());
-            
+    public function addInfoReservation(ReservationRequest $request)
+    {
+
+
+        return (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all());
     }
 
-    public function addPhoto(PhotoPublicReservationRequest $request){
+    public function addPhoto(PhotoPublicReservationRequest $request)
+    {
 
-        return $this -> sendResponse(
+        return $this->sendResponse(
             200,
             __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository())) -> addPhoto($request)
+            (new ReservationService(new ReservationRepository()))->addPhoto($request)
         );
     }
 
-    public function getInfo(GetPrivateReservationRequest $request) {
+    public function getInfo(GetPrivateReservationRequest $request)
+    {
 
-        return $this -> sendResponse(
+        return $this->sendResponse(
             200,
             __('messages.get_reservation'),
-            (new ReservationService(new ReservationRepository))->getInfo($request -> id)
+            (new ReservationService(new ReservationRepository))->getInfo($request->id)
         );
-
     }
 
-    public function addTickets(TicketsReservationRequest $request){
-        return $this -> sendResponse(
+    public function addTickets(TicketsReservationRequest $request)
+    {
+        return $this->sendResponse(
             200,
             __('messages.add_reservation'),
             (new ReservationService(new TicketsReservationRepository))->addTickets($request->all())
         );
     }
 
-    public function dateRes(DateReservationRequest $request){
-        return $this -> sendResponse(
+    public function dateRes(DateReservationRequest $request)
+    {
+        return $this->sendResponse(
             200,
             __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository)) -> dateTime($request)
+            (new ReservationService(new ReservationRepository))->dateTime($request)
         );
     }
 
-    public function listTimesForHallOwner(GetTimesRequest $request){
+    public function listTimesForHallOwner(GetTimesRequest $request)
+    {
 
-        return $this -> sendResponse(
+        return $this->sendResponse(
             200,
             __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository))->getTimesForHallOwner($request->asset_id,$request->date)
-            );
+            (new ReservationService(new ReservationRepository))->getTimesForHallOwner($request->asset_id, $request->date)
+        );
     }
 
-    public function listTimesForOrganizer(GetTimesRequest $request){
+    public function listTimesForOrganizer(GetTimesRequest $request)
+    {
 
-        return $this -> sendResponse(
+        return $this->sendResponse(
             200,
             __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository))->getTimesForOrgnizer($request->asset_id,$request->date)
-            );
+            (new ReservationService(new ReservationRepository))->getTimesForOrgnizer($request->asset_id, $request->date)
+        );
     }
 
-    public function addInfoReservationForOrganizer(ReservationRequest $request){
-
-        
+    public function addInfoReservationForOrganizer(ReservationRequest $request)
+    {
         return (new ReservationService(new ReservationRepository))->addInfoReservationForOrganizer($request->all());
-        
-}
+    }
 
+    public function addInfoPublicReservationForHallOwner(PublicEventReservationRequest $request) {
+
+    }
 }

@@ -38,12 +38,14 @@ class AssetRepository implements AssetRepositoryInterface
                 break;
             case 'price':
                 $service = Service::find($service_id);
-                $assets = $service->assets()->withPivot('price')->orderBy('pivot_price', 'desc');
                 if ($role == 'HallOwner') {
-                    $assets =  $assets->has('hall')->get();
+                    $assets = $service->assets()->has('hall')->withPivot('price')->orderBy('pivot_price', 'desc')->get();
+                    //$assets =  $assets->has('hall')->get();
                 } else {
-                    $assets =  $assets->doesntHave('hall')->get();
+                    $assets = $service->assets()->doesntHave('hall')->withPivot('price')->orderBy('pivot_price', 'desc')->get();
+                    //$assets =  $assets->doesntHave('hall')->get();
                 }
+                break;
             case 'all':
                 $assets = $assets->get();
                 break;

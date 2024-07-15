@@ -12,6 +12,7 @@ use Modules\Asset\Models\Asset;
 use Modules\Asset\Models\Time;
 use Modules\Asset\Transformers\AssetRecordsResource;
 use Modules\Asset\Transformers\AssetResource as TransformersAssetResource;
+use Modules\Asset\Transformers\AssetResourceWithTwoNames;
 use Modules\Asset\Transformers\FavoriteAssetResource;
 use Modules\Asset\Transformers\HallResource;
 use Modules\Event\app\Repositories\ProportionRepository;
@@ -125,7 +126,7 @@ class AssetService {
     }
 
     public function get($id) {
-        return new TransformersAssetResource(
+        return new AssetResourceWithTwoNames(
             $this->repository->getWithId($id)
         );
     }
@@ -144,8 +145,8 @@ class AssetService {
         return FavoriteAssetResource::collection(auth()->user()->favoriteAssets);
     }
 
-    public function deleteFavorite($pivot_id) {
-        Favorite::where('id', $pivot_id)->delete();
+    public function deleteFavorite($id) {
+        Favorite::where('favoritable_id', $id)->where('user_id', auth()->user()->id)->delete();
     }
 
     public function listForInvestor() {
@@ -176,7 +177,7 @@ class AssetService {
             }, $times['edited'], array_keys($times['edited']));
         }
         if(isset($times['added'])) {
-            $this->saveTimes($asset->hall,$times['added']);
+            $this->saveTimes($asset,$times['added']);
         }
 
 }

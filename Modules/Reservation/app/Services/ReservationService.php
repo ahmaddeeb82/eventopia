@@ -57,17 +57,6 @@ class ReservationService
     }
 
 
-    public function dateTime($date)
-    {
-        $service_asset = ServiceAsset::where('asset_id', $date['event_id'])->first();
-
-        $hall_id = $service_asset->asset->hall->id;
-
-        $times = $this->repository->dateTime($hall_id);
-
-        return TimeReservationResource::collection($times);
-    }
-
     public function processPayment($reservation, $payment_type, $price)
     {
         if ($payment_type == 'electro') {
@@ -110,7 +99,7 @@ class ReservationService
         return $asset->times()->orderBy('created_at', 'desc')->first()->id;
     }
 
-    public function addInfoReservationForHallOwner($reservationInfo)
+    public function addInfoReservationForHallOwner($reservationInfo, $returned_data = true)
     {
 
         $reservationInfo['confirmed_guest_id'] = auth()->user()->id;
@@ -150,22 +139,25 @@ class ReservationService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            //return $e;
+            if($returned_data) {
             return $this->sendResponse(
                 200,
                 $e->getMessage(),
             );
+        } else {
+            throw $e;
+        }
         }
 
         if ($service_kind == 'public' && isset($reservationInfo['extra_public_events'])) {
             $this->addPublicEvent($reservation, $reservationInfo['extra_public_events']);
             $this->addCategory($reservation, $reservationInfo['extra_public_events.category']);
         }
-        return $this->sendResponse(
+        return $returned_data?$this->sendResponse(
             200,
             __('messages.add_reservation'),
             new ReservationPrivateResource($reservation)
-        );
+        ):$reservation;
     }
 
     
@@ -255,6 +247,13 @@ class ReservationService
     public function getTimesForOrgnizer($asset_id, $date)
     {
         return GetTimesResource::collection($this->repository->listTimesToReserve($asset_id, $date, 'Organizer'));
+    }
+
+    public function publicEventReservation($reservation_info) {
+        $reservation = $this->addInfoReservationForHallOwner($reservation_info['general_info'], false);
+        if(isset($reservation_info['public_info']['category']['added'])) {
+            
+        }
     }
 
 
