@@ -13,6 +13,7 @@ use Modules\Reservation\Models\Reservation;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Notification\Models\Notification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Reservation\Models\PublicEventReservation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Reservation\Models\PublicEvent;
@@ -20,7 +21,7 @@ use Modules\Reservation\Models\PublicEvent;
 class User extends Authenticatable
 {
 
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

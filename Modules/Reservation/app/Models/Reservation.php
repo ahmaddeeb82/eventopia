@@ -8,12 +8,13 @@ use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Models\Time;
 use Modules\Reservation\Database\Factories\ReservationFactory;
 
 class Reservation extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +23,6 @@ class Reservation extends Model
         'attendees_number',
         'start_date',
         'end_date',
-        //'start_time',
-        //'end_time',
         'duration',
         'payment',
         'total_price',

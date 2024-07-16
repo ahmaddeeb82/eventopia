@@ -4,12 +4,13 @@ namespace Modules\Asset\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Database\Factories\HallFactory;
 use Spatie\Translatable\HasTranslations;
 
 class Hall extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

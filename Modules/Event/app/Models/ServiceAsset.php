@@ -4,13 +4,14 @@ namespace Modules\Event\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Models\Asset;
 use Modules\Discounts\Models\Discount;
 use Modules\Event\Database\Factories\ServiceAssetFactory;
 
 class ServiceAsset extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -24,7 +24,7 @@ class AddAssetRequest extends FormRequest
             'id' => 'required|exists:assets,id',
             'services' => 'sometimes',
             'services.existed' => 'sometimes|array',
-            'services.existed.*.id' => 'required_with:services|exists:services,id|integer',
+            'services.existed.*.id' => 'required_with:services|integer|exists:services,id',
             'services.existed.*.price' => 'required_with:services|numeric',
             'services.existed.*.proportion' => 'sometimes|integer',
             'services.added' => 'sometimes|array',

@@ -21,7 +21,7 @@ class ReservationRequest extends FormRequest
             'end_time' => 'sometimes','regex:/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/',
             'time_id' => 'sometimes|integer|exists:times,id',
             'event_id' => 'required|integer|exists:service_asset,id',
-            'attendees_number' => 'required|integer|max:' . ServiceAsset::where('id', $this->event_id)->first()->asset->capacity,
+            'attendees_number' => 'required|integer',
             'mixed' => 'required|boolean',
             'dinner' => 'required|boolean',
             'payment_type' => 'required|in:electro,cash',

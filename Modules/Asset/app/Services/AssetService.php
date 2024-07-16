@@ -19,6 +19,7 @@ use Modules\Event\app\Repositories\ProportionRepository;
 use Modules\Event\app\Repositories\ServiceAssetRepository;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
+use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Event\Transformers\GetServiceResource;
 use Modules\Event\Transformers\GetServiceWithPriceResource;
@@ -207,6 +208,15 @@ class AssetService {
 
     public function filterForReservation($filters) {
         return TransformersAssetResource::collection($this->repository->filterForReservation($filters));
+    }
+
+    public function deleteAttachedService($id) {
+        ServiceAsset::where('id', $id)->first()->delete();
+    }
+
+    public function deleteAsset($id){
+        $asset = $this->get($id);
+        $asset->delete();
     }
 
 }

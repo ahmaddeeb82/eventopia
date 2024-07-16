@@ -21,6 +21,7 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
     Route::post('add-photos','addPhotos');
     Route::post('update-hall','update');
     Route::post('update-service','updateSereviceForOrganizer');
+    Route::post('add-services','addServicesForOrganizer');
     Route::get('get','get');
     Route::get('list','list');
     Route::get('list-for-investor','listForInvestor');
@@ -30,4 +31,6 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
     Route::get('get-favorites' , 'getFavorites');
     Route::get('get-filters' , 'getFilters');
     Route::delete('delete-favorite' , 'deleteFavorite');
+    Route::delete('delete-service' , 'deleteService');
+    Route::delete('delete' , 'deleteAsset');
 });

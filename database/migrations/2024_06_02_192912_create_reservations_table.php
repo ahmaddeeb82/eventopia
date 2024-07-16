@@ -22,9 +22,9 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('confirmed_guest_id');
-            $table->foreign('confirmed_guest_id')->references('id')->on('users');
+            $table->foreign('confirmed_guest_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('event_id');
-            $table->foreign('event_id')->references('id')->on('service_asset');
+            $table->foreign('event_id')->references('id')->on('service_asset')->onDelete('cascade');
             $table->foreignId('time_id')->constrained();
             $table->timestamps();
             $table->softDeletes();

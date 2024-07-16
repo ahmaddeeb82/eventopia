@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('start_time');
             $table->string('end_time');
-            $table->foreignId('asset_id')->constrained();
+            $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

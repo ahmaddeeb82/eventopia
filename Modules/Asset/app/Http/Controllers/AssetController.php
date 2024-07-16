@@ -9,9 +9,11 @@ use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
 use Modules\Asset\Http\Requests\AddAssetRequest;
 use Modules\Asset\Http\Requests\AddServiceForOrganizerRequest;
+use Modules\Asset\Http\Requests\AddServicesForOrganizerRequest;
 use Modules\Asset\Http\Requests\AssetFiltersRequest;
 use Modules\Asset\Http\Requests\AssetPhotosRequest;
 use Modules\Asset\Http\Requests\AssetRateRequest;
+use Modules\Asset\Http\Requests\DeleteAttachedServiceRequest;
 use Modules\Asset\Http\Requests\GetAssetRequest;
 use Modules\Asset\Http\Requests\UpdateHallInformationRequest;
 use Modules\Asset\Http\Requests\UpdateServiceOrgeanizerRequest;
@@ -118,5 +120,23 @@ class AssetController extends Controller
         __('messages.create_asset'),
         (new AssetService(new AssetRepository()))->filterForReservation($request->all())
     );
+    }
+
+    public function addServicesForOrganizer(AddServicesForOrganizerRequest $request) {
+        (new AssetService(new AssetRepository()))->attachMultipleServices(auth()->user()->assets()->first(),$request->services);
+
+        return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function deleteService(DeleteAttachedServiceRequest $request) {
+        (new AssetService(new AssetRepository()))->deleteAttachedService($request->id);
+
+        return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function deleteAsset(GetAssetRequest $request) {
+        (new AssetService(new AssetRepository()))->deleteAsset($request->id);
+
+        return $this->sendResponse(200, __('messages.create_asset'));
     }
 }

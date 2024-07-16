@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('tickets_number');
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('extra_public_events')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

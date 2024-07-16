@@ -4,6 +4,7 @@ namespace Modules\Asset\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Database\Factories\AssetFactory;
 use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
@@ -14,7 +15,7 @@ use Modules\User\Models\User;
 
 class Asset extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
