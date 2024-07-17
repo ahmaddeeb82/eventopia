@@ -22,9 +22,9 @@ class PublicEvent extends Model
         'name',
         'address',
         'ticket_price',
-        'total_tickets',
         'reserved_tickets',
         'reservation_id',
+        'category_id',
     ];
 
     protected $table = 'extra_public_events';

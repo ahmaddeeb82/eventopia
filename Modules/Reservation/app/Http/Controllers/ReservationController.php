@@ -99,6 +99,6 @@ class ReservationController extends Controller
     }
 
     public function addInfoPublicReservationForHallOwner(PublicEventReservationRequest $request) {
-
+        return (new ReservationService(new ReservationRepository))->publicEventReservation($request->all());
     }
 }

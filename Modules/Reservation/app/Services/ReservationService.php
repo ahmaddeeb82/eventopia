@@ -7,24 +7,16 @@ use App\Traits\DateFormatter;
 use App\Traits\ImageTrait;
 use App\Traits\UpdateTrait;
 use DateTime;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
-use Modules\Asset\Models\Asset;
-use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\PublicEvent;
-use Modules\Reservation\Models\Reservation;
 use Modules\Reservation\Transformers\GetTimesResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
-use Modules\Reservation\Transformers\ReservationPublicResource;
-use Modules\Reservation\Transformers\ReservationResource;
-use Modules\Reservation\Transformers\TimeReservationResource;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\app\Services\UserService;
-use Modules\User\Models\User;
 
 class ReservationService
 {
@@ -49,11 +41,9 @@ class ReservationService
     }
 
 
-    public function addCategory($reservation, $category)
+    public function addCategory($category)
     {
-
-        $reservation->publicEvent()->category()
-            ->save((new ExtraPublicEventsRepository())->addCategory($category));
+        return (new ExtraPublicEventsRepository)->addCategory($category);
     }
 
 
@@ -145,7 +135,7 @@ class ReservationService
                 $e->getMessage(),
             );
         } else {
-            throw $e;
+            throw new \Exception($e->getMessage());
         }
         }
 
@@ -249,15 +239,55 @@ class ReservationService
         return GetTimesResource::collection($this->repository->listTimesToReserve($asset_id, $date, 'Organizer'));
     }
 
+    public function savePublicEvent($reservation, $public_info) {
+        $reservation->publicEvent()->save((new ExtraPublicEventsRepository)->add($public_info));
+    }
+    
+    public function addPhotoForPublicEvent($reservation_id, $photo) {
+        $reservation = $this->getInfo($reservation_id);
+        $reservation->publuicEvent->update(['photo' => $this->savePhoto($photo)]);
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+            new ReservationPrivateResource($reservation)
+        );
+    }
+
     public function publicEventReservation($reservation_info) {
+        try{
+            DB::beginTransaction();
         $reservation = $this->addInfoReservationForHallOwner($reservation_info['general_info'], false);
+
         if(isset($reservation_info['public_info']['category']['added'])) {
-            
+            //dd($this->addCategory($reservation_info['public_info']['category']['added'])->id);
+            $reservation_info['public_info']['info']['category_id'] = $this->addCategory($reservation_info['public_info']['category']['added'])->id;
+        } else if (isset($reservation_info['public_info']['category']['existed'])) {
+            $reservation_info['public_info']['info']['category_id'] = (new ExtraPublicEventsRepository)->getCategory($reservation_info['public_info']['category']['existed'])->id;
         }
+
+        //$reservation_info['public_info']['photo'] = $this->savePhoto($reservation_info['photo']);
+
+        $this->savePublicEvent($reservation,$reservation_info['public_info']['info']);
+
+        DB::commit();
+    } catch(\Exception $e) {
+        DB::rollBack();
+        return $this->sendResponse(
+            200,
+            $e->getMessage(),
+        );
+    }
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+            $reservation->id
+        );
+
     }
 
 
     public function getWithDate($date)
     {
     }
+
 }

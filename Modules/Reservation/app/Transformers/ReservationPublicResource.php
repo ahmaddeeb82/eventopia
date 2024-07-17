@@ -15,9 +15,9 @@ class ReservationPublicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'category' => $this -> category,
+            'category' => $this -> category -> name,
             'description' => $this -> description,
-            'photo' => json_decode($this -> photo),
+            'photo' => $this -> photo,
             'name' => $this -> name,
             'address' => $this -> address,
             'ticket_price' => $this -> ticket_price,

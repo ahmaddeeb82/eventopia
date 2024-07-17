@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait ImageTrait {
     public function savePhoto($image) {
-        return $imagePath = $image->store('images', 'public');
+        return $image->store('images', 'public');
     }
 
     public function saveMultiplePhotos($images) {

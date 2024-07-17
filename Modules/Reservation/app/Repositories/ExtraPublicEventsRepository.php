@@ -2,12 +2,13 @@
 
 namespace Modules\Reservation\app\Repositories;
 
+use Modules\Reservation\app\Repositories\Interfaces\ExtraPublicEventsRepositoryInterface;
 use Modules\Reservation\Models\Category;
 use Modules\Reservation\Models\PublicEvent;
 use Modules\Reservation\Models\PublicEventReservation;
 use Modules\Reservation\Models\Reservation;
 
-class ExtraPublicEventsRepository{
+class ExtraPublicEventsRepository implements ExtraPublicEventsRepositoryInterface{
     
     public function add($extraPublicEvents){
 
@@ -15,10 +16,15 @@ class ExtraPublicEventsRepository{
     
     }
 
-    public function addCategory($categry){
+    public function addCategory($category){
 
-        return new Category($categry);
+        return Category::create($category);
 
+    }
+
+    public function getCategory($id)
+    {
+        return Category::find($id);
     }
 
 }

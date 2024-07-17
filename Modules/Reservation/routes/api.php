@@ -28,4 +28,5 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
     Route::get('list-times-organizer', 'listTimesForOrganizer');
     Route::post('addTickets','addTickets');
     Route::get('dateRes','dateRes');
+    Route::post('add-public-event', 'addInfoPublicReservationForHallOwner');
 });

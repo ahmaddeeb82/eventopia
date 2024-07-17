@@ -154,7 +154,8 @@ class AssetService {
         if(auth()->user()->hasRole('HallOwner')){
         return TransformersAssetResource::collection(auth()->user()->assets);
         } else {
-            return GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice);
+            //dd(count(auth()->user()->assets[0]->serviceAssets));
+            return isset(auth()->user()->assets[0]) && count(auth()->user()->assets[0]->serviceAssets)!=0?GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice):[];
         }
     }
 
