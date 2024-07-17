@@ -155,7 +155,7 @@ class AssetService {
         return TransformersAssetResource::collection(auth()->user()->assets);
         } else {
             //dd(count(auth()->user()->assets[0]->serviceAssets));
-            return isset(auth()->user()->assets[0]) && count(auth()->user()->assets[0]->serviceAssets)!=0?GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice):[];
+            return isset(auth()->user()->assets[0]) && count(auth()->user()->assets[0]->serviceAssets)!=0?GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice->unique('id')->all()):[];
         }
     }
 
