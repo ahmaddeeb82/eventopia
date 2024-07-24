@@ -13,6 +13,7 @@ class AssetRecordsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->hall != null ?$this->hall->name:$this->user->first_name . ' ' . $this->user->last_name,
             'photo' => $this->hall != null ? json_decode($this->photos)[0]:$this->user->photo,
         ];
