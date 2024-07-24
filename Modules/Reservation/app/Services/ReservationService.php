@@ -13,6 +13,7 @@ use Modules\Asset\app\Services\AssetService;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\PublicEvent;
+use Modules\Reservation\Models\Reservation;
 use Modules\Reservation\Transformers\GetTimesResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
 use Modules\User\app\Repositories\UserRepository;
@@ -89,7 +90,7 @@ class ReservationService
         return $asset->times()->orderBy('created_at', 'desc')->first()->id;
     }
 
-    public function addInfoReservationForHallOwner($reservationInfo, $returned_data = true)
+    public function addInfoReservation($reservationInfo, $returned_data = true)
     {
 
         $reservationInfo['confirmed_guest_id'] = auth()->user()->id;
@@ -143,11 +144,7 @@ class ReservationService
             $this->addPublicEvent($reservation, $reservationInfo['extra_public_events']);
             $this->addCategory($reservation, $reservationInfo['extra_public_events.category']);
         }
-        return $returned_data?$this->sendResponse(
-            200,
-            __('messages.add_reservation'),
-            new ReservationPrivateResource($reservation)
-        ):$reservation;
+        return $returned_data?new ReservationPrivateResource($reservation):$reservation;
     }
 
     
@@ -253,21 +250,21 @@ class ReservationService
         );
     }
 
-    public function publicEventReservation($reservation_info) {
+    public function eventReservation($reservation_info) {
         try{
             DB::beginTransaction();
-        $reservation = $this->addInfoReservationForHallOwner($reservation_info['general_info'], false);
-
-        if(isset($reservation_info['public_info']['category']['added'])) {
-            //dd($this->addCategory($reservation_info['public_info']['category']['added'])->id);
-            $reservation_info['public_info']['info']['category_id'] = $this->addCategory($reservation_info['public_info']['category']['added'])->id;
-        } else if (isset($reservation_info['public_info']['category']['existed'])) {
-            $reservation_info['public_info']['info']['category_id'] = (new ExtraPublicEventsRepository)->getCategory($reservation_info['public_info']['category']['existed'])->id;
+            if(ServiceAsset::where('id', $reservation_info['general_info']['event_id'])->first()->service->kind == 'private') {
+                $response_data = $this->addInfoReservation($reservation_info['general_info']);
+            } else {
+            $reservation = $this->addInfoReservation($reservation_info['general_info'], false);
+            if(!empty($reservation_info['public_info']['category']['added'])) {
+                $reservation_info['public_info']['info']['category_id'] = $this->addCategory($reservation_info['public_info']['category']['added'])->id;
+            } else if (isset($reservation_info['public_info']['category']['existed'])) {
+                $reservation_info['public_info']['info']['category_id'] = (new ExtraPublicEventsRepository)->getCategory($reservation_info['public_info']['category']['existed']['id'])->id;
+            }
+            $this->savePublicEvent($reservation,$reservation_info['public_info']['info']);
+            $response_data = $reservation->id;
         }
-
-        //$reservation_info['public_info']['photo'] = $this->savePhoto($reservation_info['photo']);
-
-        $this->savePublicEvent($reservation,$reservation_info['public_info']['info']);
 
         DB::commit();
     } catch(\Exception $e) {
@@ -280,14 +277,9 @@ class ReservationService
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
-            $reservation->id
+            $response_data
         );
 
-    }
-
-
-    public function getWithDate($date)
-    {
     }
 
 }

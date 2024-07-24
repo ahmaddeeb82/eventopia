@@ -28,12 +28,12 @@ class ReservationController extends Controller
     use ApiResponse;
 
 
-    public function addInfoReservation(ReservationRequest $request)
-    {
+    // public function addInfoReservation(PublicEventReservationRequest $request)
+    // {
 
 
-        return (new ReservationService(new ReservationRepository))->addInfoReservationForHallOwner($request->all());
-    }
+    //     return (new ReservationService(new ReservationRepository))->eventReservation($request->all());
+    // }
 
     public function addPhoto(PhotoPublicReservationRequest $request)
     {
@@ -64,14 +64,7 @@ class ReservationController extends Controller
         );
     }
 
-    public function dateRes(DateReservationRequest $request)
-    {
-        return $this->sendResponse(
-            200,
-            __('messages.add_reservation'),
-            (new ReservationService(new ReservationRepository))->dateTime($request)
-        );
-    }
+    
 
     public function listTimesForHallOwner(GetTimesRequest $request)
     {
@@ -98,7 +91,7 @@ class ReservationController extends Controller
         return (new ReservationService(new ReservationRepository))->addInfoReservationForOrganizer($request->all());
     }
 
-    public function addInfoPublicReservationForHallOwner(PublicEventReservationRequest $request) {
-        return (new ReservationService(new ReservationRepository))->publicEventReservation($request->all());
+    public function reserveEvent(PublicEventReservationRequest $request) {
+        return (new ReservationService(new ReservationRepository))->eventReservation($request->all());
     }
 }
