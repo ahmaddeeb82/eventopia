@@ -60,6 +60,23 @@ class ReservationController extends Controller
     }
 
     public function listCategories() {
-        return (new ReservationService(new ReservationRepository))->listCategories();
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        (new ReservationService(new ReservationRepository))->listCategories());
+    }
+
+    public function listForInvestor(Request $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+            (new ReservationService(new ReservationRepository))->listForInvestor($request->asset_id,$request->date, $request->service_kind));
+    }
+
+    public function listForUser(Request $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        (new ReservationService(new ReservationRepository))->listForUser($request->date, $request->service_kind));
     }
 }

@@ -26,4 +26,6 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
     Route::get('list-times-organizer', 'listTimesForOrganizer');
     Route::post('add-photo', 'addPhotoForPublicEvent');
     Route::get('list-categories', 'listCategories');
+    Route::get('list-investor', 'listForInvestor');
+    Route::get('list-user', 'listForUser');
 });

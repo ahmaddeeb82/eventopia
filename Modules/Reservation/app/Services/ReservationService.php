@@ -157,7 +157,6 @@ class ReservationService
     
     public function addPhotoForPublicEvent($reservation_id, $photo) {
         $reservation = $this->repository->getInfo($reservation_id);
-        // dd($reservation->publicEvent);
         $reservation->publicEvent->update(['photo' => $this->savePhoto($photo)]);
         return $this->sendResponse(
             200,
@@ -200,5 +199,16 @@ class ReservationService
 
     public function listCategories() {
         return CategoryResource::collection(Category::all());
+    }
+
+    public function listForInvestor($asset_id,$date, $service_kind) {
+        if(auth()->user()->hasRole('Organizer')) {
+            return auth()->user()->assets()->first()?ReservationPrivateResource::collection($this->repository->listForInvestor(auth()->user()->assets()->first()->id,$date, $service_kind)):[];
+        }
+        return ReservationPrivateResource::collection($this->repository->listForInvestor($asset_id,$date, $service_kind));
+    }
+
+    public function listForUser($date, $service_kind) {
+        return ReservationPrivateResource::collection($this->repository->listForUser($date, $service_kind));
     }
 }

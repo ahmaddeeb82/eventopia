@@ -14,5 +14,7 @@ interface ReservationRepositoryInterface {
 
     public function listTimesToReserve($asset_id,$date, $role);
 
+    public function listForInvestor($asset_id,$date, $service_kind);
+
 
 }

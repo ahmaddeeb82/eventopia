@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Asset\Models\Asset;
 use Modules\Discounts\Models\Discount;
 use Modules\Event\Database\Factories\ServiceAssetFactory;
+use Modules\Reservation\Models\Reservation;
 
 class ServiceAsset extends Model
 {
@@ -38,6 +39,10 @@ class ServiceAsset extends Model
 
     public function service() {
         return $this->belongsTo(Service::class, 'service_id');
+    }
+
+    public function reservations() {
+        return $this->hasMany(Reservation::class, 'event_id');
     }
 
     
