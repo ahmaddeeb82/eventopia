@@ -13,7 +13,7 @@ class ReservationPrivateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {  
-        $reservation = Reservation::with('services')->find($request['id']);
+        //$reservation = Reservation::with('services')->find($request['id']);
               
         return array_merge([
             'id' => $this -> id,

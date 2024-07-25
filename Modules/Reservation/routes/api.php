@@ -22,11 +22,8 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
 ->prefix('reservations')
 ->group(function(){
     Route::post('add-reservation', 'reserveEvent');
-    Route::post('addPhoto','addPhoto');
-    Route::get('getInfo', 'getInfo');
     Route::get('list-times-hall', 'listTimesForHallOwner');
     Route::get('list-times-organizer', 'listTimesForOrganizer');
-    Route::post('addTickets','addTickets');
-    Route::get('dateRes','dateRes');
-    //Route::post('add-public-event', 'addInfoPublicReservationForHallOwner');
+    Route::post('add-photo', 'addPhotoForPublicEvent');
+    Route::get('list-categories', 'listCategories');
 });

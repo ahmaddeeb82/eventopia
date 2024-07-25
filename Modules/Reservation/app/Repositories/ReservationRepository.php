@@ -19,13 +19,11 @@ class ReservationRepository implements ReservationRepositoryInterface{
 
 
     public function getInfo($id){
-
         return Reservation::where('id',$id) -> first();
-    
+
     }
 
     public function dateTime($date){
-//->orderBy('start_time', 'asc')
         return Time::where('hall_id',$date) -> get();
 
     }

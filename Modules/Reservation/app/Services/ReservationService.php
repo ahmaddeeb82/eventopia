@@ -12,8 +12,10 @@ use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
+use Modules\Reservation\Models\Category;
 use Modules\Reservation\Models\PublicEvent;
 use Modules\Reservation\Models\Reservation;
+use Modules\Reservation\Transformers\CategoryResource;
 use Modules\Reservation\Transformers\GetTimesResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
 use Modules\User\app\Repositories\UserRepository;
@@ -34,12 +36,6 @@ class ReservationService
     }
 
 
-    public function addPublicEvent($reservation, $extraPublicEvents)
-    {
-
-        $reservation->publicEvent()
-            ->save((new ExtraPublicEventsRepository())->add($extraPublicEvents));
-    }
 
 
     public function addCategory($category)
@@ -108,7 +104,7 @@ class ReservationService
             }
             $reservation = $this->repository->addInfo($reservationInfo);
 
-            $service_kind = $reservation->serviceAsset->service->kind;
+
 
             $price = $reservation->serviceAsset->price;
 
@@ -140,91 +136,10 @@ class ReservationService
         }
         }
 
-        if ($service_kind == 'public' && isset($reservationInfo['extra_public_events'])) {
-            $this->addPublicEvent($reservation, $reservationInfo['extra_public_events']);
-            $this->addCategory($reservation, $reservationInfo['extra_public_events.category']);
-        }
         return $returned_data?new ReservationPrivateResource($reservation):$reservation;
     }
 
     
-
-    public function addInfoReservationForOrganizer($reservationInfo)
-    {
-
-        $reservationInfo['confirmed_guest_id'] = auth()->user()->id;
-
-        try{
-
-        $reservationInfo['time_id'] = $this->checkReservationAvailability($reservationInfo['start_time'],$reservationInfo['end_time'],$reservationInfo['event_id'],$reservationInfo['date']);
-
-        $reservation = $this->repository->addInfo($reservationInfo);
-
-
-        $service_kind = $reservation->serviceAsset->service->kind;
-
-        $price = $reservation->serviceAsset->price;
-
-        if (isset($reservation->serviceAsset->asset->hall)) {
-            $hall = $reservation->serviceAsset->asset->hall;
-            $price = $price + ($reservation->mixed ? $hall->mixed_price : 0) + ($reservation->dinner ? $hall->dinner_price : 0);
-        }
-
-        $this->updateWithModel($reservation, $price, 'total_price');
-
-        $this->updateWithModel(
-            $reservation,
-            $this->calcDurationForReservation($reservation->time->start_time, $reservation->time->end_time),
-            'duration'
-        );
-    } catch(\Exception $e) {
-        return 0;
-    }
-
-        if ($service_kind == 'public' && isset($reservationInfo['extra_public_events'])) {
-            $this->addPublicEvent($reservation, $reservationInfo['extra_public_events']);
-            $this->addCategory($reservation, $reservationInfo['extra_public_events.category']);
-        }
-
-        return new ReservationPrivateResource($reservation);
-    }
-
-
-    public function addPhoto($public_photo)
-    {
-
-        $reservation = PublicEvent::where('id', $public_photo['event_id'])->first();
-        $photo = ['photo' => $this->savePhoto($public_photo['photo'])];
-        $event = $this->updateWithModel($reservation, $photo, 'photo');
-
-        return $event;
-    }
-
-
-    public function getInfo($id)
-    {
-
-        $reservation = $this->repository->getInfo($id);
-
-        return new ReservationPrivateResource($reservation);
-    }
-
-
-    public function addTickets($tickets)
-    {
-
-        $reservation_tickte = $this->repository->addTickets($tickets);
-
-        $reservation = PublicEvent::where('id', $tickets['event_id'])->first();
-
-        $reserved_tickets = ($reservation->reserved_tickets + $tickets['tickets_number']);
-        $this->updateWithModel($reservation, $reserved_tickets, 'reserved_tickets');
-
-        $tickets_price = ($reservation->ticket_price * $tickets['tickets_number']);
-        $this->updateWithModel($reservation_tickte, $tickets_price, 'tickets_price');
-
-        return $tickets_price;
-    }
 
     public function getTimesForHallOwner($asset_id, $date)
     {
@@ -241,8 +156,9 @@ class ReservationService
     }
     
     public function addPhotoForPublicEvent($reservation_id, $photo) {
-        $reservation = $this->getInfo($reservation_id);
-        $reservation->publuicEvent->update(['photo' => $this->savePhoto($photo)]);
+        $reservation = $this->repository->getInfo($reservation_id);
+        // dd($reservation->publicEvent);
+        $reservation->publicEvent->update(['photo' => $this->savePhoto($photo)]);
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
@@ -282,4 +198,7 @@ class ReservationService
 
     }
 
+    public function listCategories() {
+        return CategoryResource::collection(Category::all());
+    }
 }
