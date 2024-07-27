@@ -28,4 +28,5 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
     Route::get('list-categories', 'listCategories');
     Route::get('list-investor', 'listForInvestor');
     Route::get('list-user', 'listForUser');
+    Route::get('list-public', 'listPublicEvents');
 });

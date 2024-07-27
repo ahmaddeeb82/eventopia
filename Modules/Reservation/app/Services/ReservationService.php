@@ -211,4 +211,8 @@ class ReservationService
     public function listForUser($date, $service_kind) {
         return ReservationPrivateResource::collection($this->repository->listForUser($date, $service_kind));
     }
+
+    public function listPublicEvents($category_id) {
+        return ReservationPrivateResource::collection($this->repository->listPublicEvents($category_id));
+    }
 }

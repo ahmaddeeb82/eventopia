@@ -16,5 +16,9 @@ interface ReservationRepositoryInterface {
 
     public function listForInvestor($asset_id,$date, $service_kind);
 
+    public function listForUser($date, $service_kind);
+
+    public function listPublicEvents($category_id);
+
 
 }

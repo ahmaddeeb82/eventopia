@@ -79,4 +79,11 @@ class ReservationController extends Controller
             __('messages.add_reservation'),
         (new ReservationService(new ReservationRepository))->listForUser($request->date, $request->service_kind));
     }
+
+    public function listPublicEvents(Request $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        (new ReservationService(new ReservationRepository))->listPublicEvents($request->category_id));
+    }
 }
