@@ -14,9 +14,11 @@ use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\Category;
 use Modules\Reservation\Models\PublicEvent;
+use Modules\Reservation\Models\PublicEventReservation;
 use Modules\Reservation\Models\Reservation;
 use Modules\Reservation\Transformers\CategoryResource;
 use Modules\Reservation\Transformers\GetTimesResource;
+use Modules\Reservation\Transformers\PublicEventTicketsResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\app\Services\UserService;
@@ -44,13 +46,13 @@ class ReservationService
     }
 
 
-    public function processPayment($reservation, $payment_type, $price)
+    public function processPayment($reservation, $payment_type, $price, $user_to_add, $user_to_take)
     {
         if ($payment_type == 'electro') {
             if ($price > auth()->user()->money) {
                 throw new \Exception(__('messages.no_enough_money')); // Use custom messages or handle accordingly
             }
-            $this->updateUserCart($reservation, $reservation->serviceAsset->asset->user, auth()->user(), $price);
+            $this->updateUserCart($reservation, $user_to_add, $user_to_take, $price);
         } else {
             $reservation->update(['payment' => false]);
         }
@@ -113,7 +115,7 @@ class ReservationService
                 $price = $price + ($reservation->mixed ? $hall->mixed_price : 0) + ($reservation->dinner ? $hall->dinner_price : 0);
             }
 
-            $this->processPayment($reservation, $reservationInfo['payment_type'], $price);
+            $this->processPayment($reservation, $reservationInfo['payment_type'], $price, $reservation->serviceAsset->asset->user, auth()->user());
 
             $this->updateWithModel($reservation, $price, 'total_price');
 
@@ -214,5 +216,65 @@ class ReservationService
 
     public function listPublicEvents($category_id) {
         return ReservationPrivateResource::collection($this->repository->listPublicEvents($category_id));
+    }
+
+    public function get($id) {
+        return new ReservationPrivateResource($this->repository->getInfo($id));
+    }
+
+    public function reserveTicket($data) {
+        $reservation = $this->repository->getInfo($data['event_id']);
+
+        $data['event_id'] = $reservation->publicEvent->id;
+
+        $data['user_id'] = auth()->user()->id;
+        $data['tickets_price'] = $reservation->publicEvent->ticket_price * $data['tickets_number'];
+
+        $hostage_income = $data['tickets_price'] * (100 - $reservation->serviceAsset->proportion->proportion) / 100;
+        $investor_income = $data['tickets_price'] * $reservation->serviceAsset->proportion->proportion / 100;
+
+        DB::beginTransaction();
+
+        try {
+        $public_event = PublicEventReservation::create($data);
+
+        $this->checkTicketsNumber($reservation, $data['tickets_number']);
+
+        $this->processPayment($public_event,$data['payment_type'], $hostage_income, $reservation->user, auth()->user());
+
+        $this->processPayment($public_event,$data['payment_type'], $investor_income, $reservation->serviceAsset->asset->user, auth()->user());
+
+        DB::commit();
+
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+            new PublicEventTicketsResource($public_event)
+        );
+
+        return new PublicEventTicketsResource($public_event);
+
+        } catch(\Exception $e) {
+
+            DB::rollBack();
+
+            return $this->sendResponse(
+                200,
+                $e->getMessage(),
+            );
+        }
+    }
+
+    public function checkTicketsNumber($reservation, $tickets_number) {
+        if ($tickets_number + $reservation->publicEvent->reserved_tickets > $reservation->attendees_number) {
+                throw new \Exception(__('messages.no_enough_places')); // Use custom messages or handle accordingly
+        } else {
+            $reservation->publicEvent->reserved_tickets += $tickets_number;
+            $reservation->publicEvent->save();
+        }
+    }
+
+    public function listTickets() {
+        return PublicEventTicketsResource::collection(PublicEventReservation::where('user_id', auth()->user()->id)->get());
     }
 }

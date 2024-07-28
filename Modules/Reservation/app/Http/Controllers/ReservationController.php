@@ -17,8 +17,12 @@ use Modules\Reservation\Http\Requests\GetPrivateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
 use Modules\Reservation\Http\Requests\GetTimesRequest;
+use Modules\Reservation\Http\Requests\ListForInvestorRequest;
+use Modules\Reservation\Http\Requests\ListForUserRequest;
+use Modules\Reservation\Http\Requests\ListPublicEventRequest;
 use Modules\Reservation\Http\Requests\PhotoPublicReservationRequest;
 use Modules\Reservation\Http\Requests\PublicEventReservationRequest;
+use Modules\Reservation\Http\Requests\PublicEventTicketsRequest;
 use Modules\Reservation\Http\Requests\ReservationRequest;
 use Modules\Reservation\Http\Requests\TicketsReservationRequest;
 use Modules\Reservation\Models\Reservation;
@@ -66,24 +70,43 @@ class ReservationController extends Controller
         (new ReservationService(new ReservationRepository))->listCategories());
     }
 
-    public function listForInvestor(Request $request) {
+    public function listForInvestor(ListForInvestorRequest $request) {
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
             (new ReservationService(new ReservationRepository))->listForInvestor($request->asset_id,$request->date, $request->service_kind));
     }
 
-    public function listForUser(Request $request) {
+    public function listForUser(ListForUserRequest $request) {
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
         (new ReservationService(new ReservationRepository))->listForUser($request->date, $request->service_kind));
     }
 
-    public function listPublicEvents(Request $request) {
+    public function listPublicEvents(ListPublicEventRequest $request) {
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
         (new ReservationService(new ReservationRepository))->listPublicEvents($request->category_id));
     }
+
+    public function get(GetReservationRequest $request) {
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        (new ReservationService(new ReservationRepository))->get($request->id));
+    }
+
+    public function reserveTicket(PublicEventTicketsRequest $request) {
+        return (new ReservationService(new ReservationRepository))->reserveTicket($request->all());
+    }
+
+    public function listTickets() {
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        (new ReservationService(new ReservationRepository))->listTickets());
+    }
+
 }

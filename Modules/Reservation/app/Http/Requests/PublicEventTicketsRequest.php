@@ -4,7 +4,7 @@ namespace Modules\Reservation\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetReservationRequest extends FormRequest
+class PublicEventTicketsRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,7 +12,9 @@ class GetReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|integer|exists:reservations,id',
+            'tickets_number' => 'required|integer',
+            'event_id' => 'required|integer|exists:reservations,id',
+            'payment_type' => 'required|in:electro,cash',
         ];
     }
 

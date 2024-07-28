@@ -30,5 +30,6 @@ return [
     'login_fail' => 'Log In Failed',
     'no_enough_money' => 'No Enough Money In Your Cart',
     'time_fail' => "Reservation Time Isn't Available",
+    'time_fail' => "No Enough Places Left To Reserve",
 
 ];

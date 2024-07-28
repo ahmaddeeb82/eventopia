@@ -20,6 +20,7 @@ class GetServiceWithPriceResource extends JsonResource
             'kind' => $this->kind,
             'price' => $this->pivot->price,
             'discounted_price' => $serviceAsset->discounts()->first()?$serviceAsset->discounts()->first()->disconted_price:null,
+            'proportion' => $serviceAsset->proportion?$serviceAsset->proportion->proportion:null,
         ];
     }
 }
