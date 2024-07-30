@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\ProfileController;
 use Modules\User\Http\Controllers\UserController;
 
 /*
@@ -34,3 +35,15 @@ Route::controller(UserController::class)
     Route::post('add-cart', 'addToCart')->middleware(['auth:sanctum']);
     
 });
+
+Route::controller(ProfileController::class)
+->middleware('auth:sanctum')
+->prefix('profile')
+->group( function () {
+    Route::get('get', 'get');
+    Route::post('update','update');
+    Route::post('set-photo', 'setPhoto');
+    Route::delete('delete-photo', 'deletePhoto');
+});
+Route::get('profile/viewC', [ProfileController::class,'viewContract']);
+Route::get('profile/viewR', [ProfileController::class,'viewReport']);

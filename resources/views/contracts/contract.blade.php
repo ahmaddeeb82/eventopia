@@ -1,120 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="contractPageAsPDF.css" rel="stylesheet">
-	<link href="Css/app.css" rel="stylesheet">
-	 <!-- Font Awesome -->
-	 <link rel="stylesheet" href="fontawesome-free-6.3.0-web/css/all.min.css" />
-	 <!-- Google font -->
-	 <style>
-		@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Poppins:wght@300;700&display=swap');
-		</style>
-	 <title>Event Mangment System</title>
+    <title>Eventopia Contract</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 80%;
+            max-width: 800px;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #D03171;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #777;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #555;
+        }
+        .info-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        .info-table td {
+            padding: 12px;
+            vertical-align: top;
+            border-bottom: 1px solid #ddd;
+        }
+        .info-table td:first-child {
+            font-weight: bold;
+            width: 30%;
+            color: #333;
+        }
+        .info-table td:last-child {
+            width: 70%;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-	<!-- ====================THIS PAGE FOR AHMED DEEEEEEEEB================================== -->
-		<div class="container">
-			<div class="invitetion">
-				<div class="main">
-					<div class="first-section">
-						<!-- /---------------1----------------- -->
-						<div class="logo-holder">
-							<img src="images/Logo.png" alt="">
-						</div>
-						<!-- /---------------2----------------- -->
-						<h1>Eventopia</h1>
-						<!-- /---------------3----------------- -->
-						<h2>Zakaria Al-nabulsi</h2>
-				</div>
-				<!-- /---------------4----------------- -->
-				<div class="second-section">
-					<div class="client-info">
-						<h6>Client Information</h6>
-						<p class="name">
-							<span>Client Name: </span>
-							<span>
-								{{ $contract->user->first_name . ' ' . $contract->user->last_name }}
-							</span>
-							<span></span>
-						</p>
-						<p class="role">
-							<span>Role: </span>
-							<span>
-								{{ $contract->user->getRoleNames()[0] }}
-							</span>
-							<span></span>
-						</p>
-                        @if ($contract->user->getRoleNames()[0] == 'HallOwner')
-                        <p class="lounge">
-							<span>Lounge Name: </span>
-							<span>
-								Al-Bahia Lounge
-							</span>
-							<span></span>
-						</p>
-                        @endif
-						<p class="phone">
-							<span>phone Number: </span>
-							<span>
-								{{ $contract->user->phone_number }}
-							</span>
-							<span></span>
-						</p>
-						<p class="addres">
-							<span>Lounge Addres: </span>
-							<span>
-								{{ $contract->user->address }}
-							</span>
-							<span></span>
-						</p>
-					</div>
-					<!-- /---------------5----------------- -->
-					<div class="contract-info">
-						<h6>Contract Information</h6>
-						<div class="date">
-							<div class="start-date">
-								<p>Start Date:</p>
-								<span>{{ $contract->start_date }}</span>
-							</div>
-							<div class="end-date">
-								<p>End Date:</p>
-								<span>{{ $contract->end_date }}</span>
-							</div>
-						</div>
-						<p class="aggred-value">
-							<span>Aggred-value: </span>
-							<span>
-								{{ $contract->price }}
-							</span>
-						</p>
-						<p class="aggred-value">
-							<span>Client Signature: </span>
-							<span>
-								
-							</span>
-						</p>
-					</div>
-				</div>
-				</div>
-				<footer>
-					<p class="admin-email">zakariana2003@gmail.com</p>
-					<p class="admin-phone">phone number: +963969830277</p>
-					<p class="admin-account">www.LinkedIn.com</p>
-				</footer>
-			</div>
-		</div>
+    <div class="container">
+        <div class="header">
+            <h1>EVENTOPIA</h1>
+            <h2>For events management</h2>
+        </div>
 
-	<script>
-		// Fetch and insert the header dynamically
-		fetch('header.html')
-			.then(response => response.text())
-			.then(html => {
-				document.getElementById('header-placeholder').innerHTML = html;
-			})
-			.catch(error => console.error('Error fetching header:', error));
-		</script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <div class="section-title">Client Information</div>
+        <table class="info-table">
+            <tr>
+                <td>Client Name:</td>
+                <td>{{ $user->first_name }}</td>
+            </tr>
+            <tr>
+                <td>Role:</td>
+                <td>{{ $user->getRoleNames()[0] }}</td>
+            </tr>
+            {{-- <tr>
+                <td>Lounge Name:</td>
+                <td>{{ $loungeName }}</td>
+            </tr> --}}
+            <tr>
+                <td>Phone Number:</td>
+                <td>{{ $user->phone_number }}</td>
+            </tr>
+            <tr>
+                <td>Lounge Address:</td>
+                <td>{{ $user->address }}</td>
+            </tr>
+        </table>
+
+        <div class="section-title">Contract Information</div>
+        <table class="info-table">
+            <tr>
+                <td>Start Date:</td>
+                <td>{{ $user->contracts->last()->start_date }}</td>
+            </tr>
+            <tr>
+                <td>End Date:</td>
+                <td>{{ $user->contracts->last()->end_date }}</td>
+            </tr>
+            <tr>
+                <td>Agreed Value:</td>
+                <td>{{ $user->contracts->last()->price }}</td>
+            </tr>
+            {{-- <tr>
+                <td>Client Signature:</td>
+                <td>{{ $clientSignature }}</td>
+            </tr> --}}
+        </table>
+    </div>
 </body>
 </html>

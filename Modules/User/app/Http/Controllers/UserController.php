@@ -20,6 +20,7 @@ use Modules\User\Http\Requests\GetInvestorsRequest;
 use Modules\User\Http\Requests\GetUserWithId;
 use Modules\User\Http\Requests\ResetPasswordRequest;
 use Modules\User\Http\Requests\VerificationRequest;
+use Modules\User\Models\User;
 
 class UserController extends Controller
 {
@@ -125,5 +126,7 @@ class UserController extends Controller
            
         );
     }
+
+    
 
 }

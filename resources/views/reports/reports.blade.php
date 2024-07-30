@@ -1,114 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="reportPageAsPDF.css" rel="stylesheet">
-	<link href="Css/app.css" rel="stylesheet">
-	 <!-- Font Awesome -->
-	 <link rel="stylesheet" href="fontawesome-free-6.3.0-web/css/all.min.css" />
-	<title>Event Mangment System</title>
+    <title>Eventopia Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 1000px;
+            padding: 40px;
+            border-radius: 10px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #D03171;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #777;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+        }
+        table th {
+            background-color: #ffe4e1;
+            color: #333;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>EVENTOPIA REPORT</h1>
+        </div>
 
-	<div class="container">
-
-		<div class="main-table">
-			<div class="table-container">
-				<div class="table">
-					<table>
-						<thead>
-							<tr>
-								<th>No.</th>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Role</th>
-								<th>Sales</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!-- Pagination Table Rows Go Here -->
-							<tr>
-								<td>1</td>
-								<td>32@.221zak</td>
-
-								<td>Ahmed Deeb</td>
-								<td>Organizer</td>
-								<td>42,39992010008.977989</td>
-								
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>32@.221zak</td>
-
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-<!-- 3 -->
-							<tr>
-								<td>3</td>
-								<td>32@.221zak</td>
-
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-							<!-- 4 -->
-							<tr>
-								<td>4</td>
-								<td>32@.221zak</td>
-
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-							<!-- 5 -->
-							<tr>
-								<td>5</td>
-								<td>32@.221zak</td>
-
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-							<!-- 6 -->
-							<tr>
-								<td>2</td>
-								<td>32@.221zak</td>
-
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-							<!-- 7 -->
-							<tr>
-								<td>2</td>
-								<td>32@.221zak</td>
-								<td>Zakaria Al-Nabulsi</td>
-								<td>Lounge</td>
-								<td>21,39911208.977989</td>
-							
-							</tr>
-							<!-- 8 -->
-							<!-- 9 -->
-							<!-- 10 -->
-<!-- More Rows -->
-					
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>  
-
-
-
-
-	</body>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Sales</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($users as $index => $user)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->first_name . ' ' . $user->last_name }}</td>
+                    <td>{{ $user->getRoleNames()[0]=='Organizer'?$user->getRoleNames()[0]:'Hall Owner' }}</td>
+                    <td>{{ $user->contracts->last()->price }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</body>
 </html>

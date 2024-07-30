@@ -5,23 +5,20 @@ namespace Modules\Asset\app\Services;
 use App\Traits\ImageTrait;
 use Exception;
 use Illuminate\Http\Request;
-use Modules\Asset\app\Repositories\AssetRepository;
+
 use Modules\Asset\app\Repositories\HallRepository;
-use Modules\Asset\Http\Requests\AssetResource;
-use Modules\Asset\Models\Asset;
+
+
 use Modules\Asset\Models\Time;
 use Modules\Asset\Transformers\AssetRecordsResource;
 use Modules\Asset\Transformers\AssetResource as TransformersAssetResource;
 use Modules\Asset\Transformers\AssetResourceWithTwoNames;
 use Modules\Asset\Transformers\FavoriteAssetResource;
-use Modules\Asset\Transformers\HallResource;
 use Modules\Event\app\Repositories\ProportionRepository;
 use Modules\Event\app\Repositories\ServiceAssetRepository;
 use Modules\Event\app\Repositories\ServiceRepository;
 use Modules\Event\app\Services\ServiceService;
-use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
-use Modules\Event\Transformers\GetServiceResource;
 use Modules\Event\Transformers\GetServiceWithPriceResource;
 use Modules\Favorite\Models\Favorite;
 

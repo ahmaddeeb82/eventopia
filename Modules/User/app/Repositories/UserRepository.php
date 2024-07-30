@@ -30,5 +30,10 @@ class UserRepository implements UserRepositoryInterface
         return User::where($login_type,$login_info)->first();
     }
 
+    public function update($user, $data) {
+        $user->update($data);
+        return $user;
+    }
+
     
 }

@@ -12,4 +12,5 @@ interface UserRepositoryInterface
     public function get($info, $identifier);
     public function listWithRole($role);
     public function login($login_info , $login_type);
+    public function update($user, $data);
 }
