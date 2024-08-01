@@ -19,7 +19,7 @@ class AssetResource extends JsonResource
             'id' => $this->id,
             "photos" => json_decode($this->photos),
             "rate" => $this->rate,
-            "services" => isset(auth()->user()->assets[0]) && count(auth()->user()->assets[0]->serviceAssets)!=0?GetServiceWithPriceResource::collection(auth()->user()->assets[0]->servicesWithPrice->unique('id')->all()):[],
+            "services" => GetServiceWithPriceResource::collection($this->serviceAssets),
             "is_favorite" => auth()->user()->favoriteAssets()->where('favoritable_id', $this->id)->first() != null?true:false,
         ],$this->hall?(new HallResource($this->hall))->toArray($request):['start_time' => $this->times->first()->start_time, 'end_time' => $this->times()->first()->end_time]);
     }

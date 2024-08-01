@@ -229,4 +229,8 @@ class AssetService {
         ];
     }
 
+    public function searchForUser($identifier, $value) {
+        return $identifier != 'capacity'? TransformersAssetResource::collection($this->repository->searchLike($identifier,$value)): TransformersAssetResource::collection($this->repository->searchBetween($identifier,$value));
+    }
+
 }

@@ -153,4 +153,11 @@ class AssetController extends Controller
         (new AssetService(new AssetRepository))->getAnalytics()
         );
     }
+
+    public function searchForUser(Request $request) {
+        return $this->sendResponse(200,
+        __('messages.create_asset'),
+        (new AssetService(new AssetRepository))->searchForUser($request->identifier, $request->value)
+        );
+    }
 }

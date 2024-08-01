@@ -35,4 +35,5 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
     Route::delete('delete' , 'deleteAsset');
     Route::delete('delete-time' , 'deleteTime');
     Route::get('get-analytics' , 'getAnalytics');
+    Route::get('search-user', 'searchForUser');
 });

@@ -11,4 +11,6 @@ interface AssetRepositoryInterface {
     public function recentlyAdded($role);
     public function filterForReservation($filters);
     public function getInvestorsCount($role);
+    public function searchLike($identifier, $value);
+    public function searchBetween($identifier, $value);
 }

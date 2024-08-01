@@ -127,4 +127,21 @@ class AssetRepository implements AssetRepositoryInterface
         $tickets = PublicEventReservation::sum('tickets_price');
         return $reservations + $tickets;
     }
+
+    public function searchLike($identifier, $value) {
+         return Asset::whereHas('user', function ($query) use ($value) {
+            return $query->where('first_name', 'LIKE', '%'.$value.'%')
+            ->orWhere('last_name', 'LIKE', '%'.$value.'%')
+            ->orWhere('address', 'LIKE', '%'.$value.'%');
+         })
+         ->orWhereHas('hall', function ($query) use ($identifier,$value) {
+            return $query->where($identifier,'LIKE', '%'.$value.'%');
+         })->get();
+    }
+
+    public function searchBetween($identifier, $value) {
+        return Asset::whereHas('hall', function ($query) use ($identifier,$value) {
+            return $query->whereBetween($identifier, [$value - 25, $value + 25]);
+         })->get();
+    }
 }
