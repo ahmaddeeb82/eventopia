@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\DB;
 use Modules\Asset\app\Repositories\Interfaces\AssetRepositoryInterface;
 use Modules\Asset\Models\Asset;
 use Modules\Event\Models\Service;
+use Modules\Event\Models\ServiceAsset;
+use Modules\Reservation\Models\PublicEventReservation;
+use Modules\Reservation\Models\Reservation;
+use Modules\User\Models\User;
 
 class AssetRepository implements AssetRepositoryInterface
 {
@@ -100,30 +104,27 @@ class AssetRepository implements AssetRepositoryInterface
 
         return $query->get();
 
-        // return DB::table('users')
-        // ->select('assets.*')
-        // ->distinct()
-        // ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-        // ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        // ->leftJoin('assets', 'users.id', '=', 'assets.user_id')
-        // ->leftJoin('halls', 'assets.id', '=', 'halls.asset_id')
-        // ->leftJoin('times', 'halls.id', '=', 'times.hall_id')
-        // ->join('service_asset', 'service_asset.asset_id', '=', 'assets.id')
-        // ->join('services', 'services.id', '=', 'service_asset.service_id')
-        // ->where('roles.name', '=', $filters['role'])
-        // ->where('services.id', '=', $filters['service_id'])
-        // ->when($filters['role'] == 'HallOwner', function($query) use ($filters) {
-        //     return $query->where('halls.mixed' ,'=', $filters['mixed_service'])
-        //     ->where('halls.dinner', '=', $filters['dinner_service'])
-        //     ->where('halls.address', 'LIKE' ,$filters['region'] .'%')
-        //     ->whereBetween('halls.capacity', [$filters['audiences_number']-25, $filters['audiences_number']+25])
-        //     ->where('times.start_time', '=', $filters['start_time'])
-        //     ->where('times.end_time', '=', $filters['end_time'])
-        //     ->whereBetween('service_asset.price', [$filters['min_price'], $filters['max_price']]);
-        // }, function($query) use ($filters) {
-        //     return $query->where('users.address', 'LIKE',$filters['region'] .'%');
-        // })
-        // ->get();
 
+    }
+
+    public function getInvestorsCount($role) {
+        return User::whereHas('roles', function ($query) use ($role) {
+            $query->where('name', $role);
+        })->count();
+    }
+
+    public function getMostReserved() {
+        $most_reserved = Asset::withCount(['serviceAssets as reservations_count' => function($query) {
+            $query->join('reservations', 'service_asset.id', '=', 'reservations.event_id');
+        }])
+            ->orderBy('reservations_count', 'desc')
+            ->first();
+        return $most_reserved->hall?$most_reserved->hall->name:$most_reserved->user->first_name . ' ' . $most_reserved->user->last_name;
+    }
+
+    public function getTotalSales() {
+        $reservations = Reservation::sum('total_price');
+        $tickets = PublicEventReservation::sum('tickets_price');
+        return $reservations + $tickets;
     }
 }

@@ -3,6 +3,8 @@
 namespace Modules\Reservation\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Event\Enums\ServiceKindEnum;
 
 class ListForInvestorRequest extends FormRequest
 {
@@ -14,7 +16,7 @@ class ListForInvestorRequest extends FormRequest
         return [
             'asset_id' => 'required|integer|exists:assets,id',
             'date' => 'required|in:>=,<',
-            'service_kind' => 'required|in:public,private',
+            'service_kind' => ['required', Rule::enum(ServiceKindEnum::class)],
         ];
     }
 

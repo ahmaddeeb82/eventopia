@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('public_event_reservations', function (Blueprint $table) {
             $table->id();
             $table->boolean('payment')->default(false);
-            $table->float('tickets_price')->default(0);
+            $table->decimal('tickets_price', 20)->default(0);
             $table->integer('tickets_number');
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('extra_public_events')->cascadeOnDelete();

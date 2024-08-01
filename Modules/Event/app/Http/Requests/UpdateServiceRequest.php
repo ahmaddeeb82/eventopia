@@ -3,6 +3,8 @@
 namespace Modules\Event\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Event\Enums\ServiceKindEnum;
 
 class UpdateServiceRequest extends FormRequest
 {
@@ -10,7 +12,7 @@ class UpdateServiceRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:services,id',
-            'kind' => 'required|in:public,private',
+            'kind' => ['required', Rule::enum(ServiceKindEnum::class)],
             'name' => 'required|array:ar,en',
             'name.ar' => 'required|string',
             'name.en' => 'required|string',

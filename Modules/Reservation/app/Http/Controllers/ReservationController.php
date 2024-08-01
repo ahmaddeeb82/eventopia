@@ -109,4 +109,15 @@ class ReservationController extends Controller
         (new ReservationService(new ReservationRepository))->listTickets());
     }
 
+    public function updatePayment(GetReservationRequest $request) {
+        (new ReservationService(new ReservationRepository))->updatePayement($request->id);
+
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        );
+    }
+
+    
+
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price', 12);
+            $table->decimal('price', 20);
             $table->date('start_date');
             $table->date('end_date');
             $table->float('duration');

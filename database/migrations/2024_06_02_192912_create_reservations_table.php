@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->float('duration')->default(0);
             $table->boolean('payment')->default(false);
-            $table->float('total_price')->default(0);
+            $table->decimal('total_price', 20)->default(0);
             $table->text('notes')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('confirmed_guest_id');

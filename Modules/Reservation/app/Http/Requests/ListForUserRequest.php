@@ -3,6 +3,8 @@
 namespace Modules\Reservation\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Event\Enums\ServiceKindEnum;
 
 class ListForUserRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class ListForUserRequest extends FormRequest
     {
         return [
             'date' => 'required|in:>=,<',
-            'service_kind' => 'required|in:public,private',
+            'service_kind' => ['required', Rule::enum(ServiceKindEnum::class)],
         ];
     }
 

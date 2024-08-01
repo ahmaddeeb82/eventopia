@@ -15,6 +15,7 @@ use Modules\Asset\Http\Requests\AssetPhotosRequest;
 use Modules\Asset\Http\Requests\AssetRateRequest;
 use Modules\Asset\Http\Requests\DeleteAttachedServiceRequest;
 use Modules\Asset\Http\Requests\GetAssetRequest;
+use Modules\Asset\Http\Requests\GetTimeRequest;
 use Modules\Asset\Http\Requests\UpdateHallInformationRequest;
 use Modules\Asset\Http\Requests\UpdateServiceOrgeanizerRequest;
 use Modules\Asset\Transformers\AssetResource;
@@ -138,5 +139,18 @@ class AssetController extends Controller
         (new AssetService(new AssetRepository()))->deleteAsset($request->id);
 
         return $this->sendResponse(200, __('messages.create_asset'));
+    }
+    
+    public function deleteTime(GetTimeRequest $request) {
+        (new AssetService(new AssetRepository()))->deleteAttachedTime($request->id);
+        
+        return $this->sendResponse(200, __('messages.create_asset'));
+    }
+
+    public function getAnalytics() {
+        return $this->sendResponse(200,
+        __('messages.create_asset'),
+        (new AssetService(new AssetRepository))->getAnalytics()
+        );
     }
 }

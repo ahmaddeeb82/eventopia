@@ -9,6 +9,7 @@ use Modules\Reservation\Models\Reservation;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Event\Database\Factories\ServiceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Event\Enums\ServiceKindEnum;
 
 class Service extends Model
 {
@@ -24,6 +25,10 @@ class Service extends Model
     ];
 
     protected $table = 'services';
+
+    protected $casts = [
+        'kind' => ServiceKindEnum::class,
+    ];
 
     public $translatable = ['name'];
 

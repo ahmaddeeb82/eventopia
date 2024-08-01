@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone_number');
             $table->string('photo')->nullable();
-            $table->float('money')->nullable();
+            $table->decimal('money', 15)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

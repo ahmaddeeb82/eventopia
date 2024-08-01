@@ -170,7 +170,7 @@ class ReservationService
     public function eventReservation($reservation_info) {
         try{
             DB::beginTransaction();
-            if(ServiceAsset::where('id', $reservation_info['general_info']['event_id'])->first()->service->kind == 'private') {
+            if(ServiceAsset::where('id', $reservation_info['general_info']['event_id'])->first()->service->kind->value == 'private') {
                 $response_data = $this->addInfoReservation($reservation_info['general_info']);
             } else {
             $reservation = $this->addInfoReservation($reservation_info['general_info'], false);
@@ -276,5 +276,12 @@ class ReservationService
 
     public function listTickets() {
         return PublicEventTicketsResource::collection(PublicEventReservation::where('user_id', auth()->user()->id)->get());
+    }
+
+    public function updatePayement($reservation_id) {
+        $reservation = $this->repository->getInfo($reservation_id);
+        $reservation->update([
+            'payment' => true,
+        ]);
     }
 }

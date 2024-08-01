@@ -3,6 +3,8 @@
 namespace Modules\Asset\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Event\Enums\ServiceKindEnum;
 
 class UpdateHallInformationRequest extends FormRequest
 {
@@ -19,7 +21,7 @@ class UpdateHallInformationRequest extends FormRequest
             'services.existed.*.price' => 'required_with:services.existed.*|numeric',
             'services.existed.*.proportion' => 'sometimes|integer',
             'services.added' => 'sometimes|array',
-            'services.added.*.kind' => 'required_with:services.added.*|in:public,private',
+            'services.added.*.kind' => ['required_with:services.added.*', Rule::enum(ServiceKindEnum::class)],
             'services.added.*.name' => 'required_with:services.added.*|array:ar,en',
             'services.added.*.name.ar' => 'required_with:services.added.*.name|string',
             'services.added.*.name.en' => 'required_with:services.added.*.name|string',

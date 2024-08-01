@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Reservation\Http\Requests;
+namespace Modules\Asset\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListPublicEventRequest extends FormRequest
+class GetTimeRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,7 +12,7 @@ class ListPublicEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'required|integer',
+            'id' => 'required|integer|exists:times,id',
         ];
     }
 

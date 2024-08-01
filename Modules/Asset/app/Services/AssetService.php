@@ -216,4 +216,17 @@ class AssetService {
         $asset->delete();
     }
 
+    public function deleteAttachedTime($id) {
+        Time::where('id', $id)->first()->delete();
+    }
+
+    public function getAnalytics() {
+        return [
+            'hall_owners_count' => $this->repository->getInvestorsCount('HallOwner'),
+            'organizers_count' => $this->repository->getInvestorsCount('Organizer'),
+            'most_reserved' => $this->repository->getMostReserved(),
+            'total_sales' => $this->repository->getTotalSales(),
+        ];
+    }
+
 }

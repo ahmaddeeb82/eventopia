@@ -18,7 +18,7 @@ class FavoriteAssetResource extends JsonResource
             'pivot_id' =>$this->pivot->id,
             "photos" => json_decode($this->photos),
             "rate" => $this->rate,
-            "services" => isset(auth()->user()->assets[0]) && count(auth()->user()->assets[0]->serviceAssets)!=0?GetServiceWithPriceResource::collection($this->servicesWithPrice->unique('id')->all()):[],
+            "services" => GetServiceWithPriceResource::collection($this->serviceAssets),
         ],$this->hall?(new HallResource($this->hall))->toArray($request):[
             'start_time' => $this->times->first()->start_time,
             'end_time' => $this->times()->first()->end_time,

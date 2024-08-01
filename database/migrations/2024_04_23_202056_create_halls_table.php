@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('capacity');
             $table->boolean('dinner');
-            $table->float('dinner_price');
+            $table->decimal('dinner_price', 15);
             $table->boolean('mixed');
-            $table->float('mixed_price');
+            $table->decimal('mixed_price', 15);
             $table->json('name');
             $table->string('address');
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();

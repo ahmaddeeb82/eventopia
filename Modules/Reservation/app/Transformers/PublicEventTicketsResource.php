@@ -19,8 +19,8 @@ class PublicEventTicketsResource extends JsonResource
             'tickets_number' => $this->tickets_number,
             'event_name' => $this->publicEvent->name,
             'event_date' => $this->publicEvent->reservation->start_date,
-            'event_start_time' => $this->publicEvent->reservation->time->start_time,
-            'event_end_time' => $this->publicEvent->reservation->time->end_time,
+            'event_start_time' => $this->publicEvent->reservation->time()->withTrashed()->first()->start_time,
+            'event_end_time' => $this->publicEvent->reservation->time()->withTrashed()->first()->end_time,
         ];
     }
 }

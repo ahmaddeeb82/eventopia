@@ -13,14 +13,14 @@ class GetServiceWithPriceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $serviceAsset = ServiceAsset::where('asset_id', $this->pivot->asset_id)->where('service_id', $this->pivot->service_id)->first();
+        //$serviceAsset = ServiceAsset::where('asset_id', $this->pivot->asset_id)->where('service_id', $this->pivot->service_id)->first();
         return [
-            'id' => $serviceAsset->id,
-            'name' => $this->name,
-            'kind' => $this->kind,
-            'price' => $this->pivot->price,
-            'discounted_price' => $serviceAsset->discounts()->first()?$serviceAsset->discounts()->first()->disconted_price:null,
-            'proportion' => $serviceAsset->proportion?$serviceAsset->proportion->proportion:null,
+            'id' => $this->id,
+            'name' => $this->service->name,
+            'kind' => $this->service->kind,
+            'price' => $this->price,
+            'discounted_price' => $this->discounts()->first()?$this->discounts()->first()->disconted_price:null,
+            'proportion' => $this->proportion?$this->proportion->proportion:null,
         ];
     }
 }

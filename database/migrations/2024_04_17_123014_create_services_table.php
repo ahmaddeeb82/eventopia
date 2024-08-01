@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->enum('kind',['private','public']);
+            $table->string('kind');
             $table->json('name');
             $table->boolean('active')->default(false);
             $table->timestamps();

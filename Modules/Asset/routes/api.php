@@ -33,4 +33,6 @@ Route::middleware('localizeApi', 'auth:sanctum')->controller(AssetController::cl
     Route::delete('delete-favorite' , 'deleteFavorite');
     Route::delete('delete-service' , 'deleteService');
     Route::delete('delete' , 'deleteAsset');
+    Route::delete('delete-time' , 'deleteTime');
+    Route::get('get-analytics' , 'getAnalytics');
 });

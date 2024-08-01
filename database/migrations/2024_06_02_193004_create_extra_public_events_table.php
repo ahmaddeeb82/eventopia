@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('name');
             $table->string('address');
-            $table->float('ticket_price');
+            $table->decimal('ticket_price', 15);
             $table->integer('reserved_tickets')->default(0);
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
