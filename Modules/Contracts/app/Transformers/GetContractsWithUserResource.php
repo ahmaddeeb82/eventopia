@@ -17,6 +17,7 @@ class GetContractsWithUserResource extends JsonResource
             'owner_name' => $this->user->first_name . ' ' . $this->user->last_name,
             'owner_address' => $this->user->address,
             'owner_phone' => $this->user->phone_number,
+            'owner_role' => $this->user->getRoleNames()[0],
             'price' => $this->price,
             'duration' => $this->duration,
             'start_date' => $this->start_date,
