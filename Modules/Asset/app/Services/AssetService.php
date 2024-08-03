@@ -2,8 +2,10 @@
 
 namespace Modules\Asset\app\Services;
 
+use App\Traits\ApiResponse;
 use App\Traits\ImageTrait;
 use Exception;
+use Hamcrest\Type\IsNumeric;
 use Illuminate\Http\Request;
 
 use Modules\Asset\app\Repositories\HallRepository;
@@ -23,7 +25,7 @@ use Modules\Event\Transformers\GetServiceWithPriceResource;
 use Modules\Favorite\Models\Favorite;
 
 class AssetService {
-    use ImageTrait;
+    use ImageTrait, ApiResponse;
 
     public $repository;
 
@@ -230,7 +232,23 @@ class AssetService {
     }
 
     public function searchForUser($identifier, $value) {
-        return $identifier != 'capacity'? TransformersAssetResource::collection($this->repository->searchLike($identifier,$value)): TransformersAssetResource::collection($this->repository->searchBetween($identifier,$value));
+        try{
+            if($identifier != 'capacity') {
+                $assets = TransformersAssetResource::collection($this->repository->searchLike($identifier,$value));
+            } else { 
+                if(!is_numeric($value)) {
+                    throw new \Exception();
+                } else {
+                    $assets = TransformersAssetResource::collection($this->repository->searchBetween($identifier,$value));                }
+            }
+            return $this->sendResponse(200,
+        __('messages.add_reservation'),
+        $assets);
+        } catch (\Exception $e) {
+            return $this->sendResponse(200,
+        __('messages.search_error'),
+        );
+        }
     }
 
 }

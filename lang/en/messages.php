@@ -31,5 +31,6 @@ return [
     'no_enough_money' => 'No Enough Money In Your Cart',
     'time_fail' => "Reservation Time Isn't Available",
     'time_fail' => "No Enough Places Left To Reserve",
+    'search_error' => "Something went wrong, Make sure you entered valid data",
 
 ];
