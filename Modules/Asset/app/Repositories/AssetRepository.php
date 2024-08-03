@@ -119,7 +119,7 @@ class AssetRepository implements AssetRepositoryInterface
         }])
             ->orderBy('reservations_count', 'desc')
             ->first();
-        return $most_reserved?->hall?$most_reserved->hall->name:$most_reserved->user->first_name . ' ' . $most_reserved->user->last_name;
+        return $most_reserved?->hall?$most_reserved->hall->name:$most_reserved?->user->first_name . ' ' . $most_reserved?->user->last_name;
     }
 
     public function getTotalSales() {
