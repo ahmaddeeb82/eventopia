@@ -54,6 +54,13 @@ class UserRepository implements UserRepositoryInterface
     {
 
         $query = User::query();
+        $query->select('users.id','users.first_name', 'users.last_name', 'roles.name as role', DB::raw('SUM(reservations.total_price) as total_reservation_price'))
+        ->Join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        ->Join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+      ->join('assets', 'users.id', '=', 'assets.user_id')
+      ->join('service_asset', 'assets.id', '=', 'service_asset.asset_id')
+      ->join('reservations', 'service_asset.id', '=', 'reservations.event_id')
+      ->groupBy('users.id','users.first_name','users.last_name', 'roles.name');
 
     foreach ($filters as $filter) {
         switch ($filter['fieldName']) {
@@ -73,14 +80,7 @@ class UserRepository implements UserRepositoryInterface
 
             case 'sales':
                 if($filter['value1'] != "") {
-                $query->select('users.id','users.first_name', 'users.last_name', 'roles.name as role', DB::raw('SUM(reservations.total_price) as total_reservation_price'))
-                        ->Join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                        ->Join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-                      ->join('assets', 'users.id', '=', 'assets.user_id')
-                      ->join('service_asset', 'assets.id', '=', 'service_asset.asset_id')
-                      ->join('reservations', 'service_asset.id', '=', 'reservations.event_id')
-                      ->groupBy('users.id','users.first_name','users.last_name', 'roles.name')
-                      ->havingRaw($this->getHavingCondition($filter));
+                $query->havingRaw($this->getHavingCondition($filter));
                     }
                 break;
 
