@@ -155,9 +155,6 @@ class AssetController extends Controller
     }
 
     public function searchForUser(Request $request) {
-        return $this->sendResponse(200,
-        __('messages.create_asset'),
-        (new AssetService(new AssetRepository))->searchForUser($request->identifier, $request->value)
-        );
+        return (new AssetService(new AssetRepository))->searchForUser($request->identifier, $request->value);
     }
 }

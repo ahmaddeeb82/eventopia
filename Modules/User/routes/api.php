@@ -33,6 +33,8 @@ Route::controller(UserController::class)
     Route::get('logout','logout')->middleware(['auth:sanctum']);
     Route::post('email-verification','emaiVerification')->middleware(['auth:sanctum']);
     Route::post('add-cart', 'addToCart')->middleware(['auth:sanctum']);
+    Route::get('list-sales', 'listUsersWithSales');
+    Route::post('search-dash', 'searchForDashboard');
     
 });
 

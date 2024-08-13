@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Reservation\Models\PublicEventReservation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Event\Models\ServiceAsset;
 use Modules\Reservation\Models\PublicEvent;
 
 class User extends Authenticatable
@@ -98,6 +99,11 @@ class User extends Authenticatable
 
     public function reservations() {
         return $this->hasMany(Reservation::class,'confirmed_guest_id','id');
+    }
+
+    public function serviceAssets()
+    {
+        return $this->hasManyThrough(ServiceAsset::class, Asset::class);
     }
 
 

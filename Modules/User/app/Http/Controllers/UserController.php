@@ -127,6 +127,20 @@ class UserController extends Controller
         );
     }
 
+    public function listUsersWithSales() {
+       // ((new UserService(new UserRepository()))->editToCart(auth()->user(),$request->money, '+'));
+
+        return $this->sendResponse(
+            200,
+            __('auth.create_user'),
+            (new UserService(new UserRepository()))->listInvestorsWithSales(),
+        );
+    }
+
+    public function searchForDashboard(Request $request) {
+        return (new UserRepository)->filterForReservation($request->all());
+    }
+
     
 
 }

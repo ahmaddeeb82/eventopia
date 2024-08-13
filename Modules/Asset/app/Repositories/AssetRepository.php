@@ -140,8 +140,8 @@ class AssetRepository implements AssetRepositoryInterface
     }
 
     public function searchBetween($identifier, $value) {
-        return Asset::whereHas('hall', function ($query) use ($identifier,$value) {
-            return $query->whereBetween($identifier, [$value - 25, $value + 25]);
-         })->get();
+            return Asset::whereHas('hall', function ($query) use ($identifier,$value) {
+                return $query->whereBetween($identifier, [$value - 25, $value + 25]);
+             })->get();
     }
 }

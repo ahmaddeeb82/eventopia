@@ -15,6 +15,7 @@ use Modules\User\Notifications\ResetPasswordNotification;
 use Modules\User\Transformers\GetInvestorsResource;
 use Modules\User\Transformers\GetInvestorWithContractResource;
 use Modules\User\Transformers\InvestorResource;
+use Modules\User\Transformers\ListInvestorsWithSalesResource;
 
 class UserService {
 
@@ -170,6 +171,10 @@ class UserService {
             default:
                 break;    
         }
+    }
+
+    public function listInvestorsWithSales() {
+        return ListInvestorsWithSalesResource::collection($this->repository->listWithSales());
     }
 
 }

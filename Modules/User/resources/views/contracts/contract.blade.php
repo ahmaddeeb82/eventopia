@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: DejaVu Sans;
-            background-color: #FFFFFF;
+            background-color: #f4f4f9;
             direction: rtl;
             margin: 0;
             padding: 0;
@@ -19,12 +19,9 @@
             background-color: #ffffff;
             width: 80%;
             max-width: 800px;
-            padding-left: 40px;
-            padding-right: 80px;
-            padding-top: 200px;
-            padding-bottom: 40px;
-            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px; */
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         .header {
             text-align: center;
@@ -71,7 +68,7 @@
     <div class="container">
         <div class="header">
             <h1>ايفينتوبيا</h1>
-            <h2>For events management</h2>
+            <h2>For gd management</h2>
         </div>
 
         <div class="section-title">Client Information</div>
@@ -84,6 +81,10 @@
                 <td>Role:</td>
                 <td>{{ $user->getRoleNames()[0] }}</td>
             </tr>
+            {{-- <tr>
+                <td>Lounge Name:</td>
+                <td>{{ $loungeName }}</td>
+            </tr> --}}
             <tr>
                 <td>Phone Number:</td>
                 <td>{{ $user->phone_number }}</td>
@@ -108,6 +109,10 @@
                 <td>Agreed Value:</td>
                 <td>{{ $user->contracts->last()->price }}</td>
             </tr>
+            {{-- <tr>
+                <td>Client Signature:</td>
+                <td>{{ $clientSignature }}</td>
+            </tr> --}}
         </table>
     </div>
 </body>
