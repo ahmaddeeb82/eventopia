@@ -97,23 +97,33 @@ class UserRepository implements UserRepositoryInterface
 
     protected function getHavingCondition(array $filter)
 {
-    $condition = '';
+    // Default to a no-op if the operation is not recognized
+    $condition = '1 = 1';
 
-    switch ($filter['operation']) {
-        case '>':
-        case '<':
-        case '=':
-        case '!=':
-            $condition = "total_reservation_price {$filter['operation']} {$filter['value1']}";
-            break;
+    if (isset($filter['value1'])) {
+        $value1 = is_numeric($filter['value1']) ? $filter['value1'] : "'{$filter['value1']}'";
+        $value2 = isset($filter['value2']) ? (is_numeric($filter['value2']) ? $filter['value2'] : "'{$filter['value2']}'") : null;
 
-        case '<>':
-            $condition = "total_reservation_price BETWEEN {$filter['value1']} AND {$filter['value2']}";
-            break;
+        switch ($filter['operation']) {
+            case '>':
+            case '<':
+            case '=':
+            case '!=':
+                $condition = "total_reservation_price {$filter['operation']} {$value1}";
+                break;
 
-        case '><':
-            $condition = "total_reservation_price NOT BETWEEN {$filter['value1']} AND {$filter['value2']}";
-            break;
+            case '<>':
+                if ($value2 !== null) {
+                    $condition = "total_reservation_price BETWEEN {$value1} AND {$value2}";
+                }
+                break;
+
+            case '><':
+                if ($value2 !== null) {
+                    $condition = "total_reservation_price NOT BETWEEN {$value1} AND {$value2}";
+                }
+                break;
+        }
     }
 
     return $condition;
