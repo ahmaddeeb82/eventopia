@@ -52,7 +52,7 @@ class ProfileController extends Controller
         );
     }
 
-    public function viewContract() {
+    public function viewContract(Request $request) {
         $user = User::where('id',2)->first();
         $html = view('contracts.contract', ['user' => $user])->render();
         $mpdf = new Mpdf(['default_font' => 'sans-serif']);

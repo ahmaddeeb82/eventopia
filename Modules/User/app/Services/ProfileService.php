@@ -34,4 +34,5 @@ class ProfileService {
     public function deletePhoto() {
         return new ProfileResource($this->repository->update(auth()->user(),['photo' => null]));
     }
+
 }

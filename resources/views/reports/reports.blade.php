@@ -77,8 +77,8 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->first_name . ' ' . $user->last_name }}</td>
-                    <td>{{ $user->getRoleNames()[0]=='Organizer'?$user->getRoleNames()[0]:'Hall Owner' }}</td>
-                    <td>{{ $user->contracts->last()->price }}</td>
+                    <td>{{ $user->role }}</td>
+                    <td>{{ $user->total_reservation_price }}</td>
                 </tr>
                 @endforeach
             </tbody>

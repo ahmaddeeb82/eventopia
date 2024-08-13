@@ -35,6 +35,8 @@ Route::controller(UserController::class)
     Route::post('add-cart', 'addToCart')->middleware(['auth:sanctum']);
     Route::get('list-sales', 'listUsersWithSales');
     Route::post('search-dash', 'searchForDashboard');
+    Route::get('contract-pdf', 'viewContract');
+    Route::get('report-pdf', 'viewReport');
     
 });
 
@@ -47,5 +49,4 @@ Route::controller(ProfileController::class)
     Route::post('set-photo', 'setPhoto');
     Route::delete('delete-photo', 'deletePhoto');
 });
-Route::get('profile/viewC', [ProfileController::class,'viewContract']);
-Route::get('profile/viewR', [ProfileController::class,'viewReport']);
+

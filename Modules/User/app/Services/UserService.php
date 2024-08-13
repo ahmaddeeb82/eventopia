@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Modules\Contracts\app\Repositories\ContractRepository;
+use Modules\User\Models\User;
 use Modules\User\Notifications\EmailVerificationNotification;
 use Modules\User\Notifications\ResetPasswordNotification;
 use Modules\User\Transformers\GetInvestorsResource;
 use Modules\User\Transformers\GetInvestorWithContractResource;
 use Modules\User\Transformers\InvestorResource;
 use Modules\User\Transformers\ListInvestorsWithSalesResource;
+use Mpdf\Mpdf;
 
 class UserService {
 
@@ -175,6 +177,22 @@ class UserService {
 
     public function listInvestorsWithSales() {
         return ListInvestorsWithSalesResource::collection($this->repository->listWithSales());
+    }
+
+    public function viewContract($id) {
+        $user = $this->repository->get($id,'id');
+        $html = view('contracts.contract', ['user' => $user])->render();
+        $mpdf = new Mpdf(['default_font' => 'sans-serif']);
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('document.pdf', 'D');
+    }
+
+    public function viewReport() {
+        $users = $this->repository->listWithSales();
+        $html = view('reports.reports', ['users' => $users])->render();
+        $mpdf = new Mpdf(['default_font' => 'sans-serif']);
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('document.pdf', 'D');
     }
 
 }

@@ -62,6 +62,8 @@ class UserRepository implements UserRepositoryInterface
       ->join('reservations', 'service_asset.id', '=', 'reservations.event_id')
       ->groupBy('users.id','users.first_name','users.last_name', 'roles.name');
 
+      //dd($query->get());
+
     foreach ($filters as $filter) {
         switch ($filter['fieldName']) {
             case 'name':

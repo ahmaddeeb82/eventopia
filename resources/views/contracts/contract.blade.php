@@ -70,7 +70,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>ايفينتوبيا</h1>
+            <h1>Eventopia</h1>
             <h2>For events management</h2>
         </div>
 

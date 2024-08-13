@@ -145,6 +145,12 @@ class UserController extends Controller
         );
     }
 
-    
+    public function viewContract(Request $request) {
+        (new UserService(new UserRepository()))->viewContract($request->id);
+    }
+
+    public function viewReport() {
+        (new UserService(new UserRepository()))->viewReport();
+    }
 
 }
