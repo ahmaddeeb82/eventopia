@@ -68,7 +68,7 @@ class UserRepository implements UserRepositoryInterface
                 break;
 
             case 'sales':
-                $query->select('users.id','users.first_name', 'users.last_name', 'roles.name as role', DB::raw('SUM(reservations.total_price) as total_sales'))
+                $query->select('users.id','users.first_name', 'users.last_name', 'roles.name as role', DB::raw('SUM(reservations.total_price) as total_reservation_price'))
                         ->Join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
                         ->Join('roles', 'model_has_roles.role_id', '=', 'roles.id')
                       ->join('assets', 'users.id', '=', 'assets.user_id')
@@ -104,15 +104,15 @@ class UserRepository implements UserRepositoryInterface
         case '<':
         case '=':
         case '!=':
-            $condition = "total_sales {$filter['operation']} {$filter['value1']}";
+            $condition = "total_reservation_price {$filter['operation']} {$filter['value1']}";
             break;
 
         case '<>':
-            $condition = "total_sales BETWEEN {$filter['value1']} AND {$filter['value2']}";
+            $condition = "total_reservation_price BETWEEN {$filter['value1']} AND {$filter['value2']}";
             break;
 
         case '><':
-            $condition = "total_sales NOT BETWEEN {$filter['value1']} AND {$filter['value2']}";
+            $condition = "total_reservation_price NOT BETWEEN {$filter['value1']} AND {$filter['value2']}";
             break;
     }
 

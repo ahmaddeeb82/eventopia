@@ -21,6 +21,7 @@ use Modules\User\Http\Requests\GetUserWithId;
 use Modules\User\Http\Requests\ResetPasswordRequest;
 use Modules\User\Http\Requests\VerificationRequest;
 use Modules\User\Models\User;
+use Modules\User\Transformers\ListInvestorsWithSalesResource;
 
 class UserController extends Controller
 {
@@ -128,7 +129,6 @@ class UserController extends Controller
     }
 
     public function listUsersWithSales() {
-       // ((new UserService(new UserRepository()))->editToCart(auth()->user(),$request->money, '+'));
 
         return $this->sendResponse(
             200,
@@ -138,7 +138,11 @@ class UserController extends Controller
     }
 
     public function searchForDashboard(Request $request) {
-        return (new UserRepository)->filterForReservation($request->all());
+        return $this->sendResponse(
+            200,
+            __('auth.create_user'),
+            ListInvestorsWithSalesResource::collection((new UserRepository)->filterForReservation($request->all())),
+        );
     }
 
     
