@@ -58,16 +58,21 @@ class UserRepository implements UserRepositoryInterface
     foreach ($filters as $filter) {
         switch ($filter['fieldName']) {
             case 'name':
+                if($filter['value1'] != "") {
                 $query->where('first_name', 'LIKE', '%' . $filter['value1'] . '%')
                 ->orWhere('last_name', 'LIKE', '%' . $filter['value1'] . '%');
+                }
                 break;
             case 'role':
+                if($filter['value1'] != "") {
                 $query->whereHas('roles', function ($query) use ($filter) {
                     $query->where('name', $filter['value1']);
                 });
+            }
                 break;
 
             case 'sales':
+                if($filter['value1'] != "") {
                 $query->select('users.id','users.first_name', 'users.last_name', 'roles.name as role', DB::raw('SUM(reservations.total_price) as total_reservation_price'))
                         ->Join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
                         ->Join('roles', 'model_has_roles.role_id', '=', 'roles.id')
@@ -76,17 +81,22 @@ class UserRepository implements UserRepositoryInterface
                       ->join('reservations', 'service_asset.id', '=', 'reservations.event_id')
                       ->groupBy('users.id','users.first_name','users.last_name', 'roles.name')
                       ->havingRaw($this->getHavingCondition($filter));
+                    }
                 break;
 
             case 'start_date':
+                if($filter['value1'] != "") {
                 $query->whereHas('contracts', function ($query) use ($filter) {
                     $query->where('start_date', $filter['operation'], $filter['value1']);
                 });
+            }
                 break;
             case 'end_date':
+                if($filter['value1'] != "") {
                 $query->whereHas('contracts', function ($query) use ($filter) {
                     $query->where('end_date', $filter['operation'], $filter['value1']);
                 });
+            }
                 break;
         }
     }
