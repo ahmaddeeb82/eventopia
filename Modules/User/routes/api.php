@@ -39,6 +39,7 @@ Route::controller(UserController::class)
     Route::get('report-pdf', 'viewReport');
     
 });
+//comment
 
 Route::controller(ProfileController::class)
 ->middleware('auth:sanctum')
