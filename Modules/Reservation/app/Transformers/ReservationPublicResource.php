@@ -21,6 +21,7 @@ class ReservationPublicResource extends JsonResource
             'name' => $this -> name,
             'address' => $this -> address,
             'ticket_price' => $this -> ticket_price,
+            "is_favorite" => auth()->user()->favoritePublicEvents()->where('favoritable_id', $this->id)->first() != null?true:false,
         ];
     }
 }

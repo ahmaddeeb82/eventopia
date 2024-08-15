@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
 use Modules\Event\Models\ServiceAsset;
+use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\Category;
 use Modules\Reservation\Models\PublicEvent;
@@ -283,5 +284,35 @@ class ReservationService
         $reservation->update([
             'payment' => true,
         ]);
+    }
+
+    public function updateTicketPayment($ticket_id) {
+        $ticket = PublicEventReservation::where('id', $ticket_id)->first();
+        $ticket->update([
+            'payment' => true,
+        ]);
+
+    }
+
+    public function addPublicEventToFavorite($id) {
+        $reservation = $this->repository->getInfo($id);
+        $reservation->publicEvent->usersFavorite()->attach([auth()->user()->id]);
+    }
+
+    public function getPublicEventFavorites()
+    {
+        $reservations = auth()->user()->favoritePublicEvents->map(function ($item) {
+            return $item->reservation;
+        });
+        return ReservationPrivateResource::collection($reservations);
+    }
+
+    public function deletePublicEventFavorite($id)
+    {
+        Favorite::where('favoritable_id', $this->repository->getInfo($id)->publicEvent->id)->where('favoritable_type', 'Modules\Reservation\Models\PublicEvent')->where('user_id', auth()->user()->id)->forceDelete();
+    }
+
+    public function listTicketsForPublicEvent($id) {
+        return PublicEventTicketsResource::collection($this->repository->getInfo($id)->publicEvent->publicEventReservations);
     }
 }

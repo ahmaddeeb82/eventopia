@@ -86,7 +86,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function listPublicEvents($category_id)
     {
         if($category_id == 0) {
-            return Reservation::where('start_date', '>', Carbon::today())->get();
+            return Reservation::whereHas('publicEvent')->where('start_date', '>', Carbon::today())->get();
         }
         else {
             return Reservation::whereHas('publicEvent.category', function ($query) use ($category_id) {

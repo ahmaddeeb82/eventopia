@@ -118,6 +118,42 @@ class ReservationController extends Controller
         );
     }
 
-    
+    public function updateTicketPayment(GetTicketRequest $request) {
+        (new ReservationService(new ReservationRepository))->updateTicketPayment($request->id);
+
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        );
+    }
+
+    public function addPublicEventToFavorite(GetReservationRequest $request) {
+        (new ReservationService(new ReservationRepository))->addPublicEventToFavorite($request->id);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        );
+    }
+
+    public function getPublicEventFavorites() {
+        
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new ReservationService(new ReservationRepository))->getPublicEventFavorites()
+        );
+    }
+
+    public function deletePublicEventFavorite(GetReservationRequest $request) {
+        (new ReservationService(new ReservationRepository))->deletePublicEventFavorite($request->id);
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        );
+    }
+
+    public function listTicketsForPublicEvent(GetReservationRequest $request) {
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new ReservationService(new ReservationRepository))->listTicketsForPublicEvent($request->id)
+        );
+    }
 
 }

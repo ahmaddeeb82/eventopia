@@ -33,4 +33,9 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
     Route::get('list-tickets', 'listTickets');
     Route::post('reserve-tickets', 'reserveTicket');
     Route::get('update-payment', 'updatePayment');
+    Route::get('update-ticket-payment', 'updateTicketPayment');
+    Route::get('list-tickets-for-event', 'listTicketsForPublicEvent');
+    Route::get('add-favorite', 'addPublicEventToFavorite');
+    Route::get('get-favorites', 'getPublicEventFavorites');
+    Route::delete('delete-favorite', 'deletePublicEventFavorite');
 });

@@ -14,6 +14,7 @@ class PublicEventTicketsResource extends JsonResource
     {
         return [
             'ticket_id' => $this->id,
+            "user_name" => $this->user->first_name . ' ' . $this->user->last_name,
             'payment' => $this->payment,
             'tickets_price' => $this->tickets_price,
             'tickets_number' => $this->tickets_number,

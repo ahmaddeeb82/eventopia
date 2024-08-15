@@ -23,6 +23,7 @@ use Modules\Event\app\Services\ServiceService;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Event\Transformers\GetServiceWithPriceResource;
 use Modules\Favorite\Models\Favorite;
+use Modules\Reservation\Transformers\ReservationPrivateResource;
 
 class AssetService
 {
@@ -165,7 +166,7 @@ class AssetService
 
     public function deleteFavorite($id)
     {
-        Favorite::where('favoritable_id', $id)->where('user_id', auth()->user()->id)->delete();
+        Favorite::where('favoritable_id', $id)->where('favoritable_type', 'Modules\Asset\Models\Asset')->where('user_id', auth()->user()->id)->delete();
     }
 
     public function listForInvestor()
@@ -282,6 +283,20 @@ class AssetService
                 200,
                 __('messages.search_error'),
             );
+        }
+    }
+
+    public function searchForInvestor($identifier, $value) {
+        switch($identifier) {
+            case 'assets':
+                if(auth()->user()->hasRole('HallOwner')) {
+                    return TransformersAssetResource::collection($this->repository->searchForAssetHallOwner($value));
+                } else {
+                    return GetServiceWithPriceResource::collection($this->repository->searchforAssetOrganizer($value));
+                    
+                }
+            case 'reservations':
+                return ReservationPrivateResource::collection($this->repository->searchForReservations($value)[0]);
         }
     }
 }

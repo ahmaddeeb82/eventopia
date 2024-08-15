@@ -144,4 +144,30 @@ class AssetRepository implements AssetRepositoryInterface
                 return $query->whereBetween($identifier, [$value - 25, $value + 25]);
              })->get();
     }
+
+    public function searchforAssetOrganizer($value) {
+        return auth()->user()->assets()->first()->serviceAssets()->whereHas('service', function ($query) use ($value) {
+            return $query->where('name', 'LIKE', '%'.$value.'%');
+        })->get();
+    }
+
+    public function searchForAssetHallOwner($value) {
+        return auth()->user()->assets()->whereHas('hall', function ($query) use ($value) {
+            return $query->where('name', 'LIKE', '%'.$value.'%');
+        })
+        ->get();
+    }
+
+    public function searchForReservations($value) {
+        $reservations = auth()->user()->assets->map(function ($asset) use ($value){
+            return $asset->serviceAssets()
+            ->with(['reservations' => function ($query) use ($value) {
+                $query->where('start_date','>', $value);
+            }])
+            ->get()
+            ->pluck('reservations')
+            ->flatten();
+        });
+        return $reservations;
+    }
 }
