@@ -287,10 +287,21 @@ class ReservationService
     }
 
     public function updateTicketPayment($ticket_id) {
+        try{
         $ticket = PublicEventReservation::where('id', $ticket_id)->first();
-        $ticket->update([
-            'payment' => true,
-        ]);
+        $investor_income = $ticket->tickets_price * $ticket->publicEvent->reservation->serviceAsset->proportion->proportion / 100;
+        $this->processPayment($ticket->publicEvent,'electro', $investor_income, $ticket->publicEvent->reservation->serviceAsset->asset->user, auth()->user());
+        return $this->sendResponse(
+            200,
+            __('messages.add_reservation'),
+        );
+        } catch (\Exception $e) {
+
+            return $this->sendResponse(
+                200,
+                $e->getMessage(),
+            );
+        }
 
     }
 

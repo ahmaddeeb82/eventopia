@@ -16,6 +16,7 @@ use Modules\Reservation\Http\Requests\DateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPrivateReservationRequest;
 use Modules\Reservation\Http\Requests\GetPublicReservationRequest;
 use Modules\Reservation\Http\Requests\GetReservationRequest;
+use Modules\Reservation\Http\Requests\GetTicketRequest;
 use Modules\Reservation\Http\Requests\GetTimesRequest;
 use Modules\Reservation\Http\Requests\ListForInvestorRequest;
 use Modules\Reservation\Http\Requests\ListForUserRequest;
@@ -119,12 +120,7 @@ class ReservationController extends Controller
     }
 
     public function updateTicketPayment(GetTicketRequest $request) {
-        (new ReservationService(new ReservationRepository))->updateTicketPayment($request->id);
-
-        return $this->sendResponse(
-            200,
-            __('messages.add_reservation'),
-        );
+        return (new ReservationService(new ReservationRepository))->updateTicketPayment($request->id);
     }
 
     public function addPublicEventToFavorite(GetReservationRequest $request) {
