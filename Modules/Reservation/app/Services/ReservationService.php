@@ -291,6 +291,9 @@ class ReservationService
         $ticket = PublicEventReservation::where('id', $ticket_id)->first();
         $investor_income = $ticket->tickets_price * $ticket->publicEvent->reservation->serviceAsset->proportion->proportion / 100;
         $this->processPayment($ticket->publicEvent,'electro', $investor_income, $ticket->publicEvent->reservation->serviceAsset->asset->user, auth()->user());
+        $ticket->update([
+            'payment' => true,
+        ]);
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
