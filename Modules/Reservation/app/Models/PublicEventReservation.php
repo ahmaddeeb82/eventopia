@@ -4,6 +4,7 @@ namespace Modules\Reservation\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Favorite\Interfaces\Favoritable;
 use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Database\Factories\PublicEventReservationFactory;
@@ -11,7 +12,7 @@ use Modules\User\Models\User;
 
 class PublicEventReservation extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +35,4 @@ class PublicEventReservation extends Model
         return $this->belongsTo(User::class, 'user_id','id');
     }
 
-    // public function favorites() {
-    //     return $this->morphMany(Favorite::class, 'favoritable');
-    // }
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\Event\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Modules\Asset\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -13,7 +14,7 @@ use Modules\Event\Enums\ServiceKindEnum;
 
 class Service extends Model
 {
-    use HasFactory, HasTranslations, SoftDeletes;
+    use HasFactory, HasTranslations, SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +32,10 @@ class Service extends Model
     ];
 
     public $translatable = ['name'];
+
+    protected $cascadeDeletes = ['serviceAssets','reservations'];
+
+    protected $dates = ['deleted_at'];
 
     public function assets() {
         return $this->belongsToMany(Asset::class, 'service_asset', 'service_id', 'asset_id');

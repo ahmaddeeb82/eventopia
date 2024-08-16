@@ -2,20 +2,18 @@
 
 namespace Modules\Asset\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Asset\Database\Factories\AssetFactory;
 use Modules\Event\Models\Service;
 use Modules\Event\Models\ServiceAsset;
-use Modules\Favorite\Interfaces\Favoritable;
-use Modules\Favorite\Models\Favorite;
 use Modules\Reservation\Models\Reservation;
 use Modules\User\Models\User;
 
 class Asset extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +26,10 @@ class Asset extends Model
     ];
 
     protected $table = 'assets';
+
+    protected $cascadeDeletes = ['serviceAssets', 'usersFavorite', 'hall', 'reservations', 'times'];
+
+    protected $dates = ['deleted_at'];
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');

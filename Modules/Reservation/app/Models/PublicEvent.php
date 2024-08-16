@@ -2,15 +2,17 @@
 
 namespace Modules\Reservation\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Reservation\Database\Factories\PublicEventFactory;
 use Modules\User\Models\User;
 use Spatie\Translatable\HasTranslations;
 
 class PublicEvent extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -30,6 +32,10 @@ class PublicEvent extends Model
     protected $table = 'extra_public_events';
 
     public $translatable = ['category'];
+
+    protected $cascadeDeletes = ['publicEventReservations', 'usersFavorite'];
+
+    protected $dates = ['deleted_at'];
 
     public function reservation() {
         return $this->belongsTo(Reservation::class, 'reservation_id','id');

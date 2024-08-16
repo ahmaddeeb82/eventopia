@@ -2,6 +2,7 @@
 
 namespace Modules\Event\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Modules\Reservation\Models\Reservation;
 
 class ServiceAsset extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,10 @@ class ServiceAsset extends Model
     ];
 
     protected $table = 'service_asset';
+
+    protected $cascadeDeletes = ['reservations', 'proportion', 'discounts'];
+
+    protected $dates = ['deleted_at'];
 
     public function proportion() {
         return $this->hasOne(PublicEventProportion::class,'event_id','id');

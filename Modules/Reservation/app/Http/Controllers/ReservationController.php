@@ -152,4 +152,18 @@ class ReservationController extends Controller
         );
     }
 
-}
+    public function getCategoriesForAdmin() {
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        (new ReservationService(new ReservationRepository))->getCategoriesForAdmin()
+        );
+    } 
+
+    public function AcceptCategory(Request $request) {
+        (new ReservationService(new ReservationRepository))->AcceptCategory($request->all());
+        return $this->sendResponse(200,
+        __('messages.rate'),
+        );
+    }
+    }
+

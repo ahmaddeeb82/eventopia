@@ -15,7 +15,7 @@ class ReservationPublicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'category' => $this -> category -> name,
+            'category' => $this -> category()->withTrashed()->first() -> name,
             'description' => $this -> description,
             'photo' => $this -> photo,
             'name' => $this -> name,

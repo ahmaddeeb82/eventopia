@@ -2,6 +2,7 @@
 
 namespace Modules\Reservation\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Modules\User\Models\User;
 use Modules\Asset\Models\Asset;
 use Modules\Event\Models\Service;
@@ -14,7 +15,7 @@ use Modules\Reservation\Database\Factories\ReservationFactory;
 
 class Reservation extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +37,10 @@ class Reservation extends Model
     ];
 
     protected $table = 'reservations';
+
+    protected $cascadeDeletes = ['publicEvent', 'publicEventReservations'];
+
+    protected $dates = ['deleted_at'];
 
     public function user() {
        return $this->belongsTo(User::class,'confirmed_guest_id');

@@ -37,5 +37,7 @@ Route::middleware('localizeApi', 'auth:sanctum') -> controller(ReservationContro
     Route::get('list-tickets-for-event', 'listTicketsForPublicEvent');
     Route::get('add-favorite', 'addPublicEventToFavorite');
     Route::get('get-favorites', 'getPublicEventFavorites');
+    Route::get('get-categories-dash', 'getCategoriesForAdmin');
+    Route::get('accept-category', 'AcceptCategory');
     Route::delete('delete-favorite', 'deletePublicEventFavorite');
 });

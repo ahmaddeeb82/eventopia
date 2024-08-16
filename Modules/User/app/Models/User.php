@@ -3,6 +3,8 @@
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Modules\Chat\Models\Chat;
 use Modules\Asset\Models\Asset;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,7 +24,7 @@ use Modules\Reservation\Models\PublicEvent;
 class User extends Authenticatable
 {
 
-    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -61,6 +63,10 @@ class User extends Authenticatable
     ];
 
     protected $table = 'users';
+
+    protected $cascadeDeletes = ['contracts', 'notifications', 'assets', 'publicEventReservations', 'favoriteAssets', 'favoritePublicEvents', 'reservations', 'serviceAssets'];
+
+    protected $dates = ['deleted_at'];
 
     public function contracts() {
         return $this->hasMany(Contract::class, 'user_id', 'id');
