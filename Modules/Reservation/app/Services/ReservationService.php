@@ -7,17 +7,20 @@ use App\Traits\DateFormatter;
 use App\Traits\ImageTrait;
 use App\Traits\UpdateTrait;
 use DateTime;
+use Google\Service\MyBusinessBusinessInformation\Resource\Categories;
 use Illuminate\Support\Facades\DB;
 use Modules\Asset\app\Repositories\AssetRepository;
 use Modules\Asset\app\Services\AssetService;
 use Modules\Event\Models\ServiceAsset;
 use Modules\Favorite\Models\Favorite;
+use Modules\Notification\Services\NotificationService;
 use Modules\Reservation\app\Repositories\ExtraPublicEventsRepository;
 use Modules\Reservation\Models\Category;
 use Modules\Reservation\Models\PublicEvent;
 use Modules\Reservation\Models\PublicEventReservation;
 use Modules\Reservation\Models\Reservation;
 use Modules\Reservation\Transformers\CategoryResource;
+use Modules\Reservation\Transformers\GetCategoriesForDashboard;
 use Modules\Reservation\Transformers\GetTimesResource;
 use Modules\Reservation\Transformers\PublicEventTicketsResource;
 use Modules\Reservation\Transformers\ReservationPrivateResource;
@@ -43,7 +46,9 @@ class ReservationService
 
     public function addCategory($category)
     {
-        return (new ExtraPublicEventsRepository)->addCategory($category);
+        $added_category = (new ExtraPublicEventsRepository)->addCategory($category);
+        $added_category->delete();
+        return $added_category;
     }
 
 
@@ -161,6 +166,9 @@ class ReservationService
     public function addPhotoForPublicEvent($reservation_id, $photo) {
         $reservation = $this->repository->getInfo($reservation_id);
         $reservation->publicEvent->update(['photo' => $this->savePhoto($photo)]);
+        if($reservation->category == null) {
+            $reservation->delete();
+        }
         return $this->sendResponse(
             200,
             __('messages.add_reservation'),
@@ -177,8 +185,10 @@ class ReservationService
             $reservation = $this->addInfoReservation($reservation_info['general_info'], false);
             if(!empty($reservation_info['public_info']['category']['added'])) {
                 $reservation_info['public_info']['info']['category_id'] = $this->addCategory($reservation_info['public_info']['category']['added'])->id;
+                
             } else if (isset($reservation_info['public_info']['category']['existed'])) {
                 $reservation_info['public_info']['info']['category_id'] = (new ExtraPublicEventsRepository)->getCategory($reservation_info['public_info']['category']['existed']['id'])->id;
+                
             }
             $this->savePublicEvent($reservation,$reservation_info['public_info']['info']);
             $response_data = $reservation->id;
@@ -315,6 +325,7 @@ class ReservationService
 
     public function getPublicEventFavorites()
     {
+        NotificationService::send('dV-8JstFTLSjOy30SDMc0W:APA91bG-0I-eRAORSTSF-FaOS4wuxIAybU2GlQ53kMOFMkr5xuO5iwm1uOfjYslEWMcXJjZ-5Nr1LNNOYobpMAKsTTHgw-7ihjR0FBAZ20b6MKxm-SFNpICdnDdwfOYF7IYNJBIu9zDz', 'sdfsdf', 'fsdfsdf');
         $reservations = auth()->user()->favoritePublicEvents->map(function ($item) {
             return $item->reservation;
         });
@@ -328,5 +339,18 @@ class ReservationService
 
     public function listTicketsForPublicEvent($id) {
         return PublicEventTicketsResource::collection($this->repository->getInfo($id)->publicEvent->publicEventReservations);
+    }
+
+    public function getCategoriesForAdmin() {
+        return GetCategoriesForDashboard::collection(Category::onlyTrashed()->get());
+    }
+
+    public function AcceptCategory($category_info) {
+        $category = Category::withTrashed()->where('id', $category_info['id'])->first();
+        if($category_info['status']) {
+            $category->restore();
+        } else {
+            $category->forceDelete();
+        }
     }
 }

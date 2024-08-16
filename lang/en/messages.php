@@ -32,5 +32,10 @@ return [
     'time_fail' => "Reservation Time Isn't Available",
     'time_fail' => "No Enough Places Left To Reserve",
     'search_error' => "Something went wrong, Make sure you entered valid data",
+    'add_service_notification_content' => 'You Can Now Add :service To Your App',
+    'add_service_notification_name' => 'New Service',
+    'add_discount_notification_content' => 'A New Discount From :name , Go And Make A Reservation Now!',
+    'add_discount_notification_name' =>'New Discount',
+
 
 ];

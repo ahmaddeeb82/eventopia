@@ -3,6 +3,7 @@
 namespace Modules\Event\app\Services;
 
 use Modules\Event\Transformers\GetServiceResource;
+use Modules\Notification\Services\NotificationService;
 
 class ServiceService {
 
@@ -19,8 +20,10 @@ class ServiceService {
     public function createMultipleServices($services) {
 
         foreach($services as $service) {
-            $this->createService($service);
+            $added_services[] = $this->createService($service);
         }
+
+        NotificationService::send('e51E6B8I8n09JYRUfUG8mA:APA91bFa8BU_HTG0V9jW8M0xNWJCzX3m_HEdvCtxsaQ2ACBPxUOPyQETTaHJQC4HW9F_UU9T4kzIB7b8WL6Onpk7rnTt7KDkmxeoqnDLXDiKc6WU1JBYXzfLcr_7Qq1U9a9hoCDeiRUL', __('messages.add_service_notification_name'),__('messages.add_service_notification_content', ['service' => $added_services[0]->name]));
 
     }
 

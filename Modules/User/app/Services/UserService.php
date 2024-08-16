@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Modules\Contracts\app\Repositories\ContractRepository;
+use Modules\Notification\Models\FCMToken;
 use Modules\User\Models\User;
 use Modules\User\Notifications\EmailVerificationNotification;
 use Modules\User\Notifications\ResetPasswordNotification;
@@ -49,6 +50,8 @@ class UserService {
         $user = $this->create($userInfo, $role);
 
         //$user->notify(new EmailVerificationNotification());
+
+        $user->fcmTokens()->save(new FCMToken(['token' => $userInfo['client_token']]));
 
         return $this->createToken($user);
 
@@ -127,10 +130,12 @@ class UserService {
 
         
         if (auth()->attempt([$login_type => $user['login'], 'password' => $user['password']])) {
+            $token = $this->createToken($this->repository->login($user['login'], $login_type));
+            auth()->user()->fcmTokens()->save(new FCMToken(['token' => $user['client_token']]));
             return $this->sendResponse(
                 200,
                 __('messages.login'),
-                $this->createToken($this->repository->login($user['login'], $login_type))
+                $token
             );
         } else {
             return $this->sendResponse(

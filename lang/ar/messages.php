@@ -32,5 +32,9 @@ return [
     'time_fail' => "وقت الحجز غير متاح",
     'no_enough_places' => "لا يوجد أماكن شاغرة تكفي",
     'search_error' => "حدث خطأ ما، تأكد من إدخال بيانات صحيحة",
+    'add_service_notification_content' => 'يمكنك الآن إضافة خدمة :service إلى خدماتك',
+    'add_service_notification_name' => 'خدمة جديدة',
+    'add_discount_notification_content' => 'هناك حسم جديد على :name ، سارع للاستفادة منه',
+    'add_discount_notification_name' => 'عرض جديد',
 
 ];

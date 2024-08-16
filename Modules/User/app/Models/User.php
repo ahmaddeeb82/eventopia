@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Reservation\Models\PublicEventReservation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Event\Models\ServiceAsset;
+use Modules\Notification\Models\FCMToken;
 use Modules\Reservation\Models\PublicEvent;
 
 class User extends Authenticatable
@@ -112,5 +113,8 @@ class User extends Authenticatable
         return $this->hasManyThrough(ServiceAsset::class, Asset::class);
     }
 
+    public function fcmTokens() {
+        return $this->hasMany(FCMToken::class, 'user_id', 'id');
+    }
 
 }

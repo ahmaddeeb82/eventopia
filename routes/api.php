@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Asset\Models\Asset;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/delete' , function () {
+    $asset = Asset::find(3);
+    $asset->delete();
+    return 1;
 });
