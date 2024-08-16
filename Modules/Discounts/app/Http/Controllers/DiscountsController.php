@@ -20,14 +20,14 @@ class DiscountsController extends Controller
             (new DiscountService(new DiscountRepository()))->add($request->all());
             return $this->sendResponse(
                 200,
-                __('messages.create_service')
+                __('messages.add_discount')
             );
     }
 
     public function list() {
         return $this->sendResponse(
             200,
-            __('messages.create_service'),
+            __('messages.list_discounts'),
             (new DiscountService(new DiscountRepository()))->list()
             );
     }

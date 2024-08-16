@@ -20,7 +20,7 @@ class ProfileController extends Controller
     public function get() {
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.get_profile'),
             (new ProfileService(new UserRepository()))->get(),
         );
     }
@@ -28,7 +28,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request) {
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.update_profile'),
             (new ProfileService(new UserRepository()))->update($request->all()),
         );
     }
@@ -36,7 +36,7 @@ class ProfileController extends Controller
     public function setPhoto(SetPhotoRequest $request) {
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.set_photo'),
             (new ProfileService(new UserRepository()))->setPhoto($request->photo),
         );
     }
@@ -44,7 +44,7 @@ class ProfileController extends Controller
     public function deletePhoto() {
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.delete_photo'),
             (new ProfileService(new UserRepository()))->deletePhoto(),
         );
     }

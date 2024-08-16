@@ -242,7 +242,7 @@ class AssetService {
                     $assets = TransformersAssetResource::collection($this->repository->searchBetween($identifier,$value));                }
             }
             return $this->sendResponse(200,
-        __('messages.add_reservation'),
+        __('messages.search'),
         $assets);
         } catch (\Exception $e) {
             return $this->sendResponse(200,

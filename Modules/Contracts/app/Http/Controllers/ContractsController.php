@@ -22,14 +22,14 @@ class ContractsController extends Controller
 
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.add_contract'),
         );
     }
 
     public function list(GetUserContractsRequest $request) {
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.list_contract'),
             (new ContractService(new ContractRepository()))->list($request->user_id)
         );
     }
@@ -38,7 +38,7 @@ class ContractsController extends Controller
 
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.get_contract'),
             (new ContractService(new ContractRepository()))->getWithId($request->id)
         );
     }
@@ -51,7 +51,7 @@ class ContractsController extends Controller
 
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.disactive_contract'),
             (new ContractService(new ContractRepository()))->disactive($request->id)
         );
     }
@@ -60,7 +60,7 @@ class ContractsController extends Controller
 
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.update_contract'),
             (new ContractService(new ContractRepository()))->update($request->all())
         );
     }

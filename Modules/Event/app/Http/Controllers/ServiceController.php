@@ -44,7 +44,7 @@ class ServiceController extends Controller
 
         return $this->sendResponse(
             200,
-            __('messages.retrieve_service'),
+            __('messages.delete_service'),
         );
 
     }
@@ -53,7 +53,7 @@ class ServiceController extends Controller
         
         return $this->sendResponse(
             200,
-            __('messages.retrieve_service'),
+            __('messages.list_services'),
             (new ServiceService(new ServiceRepository()))->list($request->identifier),
         );
 

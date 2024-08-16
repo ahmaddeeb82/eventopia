@@ -162,7 +162,7 @@ class ReservationService
         $reservation->publicEvent->update(['photo' => $this->savePhoto($photo)]);
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.add_photo_for_public'),
             new ReservationPrivateResource($reservation)
         );
     }
@@ -193,7 +193,7 @@ class ReservationService
     }
         return $this->sendResponse(
             200,
-            __('messages.add_reservation'),
+            __('messages.reserve_event'),
             $response_data
         );
 

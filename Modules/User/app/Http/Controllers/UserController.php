@@ -62,7 +62,7 @@ class UserController extends Controller
     return (new UserService(new UserRepository()))->login($request->all());
     return $this->sendResponse(
         200,
-        __('auth.create_user'),
+        __('auth.login'),
         (new UserService(new UserRepository()))->login($request->all())
     );
    }
@@ -80,7 +80,7 @@ class UserController extends Controller
         
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.list_investors'),
             (new UserService(new UserRepository()))->listWithRole($request->role)
         );
     }
@@ -88,7 +88,7 @@ class UserController extends Controller
     public function getWithContract(GetUserWithId $request) {
         return $this->sendResponse(
             200,
-            __('messages.loggedout'),
+            __('messages.get_investor_contract'),
             (new UserService(new UserRepository()))->getInvestorWithContract($request->id)
         );
     }
@@ -112,7 +112,7 @@ class UserController extends Controller
     public function resetPassword(ResetPasswordRequest $request) {
         return $this->sendResponse(
             200,
-            __('auth.create_user'),
+            __('auth.reset_password'),
             ((new UserService(new UserRepository()))->resetPassword($request->all()))
         );
     }
@@ -122,7 +122,7 @@ class UserController extends Controller
 
         return $this->sendResponse(
             200,
-            __('auth.create_user')
+            __('auth.add_to_cart')
            
         );
     }

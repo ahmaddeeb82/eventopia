@@ -54,14 +54,14 @@ class AssetController extends Controller
 
     public function list(Request $request) {
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.list_assets'),
         AssetResource::collection((new AssetRepository)->list($request->identifier, $request->role, $request->service_id??1))
     );
     }
 
     public function recentlyAdded(GetInvestorsRequest $request) {
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.recently_added'),
         (new AssetService(new AssetRepository()))->recentlyAdded($request->role)
     );
     }
@@ -70,14 +70,14 @@ class AssetController extends Controller
         
         (new AssetService(new AssetRepository()))->addToFavorite($request->id);
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.add_to_favorite'),
         );
     }
 
     public function getFavorites() {
         
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.get_favorites'),
         (new AssetService(new AssetRepository()))->getFavorites()
         );
     }
@@ -85,13 +85,13 @@ class AssetController extends Controller
     public function deleteFavorite(GetFavoriteWithIdRequest $request) {
         (new AssetService(new AssetRepository()))->deleteFavorite($request->id);
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.delete_Favorite'),
         );
     }
 
     public function listForInvestor() {
         return $this->sendResponse(200,
-        __('messages.rate'),
+        __('messages.list_for_investor'),
         (new AssetService(new AssetRepository()))->listForInvestor()
         );
     }
@@ -100,25 +100,25 @@ class AssetController extends Controller
 
         (new AssetService(new AssetRepository()))->updateCompleteAsset($request->all());
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.update_hall_for'));
     }
 
     public function updateSereviceForOrganizer(UpdateServiceOrgeanizerRequest $request) {
         (new AssetService(new AssetRepository()))->updateAttachedService($request->all());
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.update_serevice_for'));
     }
 
     public function addSereviceForOrganizer(AddServiceForOrganizerRequest $request) {
         (new AssetService(new AssetRepository()))->updateAttachedService($request->all());
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.add_serevice_for'));
     }
 
     public function getFilters(AssetFiltersRequest $request) {
         
         return $this->sendResponse(200,
-        __('messages.create_asset'),
+        __('messages.get_filters'),
         (new AssetService(new AssetRepository()))->filterForReservation($request->all())
     );
     }
@@ -126,37 +126,37 @@ class AssetController extends Controller
     public function addServicesForOrganizer(AddServicesForOrganizerRequest $request) {
         (new AssetService(new AssetRepository()))->attachMultipleServices(auth()->user()->assets()->first(),$request->services);
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.add_serevice_for'));
     }
 
     public function deleteService(DeleteAttachedServiceRequest $request) {
         (new AssetService(new AssetRepository()))->deleteAttachedService($request->id);
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.delete_service_for'));
     }
 
     public function deleteAsset(GetAssetRequest $request) {
         (new AssetService(new AssetRepository()))->deleteAsset($request->id);
 
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.delete_asset'));
     }
     
     public function deleteTime(GetTimeRequest $request) {
         (new AssetService(new AssetRepository()))->deleteAttachedTime($request->id);
         
-        return $this->sendResponse(200, __('messages.create_asset'));
+        return $this->sendResponse(200, __('messages.delete_time'));
     }
 
     public function getAnalytics() {
         return $this->sendResponse(200,
-        __('messages.create_asset'),
+        __('messages.get_analytics'),
         (new AssetService(new AssetRepository))->getAnalytics()
         );
     }
 
     public function searchForUser(Request $request) {
         return $this->sendResponse(200,
-        __('messages.create_asset'),
+        __('messages.search'),
         (new AssetService(new AssetRepository))->searchForUser($request->identifier, $request->value)
         );
     }
